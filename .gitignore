@@ -1,0 +1,166 @@
+# ============================================
+# LLM Safety Framework - Git Ignore
+# ============================================
+
+# -----------------------------
+# Python
+# -----------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+.venv310/
+venv/
+ENV/
+env/
+.env.local
+
+# -----------------------------
+# Secrets & API Keys
+# -----------------------------
+.env
+*.env
+!.env.template
+!.env.example
+secrets/
+credentials/
+*.pem
+*.key
+
+# -----------------------------
+# IDE & Editors
+# -----------------------------
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# -----------------------------
+# OS Files
+# -----------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# -----------------------------
+# Testing & Coverage
+# -----------------------------
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# -----------------------------
+# Type Checking
+# -----------------------------
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+# -----------------------------
+# Build & Distribution
+# -----------------------------
+*.manifest
+*.spec
+
+# -----------------------------
+# Jupyter Notebooks
+# -----------------------------
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# -----------------------------
+# Project Specific
+# -----------------------------
+
+# Large data files (keep templates, ignore generated)
+*.db
+*.sqlite
+*.sqlite3
+!database_schema.sql
+
+# Generated reports (keep latest/summary only)
+data/reports/executive_report_*.md
+!data/reports/executive_report_latest.md
+
+# Checkpoint files (can be large)
+data/checkpoints/
+data/autonomous_learning_*/checkpoint_*.json
+!data/autonomous_learning_*/checkpoint_latest.json
+
+# Cache directories
+.cache/
+response_cache/
+embedding_cache/
+
+# Log files
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Large model files
+*.bin
+*.onnx
+*.pt
+*.pth
+*.safetensors
+
+# -----------------------------
+# Documentation builds
+# -----------------------------
+docs/_build/
+site/
+
+# -----------------------------
+# Keep important files
+# -----------------------------
+!.gitkeep
+!README.md
+!CLAUDE.md
+!LICENSE
+!requirements.txt
+!pyproject.toml
+!setup.py

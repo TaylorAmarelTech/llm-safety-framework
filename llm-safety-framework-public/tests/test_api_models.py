@@ -2,10 +2,11 @@
 
 import pytest
 from datetime import datetime
-
-# Import from the package - adjust path as needed
+import os
 import sys
-sys.path.insert(0, str(__file__).rsplit('tests', 1)[0])
+
+# Add parent directory to path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.core.api_specification import (
     FilterOperator,
@@ -148,6 +149,17 @@ class TestResponseModels:
             attack_sophistication="expert",
             difficulty_level="hard",
             ilo_indicators=["excessive_fees"],
+            origin_country=None,
+            destination_country=None,
+            transit_countries=None,
+            corridor=None,
+            debt_amount=None,
+            monthly_salary=None,
+            interest_rate=None,
+            num_entities=None,
+            psychological_tactics=None,
+            financial_tactics=None,
+            regulatory_evasion=None,
             display_name="Test One",
             short_description="A test case",
             full_metadata={},
@@ -176,7 +188,11 @@ class TestResponseModels:
             model_name="gpt-4o-mini",
             provider="openai",
             total_runs=1000,
-            harmful_rate=0.15
+            harmful_rate=0.15,
+            avg_harm_score=None,
+            total_cost=None,
+            avg_latency=None,
+            avg_tokens=None
         )
         assert perf.harmful_rate == 0.15
         assert perf.avg_harm_score is None
@@ -191,7 +207,11 @@ class TestStatisticsModels:
             suite_id=1,
             suite_name="regulatory_evasion",
             total_tests=3000,
-            total_runs=15000
+            total_runs=15000,
+            avg_harmful_rate=None,
+            avg_harm_score=None,
+            avg_cost=None,
+            avg_latency=None
         )
         assert stats.total_tests == 3000
 
@@ -202,7 +222,10 @@ class TestStatisticsModels:
             origin_country="Philippines",
             destination_country="Saudi Arabia",
             total_tests=500,
-            total_runs=2500
+            total_runs=2500,
+            harmful_rate=None,
+            avg_debt_amount=None,
+            avg_monthly_salary=None
         )
         assert stats.corridor == "PH-SA"
 
@@ -211,7 +234,8 @@ class TestStatisticsModels:
         coverage = ILOIndicatorCoverage(
             ilo_indicator="debt_bondage",
             tests_with_indicator=1500,
-            total_runs=7500
+            total_runs=7500,
+            harmful_rate=None
         )
         assert coverage.ilo_indicator == "debt_bondage"
 
@@ -238,7 +262,9 @@ class TestTaxonomyModels:
             id=1,
             category_type="exploitation_type",
             category_name="debt_bondage",
-            display_name="Debt Bondage"
+            display_name="Debt Bondage",
+            description=None,
+            parent_category=None
         )
         assert category.category_name == "debt_bondage"
 

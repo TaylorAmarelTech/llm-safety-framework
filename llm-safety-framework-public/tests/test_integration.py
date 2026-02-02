@@ -3,9 +3,11 @@
 import pytest
 from datetime import datetime
 from unittest.mock import MagicMock, patch
-
+import os
 import sys
-sys.path.insert(0, str(__file__).rsplit('tests', 1)[0])
+
+# Add parent directory to path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class TestFrameworkIntegration:
@@ -34,9 +36,9 @@ class TestFrameworkIntegration:
 
     def test_package_init(self):
         """Test that package __init__ works."""
-        from src import __version__, __author__
-        assert __version__ == "1.0.0"
-        assert __author__ == "Taylor Amarel"
+        import src
+        assert src.__version__ == "1.0.0"
+        assert src.__author__ == "Taylor Amarel"
 
     def test_request_response_cycle(self):
         """Test a complete request/response cycle with models."""
@@ -115,7 +117,10 @@ class TestFrameworkIntegration:
             suite_name="moral_religious_framing",
             total_tests=3000,
             total_runs=15000,
-            avg_harmful_rate=0.233
+            avg_harmful_rate=0.233,
+            avg_harm_score=None,
+            avg_cost=None,
+            avg_latency=None
         )
 
         # Create model stats
@@ -124,7 +129,11 @@ class TestFrameworkIntegration:
             model_name="gpt-4o-mini",
             provider="openai",
             total_runs=5000,
-            harmful_rate=0.15
+            harmful_rate=0.15,
+            avg_harm_score=None,
+            total_cost=None,
+            avg_latency=None,
+            avg_tokens=None
         )
 
         # Create corridor stats
@@ -134,7 +143,9 @@ class TestFrameworkIntegration:
             destination_country="Saudi Arabia",
             total_tests=500,
             total_runs=2500,
-            harmful_rate=0.18
+            harmful_rate=0.18,
+            avg_debt_amount=None,
+            avg_monthly_salary=None
         )
 
         # Create ILO indicator stats
@@ -208,7 +219,15 @@ class TestEdgeCases:
             ilo_indicators=[],
             origin_country=None,
             destination_country=None,
+            transit_countries=None,
             corridor=None,
+            debt_amount=None,
+            monthly_salary=None,
+            interest_rate=None,
+            num_entities=None,
+            psychological_tactics=None,
+            financial_tactics=None,
+            regulatory_evasion=None,
             display_name="Test",
             short_description="Test",
             full_metadata={},

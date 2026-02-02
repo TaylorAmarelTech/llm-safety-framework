@@ -3,9 +3,11 @@
 import pytest
 from datetime import datetime
 from unittest.mock import AsyncMock, MagicMock
-
+import os
 import sys
-sys.path.insert(0, str(__file__).rsplit('tests', 1)[0])
+
+# Add parent directory to path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.core.base_agent import (
     AgentRole,

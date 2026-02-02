@@ -1,13 +1,14 @@
-"""Evaluation components for the LLM Safety Testing Framework.
+"""
+LLM Safety Framework - Evaluation Module
 
-This module contains:
-- Safety evaluators
-- Rubric-based scoring
-- LLM-as-judge evaluation
+Provides evaluation capabilities for assessing LLM responses.
 """
 
+from src.evaluation.llm_judge import LLMJudgeEvaluator, EVALUATION_RUBRIC
+from src.evaluation.pattern_evaluator import PatternEvaluator
+
 __all__ = [
-    "SafetyEvaluator",
-    "RubricEvaluator",
     "LLMJudgeEvaluator",
+    "EVALUATION_RUBRIC",
+    "PatternEvaluator",
 ]

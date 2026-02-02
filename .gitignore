@@ -155,6 +155,39 @@ docs/_build/
 site/
 
 # -----------------------------
+# Library pollution (exclude from src/core)
+# -----------------------------
+# Pip internals
+**/__pip-runner__.py
+**/__about__.py
+**/__version__.py
+**/__main__.py
+
+# Protobuf generated files
+**/*_pb2.py
+**/*_pb2_grpc.py
+
+# OpenAI SDK generated files
+**/agents_api_v1_*.py
+**/files_api_*.py
+**/assistants_api_*.py
+**/threads_api_*.py
+
+# Pygments lexers and other library files
+llm-safety-framework-public/src/core/_*.py
+llm-safety-framework-public/src/core/[a-z][a-z][a-z].py
+llm-safety-framework-public/src/core/abap.py
+llm-safety-framework-public/src/core/abc.py
+llm-safety-framework-public/src/core/accesses.py
+llm-safety-framework-public/src/core/actionscript.py
+llm-safety-framework-public/src/core/ada.py
+llm-safety-framework-public/src/core/adapters.py
+llm-safety-framework-public/src/core/appengine.py
+
+# Nul file (Windows artifact)
+nul
+
+# -----------------------------
 # Keep important files
 # -----------------------------
 !.gitkeep

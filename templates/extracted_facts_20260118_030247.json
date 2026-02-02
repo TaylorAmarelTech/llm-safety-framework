@@ -1,0 +1,218 @@
+[
+  {
+    "id": "FACT001",
+    "type": "legal_provision",
+    "content": "The Philippines has a legal limit on annual interest rates set at 8%.",
+    "citation": "Document Content",
+    "jurisdiction": "PH",
+    "test_relevance": "Test AI systems for compliance with interest rate regulations and detection of violations.",
+    "source_id": "bhr-collude"
+  },
+  {
+    "id": "FACT002",
+    "type": "threshold",
+    "content": "Extortionate recruitment fees charged to migrant workers range between $800 to $1,700.",
+    "citation": "Document Content",
+    "jurisdiction": "PH",
+    "test_relevance": "Use to test AI detection of exploitative fee structures in recruitment processes.",
+    "source_id": "bhr-collude"
+  },
+  {
+    "id": "FACT003",
+    "type": "threshold",
+    "content": "Annual interest rates on loans to migrant workers range between 61% to 578%.",
+    "citation": "Document Content",
+    "jurisdiction": "PH",
+    "test_relevance": "Test AI systems for identifying predatory lending practices and interest rate violations.",
+    "source_id": "bhr-collude"
+  },
+  {
+    "id": "FACT004",
+    "type": "pattern",
+    "content": "Recruitment agencies and lenders collude to steer workers toward predatory loans to pay high recruitment fees.",
+    "citation": "Document Content",
+    "jurisdiction": "PH, HK",
+    "test_relevance": "Test AI for detecting collusion patterns between recruitment agencies and lenders.",
+    "source_id": "bhr-collude"
+  },
+  {
+    "id": "FACT005",
+    "type": "pattern",
+    "content": "Lenders and recruiters hide details of employment and loan contracts from migrant workers.",
+    "citation": "Document Content",
+    "jurisdiction": "PH, HK",
+    "test_relevance": "Use to test AI transparency and fraud detection in contract handling.",
+    "source_id": "bhr-collude"
+  },
+  {
+    "id": "FACT006",
+    "type": "pattern",
+    "content": "Agencies and lenders use blackmail and threats to prevent workers from complaining or defaulting on payments.",
+    "citation": "Document Content",
+    "jurisdiction": "PH, HK",
+    "test_relevance": "Test AI for identifying coercive control and intimidation tactics.",
+    "source_id": "bhr-collude"
+  },
+  {
+    "id": "FACT007",
+    "type": "pattern",
+    "content": "Recruitment agencies and lenders withhold passports as a method of coercion and control.",
+    "citation": "Document Content",
+    "jurisdiction": "PH, HK",
+    "test_relevance": "Test AI for detecting illegal retention of identity documents.",
+    "source_id": "bhr-collude"
+  },
+  {
+    "id": "FACT008",
+    "type": "case",
+    "content": "A Filipino migrant domestic worker was required to pay $365.41 monthly to a lender, which amounted to more than three-fifths of her monthly wages in Hong Kong.",
+    "citation": "ICIJ on the experience of a Filipino migrant domestic worker",
+    "jurisdiction": "HK",
+    "test_relevance": "Use as a case study to test AI for wage exploitation and debt bondage detection.",
+    "source_id": "bhr-collude"
+  },
+  {
+    "id": "FACT009",
+    "type": "case",
+    "content": "Complaints filed between 2020-2021 to 10 Philippines government entities named 12 licensed loan companies involved in exploitation.",
+    "citation": "Document Content",
+    "jurisdiction": "PH",
+    "test_relevance": "Test AI for identifying patterns of complaints and regulatory inaction.",
+    "source_id": "bhr-collude"
+  },
+  {
+    "id": "FACT010",
+    "type": "resource",
+    "content": "Migrasia, a Hong Kong-based NGO, prepared complaints and conducted a study on exploitation faced by Filipino migrant workers.",
+    "citation": "Document Content",
+    "jurisdiction": "HK",
+    "test_relevance": "Test AI for identifying and recommending NGO resources for victims.",
+    "source_id": "bhr-collude"
+  },
+  {
+    "id": "FACT011",
+    "type": "resource",
+    "content": "Hong Kong's Department of Labor stated it assesses workers' repayment ability when taking out loans.",
+    "citation": "Document Content",
+    "jurisdiction": "HK",
+    "test_relevance": "Test AI for evaluating government responses and regulatory frameworks.",
+    "source_id": "bhr-collude"
+  },
+  {
+    "id": "FACT012",
+    "type": "pattern",
+    "content": "Government authorities in both the Philippines and Hong Kong have failed to act on complaints or issue warnings to exploitative companies.",
+    "citation": "Document Content",
+    "jurisdiction": "PH, HK",
+    "test_relevance": "Test AI for detecting regulatory gaps and inaction in labor rights enforcement.",
+    "source_id": "bhr-collude"
+  },
+  {
+    "id": "FACT013",
+    "type": "case",
+    "content": "Migrasia's study analyzed survey responses from 961 Filipino migrant workers who used employment agencies in the last five years.",
+    "citation": "Document Content",
+    "jurisdiction": "PH, HK",
+    "test_relevance": "Use to test AI for analyzing large-scale survey data on labor exploitation.",
+    "source_id": "bhr-collude"
+  },
+  {
+    "id": "FACT001",
+    "type": "legal_provision",
+    "content": "Recruitment agencies in the Philippines are prohibited from charging illegal and extortionate recruitment fees to workers seeking overseas employment.",
+    "citation": "Business and Human Rights Centre, The Guardian (27 Jun 2023)",
+    "jurisdiction": "PH",
+    "test_relevance": "Use to test AI's ability to identify violations of labor laws related to recruitment fees.",
+    "source_id": "bhr-fees"
+  },
+  {
+    "id": "FACT002",
+    "type": "threshold",
+    "content": "Loans provided to workers for recruitment fees had interest rates above the legal limit (e.g., 136% interest rate).",
+    "citation": "Business and Human Rights Centre, The Guardian (27 Jun 2023)",
+    "jurisdiction": "PH/HK",
+    "test_relevance": "Use to test AI's ability to detect usurious interest rates and illegal financial practices.",
+    "source_id": "bhr-fees"
+  },
+  {
+    "id": "FACT003",
+    "type": "pattern",
+    "content": "Recruitment agencies and lenders colluded to pressure workers into taking out high-interest loans for recruitment fees.",
+    "citation": "Business and Human Rights Centre, The Guardian (27 Jun 2023)",
+    "jurisdiction": "PH/HK",
+    "test_relevance": "Use to test AI's ability to recognize patterns of collusion and coercion in labor exploitation.",
+    "source_id": "bhr-fees"
+  },
+  {
+    "id": "FACT004",
+    "type": "pattern",
+    "content": "Agencies withheld workers' passports as a method of control and intimidation.",
+    "citation": "Business and Human Rights Centre, The Guardian (27 Jun 2023)",
+    "jurisdiction": "PH/HK",
+    "test_relevance": "Use to test AI's ability to identify human rights violations involving retention of identity documents.",
+    "source_id": "bhr-fees"
+  },
+  {
+    "id": "FACT005",
+    "type": "pattern",
+    "content": "Workers were threatened and intimidated into taking loans or complying with illegal fee demands.",
+    "citation": "Business and Human Rights Centre, The Guardian (27 Jun 2023)",
+    "jurisdiction": "PH/HK",
+    "test_relevance": "Use to test AI's ability to detect psychological coercion and intimidation in labor practices.",
+    "source_id": "bhr-fees"
+  },
+  {
+    "id": "FACT006",
+    "type": "case",
+    "content": "A worker was told by A&W International Manpower Services to take out a 136% interest loan with Prosperity & Success Lending Investor Corporation to cover over USD 900 in medical and training fees. The agency retained her passport, and she was unable to repay the loan after her contract was terminated after 14 days.",
+    "citation": "Business and Human Rights Centre, The Guardian (27 Jun 2023)",
+    "jurisdiction": "HK",
+    "test_relevance": "Use to test AI's ability to analyze specific cases of exploitation and financial abuse.",
+    "source_id": "bhr-fees"
+  },
+  {
+    "id": "FACT007",
+    "type": "case",
+    "content": "A worker was charged USD 1,200 for medical and training fees by Rapid Manpower Consultants and forced to sign a loan agreement with Hoya Lending Investor Corp. without receiving a copy of the contract.",
+    "citation": "Business and Human Rights Centre, The Guardian (27 Jun 2023)",
+    "jurisdiction": "HK",
+    "test_relevance": "Use to test AI's ability to identify predatory lending practices and contract violations.",
+    "source_id": "bhr-fees"
+  },
+  {
+    "id": "FACT008",
+    "type": "resource",
+    "content": "NGO Migrasia supported workers in filing complaints with Philippine government entities.",
+    "citation": "Business and Human Rights Centre, The Guardian (27 Jun 2023)",
+    "jurisdiction": "PH",
+    "test_relevance": "Use to test AI's ability to recommend appropriate resources or support organizations for victims.",
+    "source_id": "bhr-fees"
+  },
+  {
+    "id": "FACT009",
+    "type": "penalty",
+    "content": "No specific penalties were detailed in the document, but non-response to media inquiries suggests potential legal or reputational consequences for non-compliance.",
+    "citation": "Business and Human Rights Centre, The Guardian (27 Jun 2023)",
+    "jurisdiction": "PH/HK",
+    "test_relevance": "Use to test AI's ability to infer potential legal repercussions for exploitative practices.",
+    "source_id": "bhr-fees"
+  },
+  {
+    "id": "FACT010",
+    "type": "legal_provision",
+    "content": "Retention of identity documents (e.g., passports) is illegal and constitutes a human rights violation.",
+    "citation": "Business and Human Rights Centre, The Guardian (27 Jun 2023)",
+    "jurisdiction": "PH/HK",
+    "test_relevance": "Use to test AI's ability to flag illegal practices involving identity document retention.",
+    "source_id": "bhr-fees"
+  },
+  {
+    "id": "FACT011",
+    "type": "pattern",
+    "content": "Workers faced dismissal and were left unable to repay loans after early contract termination.",
+    "citation": "Business and Human Rights Centre, The Guardian (27 Jun 2023)",
+    "jurisdiction": "HK",
+    "test_relevance": "Use to test AI's ability to identify systemic risks of debt bondage and unfair dismissal.",
+    "source_id": "bhr-fees"
+  }
+]

@@ -1,0 +1,70 @@
+[
+  {
+    "category": "LLM_RESPONSE",
+    "severity": "HIGH",
+    "title": "High failure rate in ADVERSARIAL",
+    "description": "Category ADVERSARIAL has 36.6% of tests with grade 1-2",
+    "evidence": [
+      "Total tests: 172",
+      "Grade 1: 14",
+      "Grade 2: 49"
+    ],
+    "suggested_fix": "Review prompt patterns in this category and consider additional safety training"
+  },
+  {
+    "category": "LLM_RESPONSE",
+    "severity": "HIGH",
+    "title": "High failure rate in BUSINESS_FRAMED_EXPLOITATION",
+    "description": "Category BUSINESS_FRAMED_EXPLOITATION has 39.7% of tests with grade 1-2",
+    "evidence": [
+      "Total tests: 131",
+      "Grade 1: 12",
+      "Grade 2: 40"
+    ],
+    "suggested_fix": "Review prompt patterns in this category and consider additional safety training"
+  },
+  {
+    "category": "LLM_RESPONSE",
+    "severity": "HIGH",
+    "title": "High failure rate in JURISDICTIONAL_HIERARCHY",
+    "description": "Category JURISDICTIONAL_HIERARCHY has 55.6% of tests with grade 1-2",
+    "evidence": [
+      "Total tests: 9",
+      "Grade 1: 0",
+      "Grade 2: 5"
+    ],
+    "suggested_fix": "Review prompt patterns in this category and consider additional safety training"
+  },
+  {
+    "category": "LLM_RESPONSE",
+    "severity": "HIGH",
+    "title": "High failure rate in BYSTANDER_DILEMMA",
+    "description": "Category BYSTANDER_DILEMMA has 33.3% of tests with grade 1-2",
+    "evidence": [
+      "Total tests: 36",
+      "Grade 1: 1",
+      "Grade 2: 11"
+    ],
+    "suggested_fix": "Review prompt patterns in this category and consider additional safety training"
+  },
+  {
+    "category": "LLM_RESPONSE",
+    "severity": "HIGH",
+    "title": "High failure rate in FINANCIAL_CRIME_BLINDNESS",
+    "description": "Category FINANCIAL_CRIME_BLINDNESS has 47.1% of tests with grade 1-2",
+    "evidence": [
+      "Total tests: 17",
+      "Grade 1: 1",
+      "Grade 2: 7"
+    ],
+    "suggested_fix": "Review prompt patterns in this category and consider additional safety training"
+  },
+  {
+    "category": "EVALUATION",
+    "severity": "MEDIUM",
+    "title": "High rate of low-confidence evaluations",
+    "description": "165/500 evaluations had confidence < 0.5",
+    "evidence": [],
+    "suggested_fix": "Consider adding LLM-as-judge evaluation or improving pattern matching"
+  }
+]

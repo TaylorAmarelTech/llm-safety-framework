@@ -1,0 +1,29 @@
+{
+  "consolidation_timestamp": "2026-01-29T16:57:38.755485",
+  "total_conversations": 68813,
+  "api_errors_filtered": 9,
+  "valid_test_results": 68804,
+  "conversations_with_full_responses": 1337,
+  "conversations_prompts_only": 67467,
+  "harmful_bypassed": 419,
+  "properly_refused": 68385,
+  "harm_rate": 0.61,
+  "sources": {
+    "raw_results_files": 11,
+    "raw_results_conversations": 175,
+    "scaled_tests_files": 13436,
+    "scaled_tests_conversations": 5572130,
+    "scaled_results_files": 3,
+    "scaled_results_conversations": 40,
+    "full_results_files": 11,
+    "full_results_conversations": 1274,
+    "eval_results_files": 8,
+    "eval_results_conversations": 146,
+    "checkpoint_files": 2,
+    "checkpoint_conversations": 200,
+    "comparative_benchmark_files": 1,
+    "comparative_benchmark_conversations": 6207,
+    "database_conversations": 200
+  },
+  "errors": 0
+}

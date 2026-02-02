@@ -1,0 +1,15 @@
+{
+  "research_period": {
+    "start": null,
+    "end": "2026-01-30T20:44:06.244376",
+    "duration_hours": 0
+  },
+  "tasks": {
+    "total": 0,
+    "completed": 0,
+    "failed": 0,
+    "success_rate": 0
+  },
+  "completed_tasks": [],
+  "failed_tasks": []
+}

@@ -1,0 +1,434 @@
+[
+  {
+    "hour": 1,
+    "timestamp": "2026-01-19T01:24:56.502290+00:00",
+    "total_tests": 770,
+    "grade_distribution": {
+      "1": 43,
+      "2": 169,
+      "3": 359,
+      "4": 13,
+      "5": 186
+    },
+    "by_category": {
+      "LEGAL_ACCURACY": {
+        "total": 44,
+        "avg_grade": 3.0454545454545454
+      },
+      "BUSINESS_FRAMED_EXPLOITATION": {
+        "total": 193,
+        "avg_grade": 2.6632124352331608
+      },
+      "ADVERSARIAL": {
+        "total": 249,
+        "avg_grade": 2.995983935742972
+      },
+      "VICTIM_SUPPORT": {
+        "total": 146,
+        "avg_grade": 4.082191780821918
+      },
+      "FINANCIAL_CRIME_BLINDNESS": {
+        "total": 33,
+        "avg_grade": 2.787878787878788
+      },
+      "BYSTANDER_DILEMMA": {
+        "total": 45,
+        "avg_grade": 3.8222222222222224
+      },
+      "JURISDICTIONAL_HIERARCHY": {
+        "total": 29,
+        "avg_grade": 2.7586206896551726
+      },
+      "EXPLOITER_FRAMED": {
+        "total": 31,
+        "avg_grade": 3.4193548387096775
+      }
+    },
+    "avg_latency_ms": 4666.869300935004,
+    "errors": 0
+  },
+  {
+    "hour": 2,
+    "timestamp": "2026-01-19T02:24:52.881870+00:00",
+    "total_tests": 1484,
+    "grade_distribution": {
+      "1": 92,
+      "2": 340,
+      "3": 670,
+      "4": 26,
+      "5": 356
+    },
+    "by_category": {
+      "LEGAL_ACCURACY": {
+        "total": 91,
+        "avg_grade": 3.208791208791209
+      },
+      "BUSINESS_FRAMED_EXPLOITATION": {
+        "total": 357,
+        "avg_grade": 2.6358543417366946
+      },
+      "ADVERSARIAL": {
+        "total": 490,
+        "avg_grade": 2.942857142857143
+      },
+      "VICTIM_SUPPORT": {
+        "total": 274,
+        "avg_grade": 4.054744525547445
+      },
+      "FINANCIAL_CRIME_BLINDNESS": {
+        "total": 58,
+        "avg_grade": 2.7241379310344827
+      },
+      "BYSTANDER_DILEMMA": {
+        "total": 94,
+        "avg_grade": 3.7872340425531914
+      },
+      "JURISDICTIONAL_HIERARCHY": {
+        "total": 55,
+        "avg_grade": 2.727272727272727
+      },
+      "EXPLOITER_FRAMED": {
+        "total": 65,
+        "avg_grade": 3.3230769230769233
+      }
+    },
+    "avg_latency_ms": 5025.691313213772,
+    "errors": 0
+  },
+  {
+    "hour": 3,
+    "timestamp": "2026-01-19T03:24:56.322588+00:00",
+    "total_tests": 2181,
+    "grade_distribution": {
+      "1": 128,
+      "2": 494,
+      "3": 986,
+      "4": 34,
+      "5": 539
+    },
+    "by_category": {
+      "LEGAL_ACCURACY": {
+        "total": 141,
+        "avg_grade": 3.1347517730496453
+      },
+      "BUSINESS_FRAMED_EXPLOITATION": {
+        "total": 539,
+        "avg_grade": 2.654916512059369
+      },
+      "ADVERSARIAL": {
+        "total": 711,
+        "avg_grade": 2.9760900140646975
+      },
+      "VICTIM_SUPPORT": {
+        "total": 389,
+        "avg_grade": 4.102827763496144
+      },
+      "FINANCIAL_CRIME_BLINDNESS": {
+        "total": 79,
+        "avg_grade": 2.759493670886076
+      },
+      "BYSTANDER_DILEMMA": {
+        "total": 148,
+        "avg_grade": 3.824324324324324
+      },
+      "JURISDICTIONAL_HIERARCHY": {
+        "total": 83,
+        "avg_grade": 2.710843373493976
+      },
+      "EXPLOITER_FRAMED": {
+        "total": 91,
+        "avg_grade": 3.4175824175824174
+      }
+    },
+    "avg_latency_ms": 5167.896361483468,
+    "errors": 0
+  },
+  {
+    "hour": 4,
+    "timestamp": "2026-01-19T04:24:55.805567+00:00",
+    "total_tests": 2917,
+    "grade_distribution": {
+      "1": 167,
+      "2": 668,
+      "3": 1333,
+      "4": 40,
+      "5": 709
+    },
+    "by_category": {
+      "LEGAL_ACCURACY": {
+        "total": 187,
+        "avg_grade": 3.0481283422459895
+      },
+      "BUSINESS_FRAMED_EXPLOITATION": {
+        "total": 717,
+        "avg_grade": 2.6415620641562065
+      },
+      "ADVERSARIAL": {
+        "total": 941,
+        "avg_grade": 2.9936238044633368
+      },
+      "VICTIM_SUPPORT": {
+        "total": 514,
+        "avg_grade": 4.07976653696498
+      },
+      "FINANCIAL_CRIME_BLINDNESS": {
+        "total": 113,
+        "avg_grade": 2.7079646017699117
+      },
+      "BYSTANDER_DILEMMA": {
+        "total": 205,
+        "avg_grade": 3.8292682926829267
+      },
+      "JURISDICTIONAL_HIERARCHY": {
+        "total": 112,
+        "avg_grade": 2.732142857142857
+      },
+      "EXPLOITER_FRAMED": {
+        "total": 128,
+        "avg_grade": 3.375
+      }
+    },
+    "avg_latency_ms": 4883.118521836069,
+    "errors": 0
+  },
+  {
+    "hour": 5,
+    "timestamp": "2026-01-19T05:24:53.015949+00:00",
+    "total_tests": 3627,
+    "grade_distribution": {
+      "1": 203,
+      "2": 814,
+      "3": 1658,
+      "4": 58,
+      "5": 894
+    },
+    "by_category": {
+      "LEGAL_ACCURACY": {
+        "total": 229,
+        "avg_grade": 3.0436681222707422
+      },
+      "BUSINESS_FRAMED_EXPLOITATION": {
+        "total": 881,
+        "avg_grade": 2.6367763904653803
+      },
+      "ADVERSARIAL": {
+        "total": 1166,
+        "avg_grade": 3.0102915951972555
+      },
+      "VICTIM_SUPPORT": {
+        "total": 675,
+        "avg_grade": 4.071111111111111
+      },
+      "FINANCIAL_CRIME_BLINDNESS": {
+        "total": 141,
+        "avg_grade": 2.702127659574468
+      },
+      "BYSTANDER_DILEMMA": {
+        "total": 254,
+        "avg_grade": 3.8503937007874014
+      },
+      "JURISDICTIONAL_HIERARCHY": {
+        "total": 135,
+        "avg_grade": 2.748148148148148
+      },
+      "EXPLOITER_FRAMED": {
+        "total": 146,
+        "avg_grade": 3.4178082191780823
+      }
+    },
+    "avg_latency_ms": 5069.672271609306,
+    "errors": 0
+  },
+  {
+    "hour": 6,
+    "timestamp": "2026-01-19T06:25:02.724088+00:00",
+    "total_tests": 4181,
+    "grade_distribution": {
+      "1": 237,
+      "2": 935,
+      "3": 1893,
+      "4": 67,
+      "5": 1049
+    },
+    "by_category": {
+      "LEGAL_ACCURACY": {
+        "total": 267,
+        "avg_grade": 3.0262172284644193
+      },
+      "BUSINESS_FRAMED_EXPLOITATION": {
+        "total": 1009,
+        "avg_grade": 2.6372646184340933
+      },
+      "ADVERSARIAL": {
+        "total": 1343,
+        "avg_grade": 3.0104244229337302
+      },
+      "VICTIM_SUPPORT": {
+        "total": 784,
+        "avg_grade": 4.084183673469388
+      },
+      "FINANCIAL_CRIME_BLINDNESS": {
+        "total": 161,
+        "avg_grade": 2.6956521739130435
+      },
+      "BYSTANDER_DILEMMA": {
+        "total": 287,
+        "avg_grade": 3.8641114982578397
+      },
+      "JURISDICTIONAL_HIERARCHY": {
+        "total": 152,
+        "avg_grade": 2.7302631578947367
+      },
+      "EXPLOITER_FRAMED": {
+        "total": 178,
+        "avg_grade": 3.5224719101123596
+      }
+    },
+    "avg_latency_ms": 6122.768011026912,
+    "errors": 0
+  },
+  {
+    "hour": 7,
+    "timestamp": "2026-01-19T07:24:57.013406+00:00",
+    "total_tests": 4843,
+    "grade_distribution": {
+      "1": 264,
+      "2": 1080,
+      "3": 2240,
+      "4": 79,
+      "5": 1180
+    },
+    "by_category": {
+      "LEGAL_ACCURACY": {
+        "total": 347,
+        "avg_grade": 3.063400576368876
+      },
+      "BUSINESS_FRAMED_EXPLOITATION": {
+        "total": 1177,
+        "avg_grade": 2.6261682242990654
+      },
+      "ADVERSARIAL": {
+        "total": 1453,
+        "avg_grade": 3.0406056434962148
+      },
+      "VICTIM_SUPPORT": {
+        "total": 859,
+        "avg_grade": 4.087310826542491
+      },
+      "FINANCIAL_CRIME_BLINDNESS": {
+        "total": 244,
+        "avg_grade": 2.7295081967213113
+      },
+      "BYSTANDER_DILEMMA": {
+        "total": 366,
+        "avg_grade": 3.7704918032786887
+      },
+      "JURISDICTIONAL_HIERARCHY": {
+        "total": 213,
+        "avg_grade": 2.732394366197183
+      },
+      "EXPLOITER_FRAMED": {
+        "total": 184,
+        "avg_grade": 3.527173913043478
+      }
+    },
+    "avg_latency_ms": 5457.95963274108,
+    "errors": 0
+  },
+  {
+    "hour": 8,
+    "timestamp": "2026-01-19T08:24:55.988195+00:00",
+    "total_tests": 5437,
+    "grade_distribution": {
+      "1": 280,
+      "2": 1183,
+      "3": 2576,
+      "4": 85,
+      "5": 1313
+    },
+    "by_category": {
+      "LEGAL_ACCURACY": {
+        "total": 421,
+        "avg_grade": 3.0902612826603324
+      },
+      "BUSINESS_FRAMED_EXPLOITATION": {
+        "total": 1317,
+        "avg_grade": 2.6256643887623388
+      },
+      "ADVERSARIAL": {
+        "total": 1506,
+        "avg_grade": 3.0710491367861885
+      },
+      "VICTIM_SUPPORT": {
+        "total": 955,
+        "avg_grade": 4.101570680628273
+      },
+      "FINANCIAL_CRIME_BLINDNESS": {
+        "total": 318,
+        "avg_grade": 2.748427672955975
+      },
+      "BYSTANDER_DILEMMA": {
+        "total": 442,
+        "avg_grade": 3.737556561085973
+      },
+      "JURISDICTIONAL_HIERARCHY": {
+        "total": 294,
+        "avg_grade": 2.7312925170068025
+      },
+      "EXPLOITER_FRAMED": {
+        "total": 184,
+        "avg_grade": 3.527173913043478
+      }
+    },
+    "avg_latency_ms": 5892.3061062892275,
+    "errors": 0
+  },
+  {
+    "hour": 9,
+    "timestamp": "2026-01-19T09:25:00.095392+00:00",
+    "total_tests": 5975,
+    "grade_distribution": {
+      "1": 299,
+      "2": 1268,
+      "3": 2893,
+      "4": 98,
+      "5": 1417
+    },
+    "by_category": {
+      "LEGAL_ACCURACY": {
+        "total": 479,
+        "avg_grade": 3.104384133611691
+      },
+      "BUSINESS_FRAMED_EXPLOITATION": {
+        "total": 1447,
+        "avg_grade": 2.6205943331029715
+      },
+      "ADVERSARIAL": {
+        "total": 1578,
+        "avg_grade": 3.093789607097592
+      },
+      "VICTIM_SUPPORT": {
+        "total": 1028,
+        "avg_grade": 4.111867704280155
+      },
+      "FINANCIAL_CRIME_BLINDNESS": {
+        "total": 387,
+        "avg_grade": 2.7674418604651163
+      },
+      "BYSTANDER_DILEMMA": {
+        "total": 510,
+        "avg_grade": 3.7019607843137257
+      },
+      "JURISDICTIONAL_HIERARCHY": {
+        "total": 362,
+        "avg_grade": 2.748618784530387
+      },
+      "EXPLOITER_FRAMED": {
+        "total": 184,
+        "avg_grade": 3.527173913043478
+      }
+    },
+    "avg_latency_ms": 6927.204691701465,
+    "errors": 0
+  }
+]

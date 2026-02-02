@@ -1,0 +1,27 @@
+{
+  "checkpoint_id": "cp_0032_20260120_090034",
+  "iteration": 32,
+  "timestamp": "2026-01-20T09:00:34.228887",
+  "harness_version": "2.0.0",
+  "trigger": "shutdown",
+  "state_snapshot": {
+    "phase": "idle",
+    "total_tests_run": 0,
+    "total_improvements": 0,
+    "evolution_generation": 0
+  },
+  "contents": {
+    "state": "state.json"
+  },
+  "metrics_at_checkpoint": {
+    "average_pass_rate": 0.4274174669867947,
+    "average_latency": 0.0,
+    "cost_today": 0.0
+  },
+  "validation": {
+    "tests_valid": true,
+    "state_consistent": true,
+    "checksum": "ac9e2739af9aec640fff397c71f4e99f1b0b69046533afe19b5962d60010596d"
+  },
+  "restore_instructions": {}
+}

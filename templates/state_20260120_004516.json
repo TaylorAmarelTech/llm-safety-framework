@@ -1,0 +1,63 @@
+{
+  "harness_id": "d164aff0",
+  "version": "2.0.0",
+  "phase": "idle",
+  "iteration": 3,
+  "iteration_status": "completed",
+  "created_at": "2026-01-20T00:45:10.408796",
+  "started_at": "2026-01-20T00:45:10.412887",
+  "last_activity": "2026-01-20T00:45:16.482889",
+  "last_checkpoint": null,
+  "total_iterations": 3,
+  "total_tests_run": 0,
+  "total_tests_generated": 0,
+  "total_improvements_made": 0,
+  "total_attacks_evolved": 0,
+  "total_corridors_added": 0,
+  "current_iteration_tests": 0,
+  "current_iteration_improvements": 0,
+  "current_iteration_errors": [],
+  "resources": {
+    "api_calls_this_hour": 0,
+    "tokens_this_hour": 0,
+    "cost_today_usd": 0.0,
+    "storage_used_gb": 0.0,
+    "last_reset": "2026-01-20T00:45:10.408806"
+  },
+  "evolution": {
+    "current_generation": 0,
+    "population_size": 0,
+    "best_fitness": 0.0,
+    "average_fitness": 0.0,
+    "diversity_score": 0.0,
+    "stagnation_counter": 0
+  },
+  "improvements": {
+    "pending": [],
+    "in_progress": null,
+    "completed": [],
+    "failed": [],
+    "blocked": []
+  },
+  "recent_pass_rates": [
+    0.25,
+    0.55,
+    0.4
+  ],
+  "recent_latencies": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "recent_costs": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "consecutive_failures": 0,
+  "last_error": null,
+  "error_history": [],
+  "last_successful_checkpoint": null,
+  "pending_approvals": [],
+  "human_notes": []
+}

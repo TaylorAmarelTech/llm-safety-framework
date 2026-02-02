@@ -1,0 +1,15 @@
+{
+  "format": "jsonl",
+  "plan_id": "f4b8adb3f41c",
+  "model_id": "vulnerability_test",
+  "timestamp": "20260121_115903",
+  "total_examples": 14,
+  "train_count": 11,
+  "validation_count": 1,
+  "test_count": 2,
+  "categories_covered": [
+    "trafficking_indicators",
+    "legal_framework",
+    "victim_support"
+  ]
+}

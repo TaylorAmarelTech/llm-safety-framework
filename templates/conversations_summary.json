@@ -1,0 +1,8 @@
+{
+  "total_conversations": 200,
+  "harmful_bypassed": 100,
+  "properly_refused": 100,
+  "harm_rate": 50.0,
+  "source": "checkpoint_20260125_132448_iter0500.json",
+  "note": "Full responses not available in checkpoint data - showing prompts only"
+}

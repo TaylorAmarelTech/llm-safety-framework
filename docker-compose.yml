@@ -1,0 +1,126 @@
+# LLM Safety Testing Framework
+# Docker Compose Configuration
+#
+# Usage:
+#   docker-compose up              # Start all services
+#   docker-compose up api          # Start only API server
+#   docker-compose run tests       # Run test suite
+#   docker-compose run generate    # Generate test cases
+
+version: '3.8'
+
+services:
+  # ==================================================
+  # Main Application
+  # ==================================================
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: llm-safety-framework:latest
+    container_name: llm-safety-app
+    environment:
+      - PYTHONPATH=/app
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./data:/app/data
+      - ./reports:/app/reports
+    env_file:
+      - .env
+    command: python scripts/demo.py
+
+  # ==================================================
+  # API Server
+  # ==================================================
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: llm-safety-framework:latest
+    container_name: llm-safety-api
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+      - LOG_LEVEL=INFO
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env
+    command: python -m uvicorn src.api:app --host 0.0.0.0 --port 8000 --reload
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ==================================================
+  # Test Runner
+  # ==================================================
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: llm-safety-framework:latest
+    container_name: llm-safety-tests
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      - ./data:/app/data
+      - ./reports:/app/reports
+    command: pytest tests/ -v --tb=short
+    profiles:
+      - testing
+
+  # ==================================================
+  # Test Generator
+  # ==================================================
+  generate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: llm-safety-framework:latest
+    container_name: llm-safety-generate
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      - ./data:/app/data
+    command: python scripts/generate_tests.py --all --count 100
+    profiles:
+      - generate
+
+  # ==================================================
+  # Showcase Demo
+  # ==================================================
+  showcase:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: llm-safety-framework:latest
+    container_name: llm-safety-showcase
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      - ./data:/app/data
+    command: python scripts/showcase.py
+    profiles:
+      - demo
+
+# ==================================================
+# Named Volumes (optional, for persistence)
+# ==================================================
+volumes:
+  data:
+    driver: local
+  reports:
+    driver: local
+
+# ==================================================
+# Networks
+# ==================================================
+networks:
+  default:
+    name: llm-safety-network

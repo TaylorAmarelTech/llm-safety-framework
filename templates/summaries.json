@@ -1,0 +1,26 @@
+{
+  "iteration.attacks_evolved": {
+    "count": 4,
+    "mean": 15.0,
+    "min": 15.0,
+    "max": 15.0,
+    "latest": 15.0,
+    "window_minutes": 60
+  },
+  "iteration.pass_rate": {
+    "count": 4,
+    "mean": 0.20500000000000002,
+    "min": 0.14,
+    "max": 0.26,
+    "latest": 0.26,
+    "window_minutes": 60
+  },
+  "iteration.tests_run": {
+    "count": 4,
+    "mean": 50.0,
+    "min": 50.0,
+    "max": 50.0,
+    "latest": 50.0,
+    "window_minutes": 60
+  }
+}

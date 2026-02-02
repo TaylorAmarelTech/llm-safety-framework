@@ -1,0 +1,164 @@
+# =============================================
+# LLM Safety Framework - Git Ignore
+# =============================================
+
+# ==================================================
+# Python
+# ==================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ==================================================
+# Virtual Environments
+# ==================================================
+.venv/
+venv/
+ENV/
+env/
+.env.local
+*.env
+
+# ==================================================
+# IDE / Editors
+# ==================================================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# ==================================================
+# Testing
+# ==================================================
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+
+# ==================================================
+# Type Checking
+# ==================================================
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+
+# ==================================================
+# OS Files
+# ==================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ==================================================
+# Logs
+# ==================================================
+*.log
+logs/
+log/
+
+# ==================================================
+# Temporary Files
+# ==================================================
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# ==================================================
+# Large Template Files (for faster cloning)
+# Keep only essential sample templates
+# ==================================================
+templates/template_massive_complete_*.json
+templates/template_massive_batch_*.json
+templates/all_conversations.json
+templates/all_tests_consolidated_*.json
+templates/untested_prompts*.json
+templates/batch_*.json
+templates/*_raw_results.json
+templates/benchmark_*.json
+templates/test_results_*.json
+templates/mega_*.json
+templates/corridor_*.json
+templates/indicator_*.json
+templates/ilo_*.json
+templates/model_*.json
+templates/research_*.json
+templates/unified_*.json
+templates/expanded_*.json
+templates/generated_*.json
+templates/combined_*.json
+templates/analysis_*.json
+templates/cross_*.json
+templates/session_*.json
+
+# ==================================================
+# Environment / Secrets
+# ==================================================
+.env
+.env.*
+!.env.example
+secrets/
+*.pem
+*.key
+
+# ==================================================
+# Generated Reports
+# ==================================================
+reports/
+*.html
+!docs/*.html
+
+# ==================================================
+# Jupyter Notebooks
+# ==================================================
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ==================================================
+# Distribution / Packaging
+# ==================================================
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ==================================================
+# Documentation Build
+# ==================================================
+docs/_build/
+site/

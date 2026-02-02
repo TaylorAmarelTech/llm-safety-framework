@@ -152,6 +152,26 @@ python scripts/showcase.py
 ```
 
 This demonstrates:
+
+### WhatsApp-Style Chat Viewer
+
+View conversations in a familiar chat interface:
+
+```bash
+python scripts/start_chat_viewer.py
+```
+
+Opens a browser with:
+- WhatsApp-style message bubbles
+- User prompts (green) vs LLM responses (gray)
+- Harmful/Safe badges per conversation
+- Evaluation scores and ILO indicators
+- Search and filter conversations
+- Load your own JSON conversation files
+
+![Chat Viewer](docs/chat_viewer_preview.png)
+
+This demonstrates:
 - Database access (21,000+ test cases)
 - API models (Pydantic v2)
 - Agent system (autonomous testing)

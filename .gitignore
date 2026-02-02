@@ -140,7 +140,8 @@ secrets/
 # Generated Reports
 # ==================================================
 reports/
-*.html
+# Keep HTML viewers
+!scripts/*.html
 !docs/*.html
 
 # ==================================================

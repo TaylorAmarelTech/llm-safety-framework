@@ -48,8 +48,11 @@ ENV PYTHONUNBUFFERED=1 \
 # Switch to non-root user
 USER appuser
 
-# Default command - run the demo
-CMD ["python", "scripts/demo.py"]
+# Expose port for web dashboard
+EXPOSE 8080
+
+# Default command - start web dashboard
+CMD ["python", "-m", "uvicorn", "src.web.app:app", "--host", "0.0.0.0", "--port", "8080"]
 
 # ============================================
 # Alternative entrypoints:
@@ -60,11 +63,17 @@ CMD ["python", "scripts/demo.py"]
 # Run showcase:
 #   docker run llm-safety python scripts/showcase.py
 #
-# Run API server:
+# Run web dashboard (default):
+#   docker run -p 8080:8080 llm-safety
+#
+# Run API server only:
 #   docker run -p 8000:8000 llm-safety python -m uvicorn src.api:app --host 0.0.0.0 --port 8000
 #
 # Generate tests:
 #   docker run llm-safety python scripts/generate_tests.py --all --count 100
+#
+# Run demo script:
+#   docker run llm-safety python scripts/demo.py
 #
 # Interactive shell:
 #   docker run -it llm-safety bash

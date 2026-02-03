@@ -11,14 +11,46 @@ version: '3.8'
 
 services:
   # ==================================================
-  # Main Application
+  # Web Dashboard (Default Service)
   # ==================================================
-  app:
+  web:
     build:
       context: .
       dockerfile: Dockerfile
     image: llm-safety-framework:latest
-    container_name: llm-safety-app
+    container_name: llm-safety-web
+    ports:
+      - "8080:8080"
+    environment:
+      - PYTHONPATH=/app
+      - LOG_LEVEL=INFO
+      - LLM_SAFETY_HOST=0.0.0.0
+      - LLM_SAFETY_PORT=8080
+    volumes:
+      - ./data:/app/data
+      - ./templates:/app/templates
+      - ./examples:/app/examples
+      - ./config:/app/config
+      - ./exports:/app/exports
+    env_file:
+      - .env
+    command: python -m uvicorn src.web.app:app --host 0.0.0.0 --port 8080
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ==================================================
+  # Demo Application
+  # ==================================================
+  demo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: llm-safety-framework:latest
+    container_name: llm-safety-demo
     environment:
       - PYTHONPATH=/app
       - LOG_LEVEL=INFO
@@ -28,9 +60,11 @@ services:
     env_file:
       - .env
     command: python scripts/demo.py
+    profiles:
+      - demo
 
   # ==================================================
-  # API Server
+  # API Server (Standalone)
   # ==================================================
   api:
     build:
@@ -56,6 +90,8 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+    profiles:
+      - api-only
 
   # ==================================================
   # Test Runner

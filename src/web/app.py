@@ -13,6 +13,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 
 from .routes import router
 from .config import Settings, get_settings
@@ -86,6 +87,15 @@ def create_app(settings: Optional[Settings] = None) -> FastAPI:
     static_dir = Path(__file__).parent / "static"
     if static_dir.exists():
         app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+
+    # Serve index.html at root
+    @app.get("/")
+    async def root():
+        """Serve the main dashboard."""
+        index_file = static_dir / "index.html"
+        if index_file.exists():
+            return FileResponse(str(index_file))
+        return {"message": "LLM Safety Framework API", "docs": "/api/docs"}
 
     return app
 

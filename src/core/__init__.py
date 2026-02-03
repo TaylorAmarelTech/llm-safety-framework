@@ -15,6 +15,10 @@ from src.core.api_specification import (
     # Enums
     FilterOperator,
     SortOrder,
+    ResponseGrade,
+    # Graded Response System
+    GradedResponse,
+    GradedResponseSet,
     # Request Models
     TestFilter,
     PaginationParams,
@@ -53,6 +57,10 @@ __all__ = [
     # API Specification - Enums
     "FilterOperator",
     "SortOrder",
+    "ResponseGrade",
+    # Graded Response System
+    "GradedResponse",
+    "GradedResponseSet",
     # API Specification - Request Models
     "TestFilter",
     "PaginationParams",

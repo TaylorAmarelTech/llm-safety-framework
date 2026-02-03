@@ -52,6 +52,7 @@ dependencies = [
     # API Server
     "fastapi>=0.109",
     "uvicorn>=0.27",
+    "python-multipart>=0.0.6",
 
     # Data Processing
     "pandas>=2.0",
@@ -107,10 +108,10 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/llm-safety-framework"
-Documentation = "https://github.com/yourusername/llm-safety-framework/docs"
-Repository = "https://github.com/yourusername/llm-safety-framework"
-Issues = "https://github.com/yourusername/llm-safety-framework/issues"
+Homepage = "https://github.com/tayloramarel/llm-safety-framework"
+Documentation = "https://github.com/tayloramarel/llm-safety-framework/docs"
+Repository = "https://github.com/tayloramarel/llm-safety-framework"
+Issues = "https://github.com/tayloramarel/llm-safety-framework/issues"
 
 [project.scripts]
 llm-safety = "src.cli:main"

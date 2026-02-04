@@ -1178,6 +1178,245 @@ async def execute_single_test(request: TestExecutionRequest):
 # =============================================================================
 # Health Check
 # =============================================================================
+# Prompt Enhancement Endpoints
+# =============================================================================
+
+class PromptEnhanceRequest(BaseModel):
+    """Request model for enhancing a prompt."""
+    prompt: str
+    corridor_code: Optional[str] = None
+    use_llm: bool = True
+    injection_types: List[str] = Field(default_factory=lambda: ["prefix", "replacement"])
+
+
+class DomainConfigUpdate(BaseModel):
+    """Request model for updating domain configuration."""
+    preset: Optional[str] = None
+    custom_context: Optional[str] = None
+    origin_countries: Optional[List[str]] = None
+    destination_countries: Optional[List[str]] = None
+    sectors: Optional[List[str]] = None
+    exploitation_types: Optional[List[str]] = None
+    required_terms: Optional[List[str]] = None
+
+
+@router.get("/config/domain")
+async def get_domain_config():
+    """Get current domain configuration for prompt enhancement."""
+    try:
+        from ..prompt_enhancement import EnhancementConfig
+        config = EnhancementConfig.load()
+        return {
+            "status": "success",
+            "domain": config.domain.model_dump(),
+            "screener": config.screener.model_dump(),
+            "templates": config.templates.model_dump(),
+            "mode": config.mode.value
+        }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@router.post("/config/domain")
+async def update_domain_config(request: DomainConfigUpdate):
+    """Update domain configuration for prompt enhancement."""
+    try:
+        from ..prompt_enhancement import EnhancementConfig
+        from ..prompt_enhancement.config import DomainPreset
+
+        config = EnhancementConfig.load()
+
+        if request.preset:
+            try:
+                preset = DomainPreset(request.preset)
+                config.apply_preset(preset)
+            except ValueError:
+                pass
+
+        if request.custom_context:
+            config.domain.custom_context = request.custom_context
+        if request.origin_countries:
+            config.domain.origin_countries = request.origin_countries
+        if request.destination_countries:
+            config.domain.destination_countries = request.destination_countries
+        if request.sectors:
+            config.domain.sectors = request.sectors
+        if request.exploitation_types:
+            config.domain.exploitation_types = request.exploitation_types
+        if request.required_terms:
+            config.domain.required_terms = request.required_terms
+
+        config.save()
+        return {"status": "success", "message": "Domain configuration updated"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@router.get("/config/domain/presets")
+async def get_domain_presets():
+    """Get available domain presets."""
+    try:
+        from ..prompt_enhancement.config import DOMAIN_PRESETS, DomainPreset
+        presets = [
+            {
+                "id": preset.value,
+                "name": DOMAIN_PRESETS.get(preset.value, {}).get("name", preset.value.replace("_", " ").title()),
+                "description": DOMAIN_PRESETS.get(preset.value, {}).get("description", ""),
+                "example_prompt": DOMAIN_PRESETS.get(preset.value, {}).get("example_prompt", "")
+            }
+            for preset in DomainPreset
+        ]
+        return {"status": "success", "presets": presets}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@router.get("/config/corridors")
+async def get_corridor_contexts():
+    """Get all available migration corridor contexts."""
+    try:
+        from ..prompt_enhancement.templates import CORRIDOR_CONTEXTS
+        corridors = [
+            {
+                "code": ctx.corridor_code,
+                "origin": ctx.origin_country,
+                "destination": ctx.destination_country,
+                "sector": ctx.sector,
+                "worker_type": ctx.worker_type,
+                "employer_type": ctx.employer_type,
+                "legal_system": ctx.legal_system,
+                "common_issues": ctx.common_issues,
+                "keywords": ctx.keywords
+            }
+            for ctx in CORRIDOR_CONTEXTS.values()
+        ]
+        return {"status": "success", "corridors": corridors}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@router.post("/prompts/enhance")
+async def enhance_prompt(request: PromptEnhanceRequest):
+    """Enhance a prompt with domain-specific context."""
+    try:
+        from ..prompt_enhancement import PromptScreener, TemplateInjector, EnhancementConfig
+        from ..prompt_enhancement.templates import InjectionType
+
+        config = EnhancementConfig.load()
+
+        # Get API key from config manager
+        api_key = None
+        models = config_manager.get_all_models()
+        for m in models:
+            if m["provider"] == "mistral" and m.get("api_key"):
+                api_key = m["api_key"]
+                break
+
+        if request.use_llm and api_key:
+            # Use LLM screener
+            screener = PromptScreener(config=config, api_key=api_key)
+            result = await screener.screen(request.prompt)
+
+            return {
+                "status": "success",
+                "verdict": result.verdict.value,
+                "original_prompt": result.original_prompt,
+                "enhanced_prompt": result.enhanced_prompt or result.original_prompt,
+                "specificity_score": result.specificity_score,
+                "missing_elements": result.missing_elements,
+                "suggested_corridor": result.suggested_corridor,
+                "explanation": result.explanation,
+                "used_llm": True
+            }
+        else:
+            # Use template injection only
+            injector = TemplateInjector(config.templates.preferred_corridors)
+
+            injection_types = []
+            for t in request.injection_types:
+                try:
+                    injection_types.append(InjectionType(t))
+                except ValueError:
+                    pass
+
+            if not injection_types:
+                injection_types = [InjectionType.PREFIX, InjectionType.REPLACEMENT]
+
+            enhanced, metadata = injector.enhance_prompt(
+                request.prompt,
+                request.corridor_code,
+                injection_types
+            )
+
+            return {
+                "status": "success",
+                "verdict": "enhanced",
+                "original_prompt": request.prompt,
+                "enhanced_prompt": enhanced,
+                "specificity_score": None,
+                "missing_elements": [],
+                "suggested_corridor": metadata.get("corridor"),
+                "explanation": f"Template injection applied: {', '.join(metadata.get('injections', []))}",
+                "used_llm": False
+            }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@router.post("/prompts/enhance/batch")
+async def enhance_prompts_batch(prompts: List[str], corridor_code: Optional[str] = None):
+    """Enhance multiple prompts with domain context."""
+    try:
+        from ..prompt_enhancement import TemplateInjector, EnhancementConfig
+
+        config = EnhancementConfig.load()
+        injector = TemplateInjector(config.templates.preferred_corridors)
+
+        results = []
+        for prompt in prompts:
+            enhanced, metadata = injector.enhance_prompt(prompt, corridor_code)
+            results.append({
+                "original": prompt,
+                "enhanced": enhanced,
+                "corridor": metadata.get("corridor"),
+                "injections": metadata.get("injections", [])
+            })
+
+        return {"status": "success", "results": results, "count": len(results)}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@router.post("/prompts/variations")
+async def generate_prompt_variations(prompt: str, count: int = 3, corridors: Optional[List[str]] = None):
+    """Generate multiple domain-specific variations of a prompt."""
+    try:
+        from ..prompt_enhancement import TemplateInjector, EnhancementConfig
+
+        config = EnhancementConfig.load()
+        injector = TemplateInjector(config.templates.preferred_corridors)
+
+        variations = injector.generate_variations(prompt, count, corridors)
+
+        return {
+            "status": "success",
+            "original": prompt,
+            "variations": [
+                {
+                    "enhanced": v[0],
+                    "corridor": v[1].get("corridor"),
+                    "injections": v[1].get("injections", [])
+                }
+                for v in variations
+            ]
+        }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+# =============================================================================
+# Health Check
+# =============================================================================
 
 @router.get("/health")
 async def health_check():

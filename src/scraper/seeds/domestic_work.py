@@ -1,0 +1,147 @@
+"""Domestic worker protections — ILO C189, live-in exploitation, and reform efforts."""
+
+DOMESTIC_WORK_FACTS: list[dict] = [
+    # ── Global Scale ────────────────────────────────────────────────────
+    {
+        "type": "statistic",
+        "jurisdiction": "international",
+        "title": "ILO — Global Domestic Worker Population",
+        "metric": "global_domestic_workers",
+        "value": "75.6 million",
+        "summary": "ILO estimates 75.6 million domestic workers worldwide (2021), 76.2% women. 61.5 million (81.2%) in informal employment. Only 10% covered by general labour legislation to the same extent as other workers. 36% of domestic workers entirely excluded from labour law. 15.7 million are international migrants. Sector has highest prevalence of forced labour indicators after fishing.",
+        "source": "ILO Domestic Workers Report (2021)",
+    },
+    {
+        "type": "statistic",
+        "jurisdiction": "international",
+        "title": "Domestic Workers in Forced Labour — Sector Prevalence",
+        "metric": "domestic_workers_forced_labour",
+        "value": "2.3 million",
+        "summary": "ILO estimates 2.3 million domestic workers in forced labour globally, representing 18% of all forced labour in the private economy. Forced labour indicators present in 24% of live-in domestic arrangements. Highest prevalence in Gulf states and Southeast Asia. Key indicators: document confiscation (73%), restriction of movement (67%), excessive overtime (89%), wage withholding (54%).",
+        "source": "ILO Global Estimates of Modern Slavery (2022)",
+    },
+    # ── ILO Convention 189 ──────────────────────────────────────────────
+    {
+        "type": "law",
+        "jurisdiction": "international",
+        "title": "ILO Domestic Workers Convention (C189, 2011)",
+        "summary": "ILO C189 establishes first international standards for domestic workers: normal working hours, weekly rest (24 consecutive hours minimum), minimum wage coverage, social security, written contracts, protection from violence. Supplemented by Recommendation R201. Entered into force 2013. 36 ratifications as of 2024. Major destination countries NOT ratifying: Saudi Arabia, UAE, Qatar, Kuwait, Singapore, Hong Kong, Malaysia, Lebanon.",
+        "source": "ILO NORMLEX / IDWF",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "Barriers to C189 Implementation",
+        "summary": "Even in ratifying countries, C189 implementation challenges: (1) private household workplace difficult to inspect, (2) live-in arrangements blur work/rest boundaries, (3) immigration status creates dependency, (4) domestic work culturally devalued, (5) language barriers between worker and employer, (6) workers isolated from other workers. IDWF estimates only 12 of 36 ratifying states have effective implementation measures.",
+        "source": "International Domestic Workers Federation (IDWF) / ILO",
+    },
+    # ── Gulf States Domestic Work ───────────────────────────────────────
+    {
+        "type": "case_study",
+        "jurisdiction": "SA",
+        "title": "Saudi Arabia — Domestic Worker Conditions Under Kafala",
+        "sector": "domestic_work",
+        "exploitation_type": "multiple",
+        "summary": "Saudi Arabia hosts 3.7M domestic workers (primarily from Philippines, Indonesia, Ethiopia, Sri Lanka, Bangladesh, Kenya). Excluded from Labour Law until Decision 310 (2013): 15-hour daily rest, 9-hour daily work limit (unenforced), end-of-service benefits. HRW documented: 18-21 hour workdays, no rest day, locked in homes, verbal/physical/sexual abuse. 10,000+ runway complaints to embassies annually.",
+        "source": "Human Rights Watch / Philippines DMW / Indonesian Embassy Riyadh",
+    },
+    {
+        "type": "case_study",
+        "jurisdiction": "LB",
+        "title": "Lebanon — Domestic Worker Deaths and Kafala",
+        "sector": "domestic_work",
+        "exploitation_type": "multiple",
+        "summary": "Lebanon hosts 250,000+ domestic workers under kafala. General Security records show 2 domestic worker deaths per week on average. Human Rights Watch documented: workers locked in homes, unpaid for months, physical and sexual abuse, suicides and falls from buildings. Economic crisis (2019-present) worsened conditions: employers unable to pay but refusing to release workers. 'Freelance' visa introduced (2022) but limited uptake.",
+        "source": "Human Rights Watch / Anti-Racism Movement / ILO Beirut",
+    },
+    {
+        "type": "case_study",
+        "jurisdiction": "KW",
+        "title": "Kuwait — Online 'Maid Trading' Apps",
+        "sector": "domestic_work",
+        "exploitation_type": "abuse_of_vulnerability",
+        "summary": "Kuwait, Saudi Arabia, and other Gulf states developed online marketplaces for 'hiring' domestic workers: apps and Instagram accounts advertising workers by nationality, appearance, and 'skills'. Workers transferred between employers like commodities. BBC investigation (2019) documented: workers advertised for sale at USD 2,000-10,000, no consent obtained, passports transferred with 'purchase'. Apple and Google removed some apps after media exposure.",
+        "source": "BBC Arabic / Amnesty International / Apple/Google statements",
+    },
+    # ── Asia-Pacific ────────────────────────────────────────────────────
+    {
+        "type": "law",
+        "jurisdiction": "HK",
+        "title": "Hong Kong — Domestic Worker Legal Protections",
+        "summary": "Hong Kong provides strongest legal framework for domestic workers in Asia: minimum wage (HKD 4,870/month, 2023), mandatory rest day, statutory holidays, free accommodation/food, standard employment contract, Employees' Compensation Ordinance coverage, access to Labour Tribunal. However: 'two-week rule' (must find new employer within 14 days or leave HK) creates vulnerability. 340,000+ foreign domestic workers, 98% women from Philippines and Indonesia.",
+        "source": "Hong Kong Labour Department / Mission for Migrant Workers",
+    },
+    {
+        "type": "case_study",
+        "jurisdiction": "SG",
+        "title": "Singapore — Mandatory Day Off and Reform Progress",
+        "sector": "domestic_work",
+        "exploitation_type": "excessive_overtime",
+        "summary": "Singapore hosts 250,000+ foreign domestic workers (Philippines, Indonesia, Myanmar). Weekly rest day mandated (2013) but worker can 'agree' to compensation in lieu (SGD 26/day) — 60% reportedly forgo day off under employer pressure. Other protections: mandatory insurance, employment contract, quarterly salary payment. Gaps: no minimum wage, no overtime pay, no maximum working hours. HOME receives 2,000+ complaints annually.",
+        "source": "Singapore MOM / HOME / TWC2",
+    },
+    {
+        "type": "regulation_change",
+        "jurisdiction": "MY",
+        "title": "Malaysia — Domestic Workers Excluded from Employment Act",
+        "summary": "Malaysian Employment Act 1955 explicitly excludes domestic workers from key protections: minimum wage, working hour limits, overtime pay, rest days, public holidays. Domestic Workers Minimum Standards Bill (proposed 2015) never passed. Indonesia imposed moratorium on sending domestic workers to Malaysia (2009-2011, partial ban ongoing) citing abuse. 150,000+ registered domestic workers, unknown undocumented population.",
+        "source": "Malaysia Ministry of Human Resources / Tenaganita",
+    },
+    # ── Live-in Exploitation Dynamics ───────────────────────────────────
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "Live-in Arrangement as Exploitation Enabler",
+        "summary": "Live-in domestic work creates unique vulnerability: (1) no separation of work/personal space, (2) 'on-call' 24 hours normalised, (3) meals/accommodation used to justify lower wages, (4) employer controls living conditions, (5) isolation from community, (6) workplace inspections virtually impossible, (7) termination means homelessness. ILO C189 Art. 9 requires decent living conditions but enforcement in private homes remains the core challenge.",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "Sexual Violence Against Domestic Workers",
+        "summary": "ILO estimates 1 in 6 domestic workers experiences sexual harassment or violence. Risk factors: live-in arrangements, isolation, power imbalance, immigration dependency. Barriers to reporting: fear of deportation, employer controls movement, cultural shame, police bias, lack of evidence (private setting). Most destination countries lack specific protections. Some countries (SG, HK) introduced safe reporting mechanisms but utilisation remains low.",
+        "source": "ILO / Migrant Forum in Asia / UN Women",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "Food Deprivation as Control Mechanism in Domestic Work",
+        "summary": "Documented across Gulf and Southeast Asian destinations: employers restrict domestic workers' food as punishment or cost-saving. Workers report: receiving only employer's leftovers, separate (inferior) food, restricted eating times, locked refrigerators/pantries, denied food during religious fasting periods of employer's religion. Food deprivation present in 23% of forced domestic labour cases surveyed by ILO.",
+        "source": "ILO / Human Rights Watch / Amnesty International",
+    },
+    # ── Recruitment and Placement ───────────────────────────────────────
+    {
+        "type": "statistic",
+        "jurisdiction": "international",
+        "title": "Domestic Worker Recruitment Fees by Corridor",
+        "metric": "domestic_worker_fees",
+        "value": "USD 500-5,000",
+        "summary": "Recruitment fees for domestic workers vary by corridor: PH-HK USD 500-1,500, PH-SA USD 600-2,000, ET-LB USD 800-3,000, ID-MY USD 1,000-3,000, BD-SA USD 2,000-5,000. Fees represent 3-12 months of expected wages. Workers from poorer backgrounds pay more (less access to licensed agencies). Sub-agents in rural areas add 30-50% to total cost.",
+        "source": "ILO / Verité / Migrant Forum in Asia",
+    },
+    {
+        "type": "case_study",
+        "jurisdiction": "PH",
+        "title": "Philippines — DMW Regulation of Domestic Worker Deployment",
+        "sector": "domestic_work",
+        "exploitation_type": "abuse_of_vulnerability",
+        "summary": "Philippines Department of Migrant Workers requires: minimum age 23 for domestic worker deployment, guaranteed minimum wage (USD 400/month for most destinations), verified employment contract, PDOS completion. Bilateral agreements with 15+ countries set conditions. Despite protections, 2,000+ complaints filed annually by Filipino domestic workers abroad. Common issues: contract substitution (41%), wage theft (35%), physical abuse (18%).",
+        "source": "Philippines DMW / POEA Statistics / Blas F. Ople Policy Center",
+    },
+    # ── Organising and Advocacy ─────────────────────────────────────────
+    {
+        "type": "regulation_change",
+        "jurisdiction": "international",
+        "title": "International Domestic Workers Federation (IDWF)",
+        "summary": "IDWF (founded 2013) represents 590,000 domestic workers in 67 countries. Key campaigns: C189 ratification, minimum wage inclusion, social security access. Supported formation of domestic worker unions in: Hong Kong (FADWU), Philippines (UNITED), India (NDWM), Brazil (FENATRAD), South Africa (SADSAWU). Challenges: organising isolated workers, employer hostility, legal barriers to union membership for migrants in many countries.",
+        "source": "IDWF / WIEGO / ILO",
+    },
+    {
+        "type": "case_study",
+        "jurisdiction": "HK",
+        "title": "Hong Kong — Erwiana Sulistyaningsih Case and Legal Precedent",
+        "sector": "domestic_work",
+        "exploitation_type": "multiple",
+        "summary": "Indonesian domestic worker Erwiana Sulistyaningsih was tortured by Hong Kong employer Law Wan-tung (2013-2014): beaten with mop handles, burned with iron, denied food, unpaid for 8 months, forced to work 21 hours/day. Case gained international attention. Employer sentenced to 6 years imprisonment (2015). Case catalysed: ILO C189 advocacy, Hong Kong sentencing guidelines for domestic worker abuse, and employment agency regulation tightening.",
+        "source": "Hong Kong District Court / ILO / South China Morning Post",
+    },
+]

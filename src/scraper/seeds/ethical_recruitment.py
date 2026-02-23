@@ -1,0 +1,135 @@
+"""Ethical recruitment initiatives — fair recruitment standards and employer pays principle."""
+
+ETHICAL_RECRUITMENT_FACTS: list[dict] = [
+    # ── International Frameworks ────────────────────────────────────────
+    {
+        "type": "regulation_change",
+        "jurisdiction": "international",
+        "title": "ILO Fair Recruitment Initiative (FRI)",
+        "summary": "ILO Fair Recruitment Initiative (launched 2014) promotes recruitment practices free from deception, coercion, and fee-charging to workers. Core principle: workers should not bear any costs of recruitment. Published General Principles and Operational Guidelines (2019) endorsed by governments, employers, and workers. Defines 'recruitment fees and related costs' comprehensively. Covers entire recruitment cycle.",
+        "source": "ILO Fair Recruitment Initiative",
+    },
+    {
+        "type": "regulation_change",
+        "jurisdiction": "international",
+        "title": "Dhaka Principles for Migration with Dignity — 10 Core Principles",
+        "summary": "Dhaka Principles (2012, IHRB) provide 10 principles for ethical recruitment: (1) no fees charged to workers, (2) clear contracts before departure, (3) right to retain identity documents, (4) right to freedom of movement, (5) right to free communication, (6) safe working conditions, (7) access to remedy, (8) right to join unions, (9) right to change employer, (10) timely return home.",
+        "source": "Institute for Human Rights and Business (IHRB)",
+    },
+    {
+        "type": "regulation_change",
+        "jurisdiction": "international",
+        "title": "Employer Pays Principle — Leadership Group for Responsible Recruitment",
+        "summary": "Employer Pays Principle: workers should not pay for their job. All recruitment costs borne by employer. Leadership Group for Responsible Recruitment (2016) signatories include: IKEA, HP, Coca-Cola, Hewlett Packard Enterprise, Unilever, Mars, Patagonia. Commitment to reimburse any fees paid by workers in their supply chains. Implementation challenges: sub-contractor monitoring, defining 'recruitment costs'.",
+        "source": "IHRB Leadership Group for Responsible Recruitment",
+    },
+    {
+        "type": "regulation_change",
+        "jurisdiction": "international",
+        "title": "IRIS — International Recruitment Integrity System",
+        "summary": "IOM's IRIS programme (2014) provides voluntary certification for ethical recruitment agencies. Standards: zero-fee recruitment, transparent contracts, due diligence. As of 2024: 30+ certified agencies, 15 countries. Certified agencies recruit for IOM member state programmes and private sector. Challenges: costly certification process, limited awareness among employers, agencies undercut by non-compliant competitors.",
+        "source": "IOM IRIS",
+    },
+    # ── National Regulations ────────────────────────────────────────────
+    {
+        "type": "law",
+        "jurisdiction": "PH",
+        "title": "Philippines — RA 10022 (Migrant Workers Act Amendment 2009)",
+        "summary": "Philippine Republic Act 10022 (2009) caps placement fees at one month's salary (where allowed by bilateral agreement) and strengthens illegal recruitment penalties. Department of Migrant Workers (DMW, est. 2022) replaced POEA as regulator. Licensed agencies: 1,200+. Violations: 300+ agency closures (2020-2023). Mandatory PDOS (Pre-Departure Orientation Seminar) for all OFWs. Anti-illegal recruitment hotline (1348).",
+        "source": "Philippines DMW / POEA (predecessor)",
+    },
+    {
+        "type": "law",
+        "jurisdiction": "NP",
+        "title": "Nepal — Foreign Employment Act 2007 (Zero-Cost Recruitment)",
+        "summary": "Nepal's Foreign Employment Act (2007, amended 2019) mandates: recruitment agencies cannot charge workers more than NPR 10,000 (USD 75) for service fee. Government of Nepal's 'free-visa, free-ticket' policy (2015) for Gulf countries requires employer to pay all costs. In practice: 85% of Nepali workers still pay NPR 60,000-200,000 (USD 450-1,500) through informal channels and sub-agents.",
+        "source": "Nepal Department of Foreign Employment / ILO Nepal",
+    },
+    {
+        "type": "law",
+        "jurisdiction": "BD",
+        "title": "Bangladesh — Overseas Employment and Migrants Act 2013",
+        "summary": "Bangladesh OEMA (2013) caps recruitment costs at BDT 84,000 (USD 770) for government-to-government channels. Private agencies charge BDT 200,000-600,000 (USD 1,800-5,500) in practice. Bureau of Manpower, Employment and Training (BMET) regulates 1,500+ agencies. License revocations: 200+ (2018-2023). Informal dalal (sub-agent) system adds 30-50% to costs. Workers mortgage land to pay fees.",
+        "source": "Bangladesh BMET / ILO Dhaka",
+    },
+    {
+        "type": "regulation_change",
+        "jurisdiction": "US",
+        "title": "US Federal Acquisition Regulation — Contractor Anti-Trafficking (2015)",
+        "summary": "US FAR 52.222-50 prohibits US government contractors and subcontractors from: charging recruitment fees to workers, using misleading recruitment practices, confiscating identity documents, restricting worker movement. Applies to contracts exceeding USD 550,000. Compliance plans required for contracts with work abroad. GAO and IG oversight. Companies disbarred for violations.",
+        "source": "US Federal Acquisition Regulation / Executive Order 13627",
+    },
+    # ── Corporate Practices ─────────────────────────────────────────────
+    {
+        "type": "case_study",
+        "jurisdiction": "international",
+        "title": "Apple — Supplier Recruitment Fee Reimbursement Programme",
+        "sector": "manufacturing",
+        "exploitation_type": "debt_bondage",
+        "summary": "Apple required suppliers to reimburse USD 32.4M in excessive recruitment fees to 36,599 workers (2008-2023). Largest corporate repayment programme. Audits cover 50+ countries. Policy: zero recruitment fees. Workers in Malaysia, Singapore, Taiwan most affected. Challenges: fees paid to sub-agents in origin countries difficult to trace. Apple terminates non-compliant suppliers.",
+        "source": "Apple Supplier Responsibility Report / KnowTheChain",
+    },
+    {
+        "type": "case_study",
+        "jurisdiction": "international",
+        "title": "IKEA — Responsible Recruitment Implementation in Supply Chain",
+        "sector": "manufacturing",
+        "exploitation_type": "debt_bondage",
+        "summary": "IKEA IWAY Standard (2012, updated 2021) prohibits recruitment fees in all 1,600+ supplier factories. Workers must not pay any fees or costs. Implementation: 500+ audits annually, worker interviews in native language, fee repayment required when discovered. Partnerships with IOM IRIS for supplier training. Estimated USD 5M+ in fee repayments to workers since programme inception.",
+        "source": "IKEA Sustainability Report / Leadership Group",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "Ethical Recruitment Challenges — Sub-Agent Networks",
+        "summary": "Formal ethical recruitment programmes undermined by sub-agent (dalal/broker) networks. Sub-agents operate informally in rural areas, charge fees before workers reach licensed agencies. In Nepal: 75% of workers recruited through sub-agents. In Bangladesh: dalals add 40-100% to total costs. Sub-agents rarely licensed, prosecution rare. Solution requires licensing sub-agents and digital recruitment platforms.",
+        "source": "ILO Fair Recruitment Initiative / Verité",
+    },
+    # ── Government-to-Government Schemes ────────────────────────────────
+    {
+        "type": "regulation_change",
+        "jurisdiction": "KR",
+        "title": "South Korea — Employment Permit System (EPS) as Ethical Model",
+        "summary": "Korea's EPS (2004) is cited as most ethical bilateral recruitment system: government-to-government recruitment eliminating private agency fees. Worker costs capped at USD 1,000 (language test, medical, airfare). 16 sending countries with MOUs. 60,000+ workers annually. Workers can change employers (up to 3 times). Challenges: workplace change still requires employer consent, '3 months re-employment' deadline creates pressure.",
+        "source": "Korea HRD Service / ILO / IOM",
+    },
+    {
+        "type": "regulation_change",
+        "jurisdiction": "JP",
+        "title": "Japan — Technical Intern Training Programme Reform (2024)",
+        "summary": "Japan replaced scandal-plagued Technical Intern Training Programme (TITP) with 'Ikusei Shuro' (Developing Employment) system (2024). Key reforms: workers can change employers after 1-2 years (TITP prohibited changes), supervision of agencies strengthened, dispatching organisations in origin countries must be licensed. TITP documented widespread exploitation: 9,000+ missing interns (2020), forced labour in textiles, agriculture, construction.",
+        "source": "Japan Ministry of Justice / ILO / US TIP Report",
+    },
+    {
+        "type": "case_study",
+        "jurisdiction": "CA",
+        "title": "Canada — Temporary Foreign Worker Program (TFWP) Abuse Cases",
+        "sector": "agriculture",
+        "exploitation_type": "abuse_of_vulnerability",
+        "summary": "Canada's TFWP and Seasonal Agricultural Worker Program (SAWP) documented recruitment fraud: workers from Mexico, Guatemala, Jamaica, Philippines pay CAD 5,000-15,000 to unlicensed agents. Closed work permits tie workers to single employer. 2024 reforms: open work permit for workers experiencing abuse, mandatory foreign worker protection plans, employer compliance inspections doubled to 4,000/year.",
+        "source": "Employment and Social Development Canada / Migrant Workers Alliance for Change",
+    },
+    # ── Digital and Emerging Solutions ───────────────────────────────────
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "Digital Recruitment Platforms and Disintermediation",
+        "summary": "Digital platforms aim to bypass exploitative agents: e.g., GCC-focused Omal, Overseas Workers Welfare (PH), and ILO-supported pilots. Features: job matching, digital contracts, fee transparency, worker ratings of employers. Challenges: low digital literacy in rural sending areas, platforms require employer buy-in, cannot address structural issues (kafala, closed work permits). Promising but not yet at scale.",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "Recruitment Fee Definition — What Counts as 'Zero Fee'",
+        "summary": "ILO General Principles (2019) define recruitment fees broadly: agent fees, service charges, pre-departure training costs, medical exams, skills tests, travel costs, visa fees, and administrative charges. Employer Pays Principle requires employer bear ALL these costs. Some programmes (Korea EPS) allow workers to pay language test and medical — debate on whether this violates zero-fee standard.",
+        "source": "ILO General Principles and Operational Guidelines for Fair Recruitment (2019)",
+    },
+    {
+        "type": "statistic",
+        "jurisdiction": "international",
+        "title": "Average Recruitment Fees by Corridor",
+        "metric": "average_recruitment_fees",
+        "value": "varies: USD 600-7,500",
+        "summary": "Average recruitment fees paid by workers (ILO/World Bank data): NP-QA USD 1,200-2,500, BD-SA USD 2,500-5,000, BD-MY USD 3,000-7,500, PH-SA USD 600-1,500, ET-SA USD 800-2,000, ID-MY USD 1,500-3,000. Fees represent 3-18 months of expected salary. Workers borrow at 20-60% annual interest from informal lenders, mortgaging land or family assets.",
+        "source": "ILO / World Bank / Knomad",
+    },
+]

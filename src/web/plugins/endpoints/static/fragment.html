@@ -1,0 +1,52 @@
+<div id="section-endpoints" class="section">
+    <div class="page-header">
+        <h2>API Endpoints</h2>
+        <p>Configure API connections and manage models per endpoint</p>
+        <div class="section-hint">Step 1 of 6 &mdash; After configuring endpoints, <a onclick="showSection('prompt-sets')">set up Prompt Sets</a></div>
+    </div>
+    <div class="btn-group" style="margin-bottom:16px;">
+        <button class="btn btn-primary" onclick="showAddEndpoint()">+ Add Endpoint</button>
+        <button class="btn" onclick="loadEndpoints()">Refresh</button>
+    </div>
+    <div id="endpoints-list"><div class="loading">Loading endpoints...</div></div>
+
+    <div id="add-endpoint-form" class="card" style="display:none">
+        <h3>Add New Endpoint</h3>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Endpoint ID</label>
+                <input type="text" id="new-ep-id" placeholder="e.g. openrouter-1">
+            </div>
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="new-ep-name" placeholder="e.g. My OpenRouter">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Base URL</label>
+                <input type="url" id="new-ep-url" placeholder="https://openrouter.ai/api/v1">
+            </div>
+            <div class="form-group">
+                <label>Request Format</label>
+                <select id="new-ep-format">
+                    <option value="openai">OpenAI-compatible</option>
+                    <option value="anthropic">Anthropic</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>API Key</label>
+            <input type="password" id="new-ep-key" placeholder="sk-...">
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="createEndpoint()">Create Endpoint</button>
+            <button class="btn" onclick="document.getElementById('add-endpoint-form').style.display='none'">Cancel</button>
+        </div>
+    </div>
+
+    <div class="section-next">
+        <div class="sn-text"><strong>Next:</strong> Set up prompt sets for testing</div>
+        <button class="btn btn-primary" onclick="showSection('prompt-sets')">Go to Prompt Sets</button>
+    </div>
+</div>

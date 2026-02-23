@@ -1,0 +1,33 @@
+<div id="section-data-mgmt" class="section">
+    <div class="page-header">
+        <h2>Data Management</h2>
+        <p>Import and export data, configuration, and results</p>
+    </div>
+    <div class="card">
+        <h3>Export</h3>
+        <div class="btn-group">
+            <button class="btn" onclick="window.open('/api/data/export/prompts','_blank')">Export Prompts</button>
+            <button class="btn" onclick="window.open('/api/data/export/conversations','_blank')">Export Conversations</button>
+            <button class="btn" onclick="window.open('/api/data/export/config','_blank')">Export Config</button>
+            <button class="btn" onclick="window.open('/api/data/export/pipeline','_blank')">Export Pipeline</button>
+            <button class="btn" onclick="window.open('/api/data/export/graded-responses','_blank')">Export Graded Responses</button>
+            <button class="btn" onclick="window.open('/api/data/export/contrastive-pairs','_blank')">Export Contrastive Pairs</button>
+        </div>
+    </div>
+    <div class="card">
+        <h3>Import Conversations</h3>
+        <div class="form-group">
+            <input type="file" id="import-conv-file" accept=".json">
+        </div>
+        <button class="btn btn-primary" onclick="importConversations()">Import</button>
+        <div id="import-conv-result" style="margin-top:12px"></div>
+    </div>
+    <div class="card">
+        <h3>Import Configuration</h3>
+        <div class="form-group">
+            <input type="file" id="import-config-file" accept=".json">
+        </div>
+        <button class="btn btn-primary" onclick="importConfig()">Import</button>
+        <div id="import-config-result" style="margin-top:12px"></div>
+    </div>
+</div>

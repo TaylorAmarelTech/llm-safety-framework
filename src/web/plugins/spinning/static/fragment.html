@@ -1,0 +1,446 @@
+<!-- ============================================================ -->
+<!-- TRANSFORM WORKBENCH -->
+<!-- ============================================================ -->
+<div id="section-transform" class="section">
+    <div class="page-header">
+        <h2>Transform Workbench</h2>
+        <p>Remix, rephrase, augment, and build your test pipeline</p>
+        <div class="section-hint">Step 3 of 6 &mdash; Save results to pipeline, then <a onclick="showTransformTab('tab-tw-pipeline')">build the pipeline</a> before <a onclick="showSection('testing')">testing</a></div>
+    </div>
+
+    <!-- Unified tab strip -->
+    <div class="tab-bar" id="transform-tab-bar">
+        <div class="tab-btn active" onclick="switchTab(this,'transform-tabs','tab-tw-spintax')">Spintax</div>
+        <div class="tab-btn" onclick="switchTab(this,'transform-tabs','tab-tw-regex')">Regex</div>
+        <div class="tab-btn" onclick="switchTab(this,'transform-tabs','tab-tw-charpad')">Char Pad</div>
+        <div class="tab-btn" onclick="switchTab(this,'transform-tabs','tab-tw-llm')">LLM Rephrase</div>
+        <div class="tab-btn" onclick="switchTab(this,'transform-tabs','tab-tw-attack')">Attack</div>
+        <div class="tab-btn" onclick="switchTab(this,'transform-tabs','tab-tw-custom')">Custom</div>
+        <div class="tab-btn" onclick="switchTab(this,'transform-tabs','tab-tw-encode')">Encode</div>
+        <div class="tab-btn" onclick="switchTab(this,'transform-tabs','tab-tw-obfuscate')">Obfuscate</div>
+        <div class="tab-btn" onclick="switchTab(this,'transform-tabs','tab-tw-jailbreak')">Jailbreak</div>
+        <div class="tab-btn" onclick="switchTab(this,'transform-tabs','tab-tw-multilingual')">Multilingual</div>
+        <div class="tab-btn" onclick="switchTab(this,'transform-tabs','tab-tw-chains')">Chains</div>
+        <div class="tab-btn" onclick="switchTab(this,'transform-tabs','tab-tw-pipeline')">Pipeline <span class="badge" id="pipeline-badge" style="margin-left:4px">0</span></div>
+    </div>
+
+    <!-- Split layout: tools on left, preview on right -->
+    <div class="transform-split" id="transform-tabs">
+
+        <!-- SPINTAX -->
+        <div id="tab-tw-spintax" class="tab-panel active">
+            <div class="card card-accent">
+                <h3>Spintax Template</h3>
+                <div class="form-group">
+                    <label>Template</label>
+                    <textarea id="spintax-template" rows="4" placeholder="I need help {hiring|recruiting|finding} {workers|employees} for my {farm|factory|restaurant}"></textarea>
+                    <div class="help-text">Use {option1|option2|option3} syntax. Nesting supported.</div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Count</label>
+                        <input type="number" id="spintax-count" value="10" min="1" max="1000">
+                    </div>
+                    <div class="form-group" style="display:flex;align-items:flex-end">
+                        <label><input type="checkbox" id="spintax-save" checked> Save to Pipeline</label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="expandSpintax()">Generate</button>
+                <div id="spintax-results" style="margin-top:16px"></div>
+            </div>
+        </div>
+
+        <!-- REGEX -->
+        <div id="tab-tw-regex" class="tab-panel">
+            <div class="card card-accent">
+                <h3>Regex Find &amp; Replace</h3>
+                <div class="form-group">
+                    <label>Source Prompts (one per line)</label>
+                    <textarea id="regex-prompts" rows="4" placeholder="Enter prompts, one per line"></textarea>
+                </div>
+                <div id="regex-patterns">
+                    <div class="form-row" style="margin-bottom:8px">
+                        <div class="form-group"><label>Find (regex)</label><input type="text" class="regex-find" placeholder="worker(s)?"></div>
+                        <div class="form-group"><label>Replace</label><input type="text" class="regex-replace" placeholder="employee$1"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-sm" onclick="addRegexRow()">+ Add Pattern</button>
+                    <button class="btn btn-primary" onclick="runRegexSpin()">Apply &amp; Save</button>
+                </div>
+                <div id="regex-results" style="margin-top:16px"></div>
+            </div>
+        </div>
+
+        <!-- CHAR PAD -->
+        <div id="tab-tw-charpad" class="tab-panel">
+            <div class="card card-accent">
+                <h3>Character Padding / Trailing</h3>
+                <div class="form-group">
+                    <label>Source Prompts (one per line)</label>
+                    <textarea id="charpad-prompts" rows="4"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Padding Character</label>
+                        <input type="text" id="charpad-char" value=" ">
+                    </div>
+                    <div class="form-group">
+                        <label>Padding Count</label>
+                        <input type="number" id="charpad-count" value="0">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Trailing Characters</label>
+                        <input type="text" id="charpad-trailing" placeholder="e.g. \n\n">
+                    </div>
+                    <div class="form-group" style="display:flex;align-items:flex-end">
+                        <label><input type="checkbox" id="charpad-zw"> Insert Zero-Width Spaces</label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="runCharPad()">Apply &amp; Save</button>
+                <div id="charpad-results" style="margin-top:16px"></div>
+            </div>
+        </div>
+
+        <!-- LLM REPHRASE -->
+        <div id="tab-tw-llm" class="tab-panel">
+            <div class="card card-accent">
+                <h3>LLM-Based Rephrasing</h3>
+                <div class="form-group">
+                    <label>Select Model</label>
+                    <select id="llm-rephrase-model"></select>
+                </div>
+                <div class="form-group">
+                    <label>Source Prompts (one per line)</label>
+                    <textarea id="llm-rephrase-prompts" rows="4" placeholder="Enter prompts to rephrase"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Instructions</label>
+                    <textarea id="llm-rephrase-instructions" rows="2">Rephrase this prompt while preserving the original intent and meaning.</textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Variations per prompt</label>
+                        <input type="number" id="llm-rephrase-count" value="3" min="1" max="20">
+                    </div>
+                    <div class="form-group">
+                        <label>Temperature</label>
+                        <input type="number" id="llm-rephrase-temp" value="0.9" step="0.1" min="0" max="2">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="runLLMRephrase()">Rephrase &amp; Save to Pipeline</button>
+                <div id="llm-rephrase-results" style="margin-top:16px"></div>
+            </div>
+        </div>
+
+        <!-- ATTACK AUGMENTATION -->
+        <div id="tab-tw-attack" class="tab-panel">
+            <div class="card card-accent">
+                <h3>Attack Augmentation</h3>
+                <div class="form-group">
+                    <label>Source Prompts (one per line)</label>
+                    <textarea id="attack-aug-prompts" rows="4" placeholder="Enter prompts to augment with attack strategies"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Select Attack Strategies</label>
+                    <div id="attack-strategy-checkboxes"><div class="loading">Loading strategies...</div></div>
+                </div>
+                <button class="btn btn-primary" onclick="runAttackAugment()">Augment &amp; Save to Pipeline</button>
+                <div id="attack-aug-results" style="margin-top:16px"></div>
+            </div>
+        </div>
+
+        <!-- CUSTOM AUGMENTATION -->
+        <div id="tab-tw-custom" class="tab-panel">
+            <div class="card card-accent">
+                <h3>Custom Augmentation</h3>
+                <div class="form-group">
+                    <label>Source Prompts (one per line)</label>
+                    <textarea id="custom-aug-prompts" rows="4"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Prefix</label>
+                        <input type="text" id="custom-aug-prefix" placeholder="e.g. As a business owner, ">
+                    </div>
+                    <div class="form-group">
+                        <label>Suffix</label>
+                        <input type="text" id="custom-aug-suffix" placeholder="e.g.  Please be detailed.">
+                    </div>
+                </div>
+                <div id="custom-find-replace">
+                    <div class="form-row" style="margin-bottom:8px">
+                        <div class="form-group"><label>Find</label><input type="text" class="custom-find" placeholder="worker"></div>
+                        <div class="form-group"><label>Replace</label><input type="text" class="custom-replace" placeholder="employee"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-sm" onclick="addCustomRow()">+ Add Find/Replace</button>
+                    <button class="btn btn-primary" onclick="runCustomAugment()">Apply &amp; Save to Pipeline</button>
+                </div>
+                <div id="custom-aug-results" style="margin-top:16px"></div>
+            </div>
+        </div>
+
+        <!-- ENCODE -->
+        <div id="tab-tw-encode" class="tab-panel">
+            <div class="card card-accent">
+                <h3>Encoding &amp; Cipher Techniques</h3>
+                <div class="form-group">
+                    <label>Source Prompts (one per line)</label>
+                    <textarea id="encode-prompts" rows="4" placeholder="Enter prompts to encode..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Encoding Type</label>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+                        <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="radio" name="encode-type" value="base64" checked> Base64</label>
+                        <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="radio" name="encode-type" value="rot13"> ROT13</label>
+                        <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="radio" name="encode-type" value="hex"> Hex</label>
+                        <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="radio" name="encode-type" value="caesar"> Caesar Cipher</label>
+                        <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="radio" name="encode-type" value="reverse"> Reverse Text</label>
+                        <label style="font-size:12px;display:flex;align-items:center;gap:4px"><input type="radio" name="encode-type" value="pig_latin"> Pig Latin</label>
+                    </div>
+                </div>
+                <div class="form-row" id="encode-caesar-opts" style="display:none">
+                    <div class="form-group"><label>Shift (1-25)</label><input type="number" id="encode-caesar-shift" value="3" min="1" max="25"></div>
+                </div>
+                <div id="encode-reverse-opts" style="display:none">
+                    <label style="font-size:12px;display:flex;align-items:center;gap:6px"><input type="checkbox" id="encode-reverse-word-level"> Word-level reversal (not character-level)</label>
+                </div>
+                <div class="form-group">
+                    <label>Decoder Instruction (optional override)</label>
+                    <textarea id="encode-decoder-instruction" rows="2" placeholder="Leave blank for default decoder instruction"></textarea>
+                </div>
+                <label style="font-size:12px;display:flex;align-items:center;gap:6px;margin-bottom:12px"><input type="checkbox" id="encode-save" checked> Save to Pipeline</label>
+                <button class="btn btn-primary" onclick="runEncode()">Encode Prompts</button>
+                <div id="encode-results" style="margin-top:16px"></div>
+            </div>
+        </div>
+
+        <!-- OBFUSCATE -->
+        <div id="tab-tw-obfuscate" class="tab-panel">
+            <div class="card card-accent">
+                <h3>Visual &amp; Character Obfuscation</h3>
+                <p style="font-size:12px;color:var(--gray-500);margin-bottom:12px">Select one or more techniques. They are applied in order (layered).</p>
+                <div class="form-group">
+                    <label>Source Prompts (one per line)</label>
+                    <textarea id="obfuscate-prompts" rows="4" placeholder="Enter prompts to obfuscate..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Techniques</label>
+                    <div id="obfuscate-techniques">
+                        <div class="obfusc-technique">
+                            <label><input type="checkbox" class="obfusc-cb" value="homoglyph"> Homoglyph Substitution</label>
+                            <div class="obfusc-options">
+                                <span style="font-size:11px">Rate:</span>
+                                <input type="range" id="obfusc-homoglyph-rate" min="0.1" max="1.0" step="0.1" value="0.3" oninput="document.getElementById('obfusc-homoglyph-rate-val').textContent=this.value">
+                                <span class="range-val" id="obfusc-homoglyph-rate-val">0.3</span>
+                            </div>
+                        </div>
+                        <div class="obfusc-technique">
+                            <label><input type="checkbox" class="obfusc-cb" value="leetspeak"> Leetspeak</label>
+                            <div class="obfusc-options">
+                                <span style="font-size:11px">Intensity:</span>
+                                <select id="obfusc-leet-intensity"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select>
+                            </div>
+                        </div>
+                        <div class="obfusc-technique">
+                            <label><input type="checkbox" class="obfusc-cb" value="zalgo"> Zalgo Text</label>
+                            <div class="obfusc-options">
+                                <span style="font-size:11px">Intensity:</span>
+                                <select id="obfusc-zalgo-intensity"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select>
+                            </div>
+                        </div>
+                        <div class="obfusc-technique">
+                            <label><input type="checkbox" class="obfusc-cb" value="markdown_wrap"> Markdown / Code Wrapping</label>
+                            <div class="obfusc-options">
+                                <span style="font-size:11px">Format:</span>
+                                <select id="obfusc-wrap-format"><option value="code_fence">Code Fence</option><option value="json">JSON</option><option value="xml">XML</option><option value="pseudocode">Pseudocode</option></select>
+                            </div>
+                        </div>
+                        <div class="obfusc-technique">
+                            <label><input type="checkbox" class="obfusc-cb" value="typo_inject"> Typo Injection</label>
+                            <div class="obfusc-options">
+                                <span style="font-size:11px">Error rate:</span>
+                                <input type="range" id="obfusc-typo-rate" min="0.01" max="0.20" step="0.01" value="0.05" oninput="document.getElementById('obfusc-typo-rate-val').textContent=this.value">
+                                <span class="range-val" id="obfusc-typo-rate-val">0.05</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <label style="font-size:12px;display:flex;align-items:center;gap:6px;margin-bottom:12px"><input type="checkbox" id="obfuscate-save" checked> Save to Pipeline</label>
+                <button class="btn btn-primary" onclick="runObfuscate()">Obfuscate Prompts</button>
+                <div id="obfuscate-results" style="margin-top:16px"></div>
+            </div>
+        </div>
+
+        <!-- JAILBREAK -->
+        <div id="tab-tw-jailbreak" class="tab-panel">
+            <div class="card card-accent">
+                <h3>Jailbreak Template Library</h3>
+                <p style="font-size:12px;color:var(--gray-500);margin-bottom:12px">Select templates to wrap around your prompts. Each prompt &times; template = one output.</p>
+                <div class="form-group">
+                    <label>Source Prompts (one per line)</label>
+                    <textarea id="jailbreak-prompts" rows="4" placeholder="Enter prompts to wrap with jailbreak templates..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Templates <span id="jb-selected-count" style="font-weight:400;color:var(--gray-400)">(0 selected)</span></label>
+                    <div id="jailbreak-templates-list"><div class="loading">Loading templates...</div></div>
+                </div>
+                <div style="display:flex;gap:8px;margin-bottom:12px">
+                    <button class="btn btn-sm" onclick="jailbreakSelectAll()">Select All</button>
+                    <button class="btn btn-sm" onclick="jailbreakSelectNone()">Select None</button>
+                </div>
+                <label style="font-size:12px;display:flex;align-items:center;gap:6px;margin-bottom:12px"><input type="checkbox" id="jailbreak-save" checked> Save to Pipeline</label>
+                <button class="btn btn-primary" onclick="runJailbreakWrap()">Wrap &amp; Save</button>
+                <div id="jailbreak-results" style="margin-top:16px"></div>
+            </div>
+        </div>
+
+        <!-- MULTILINGUAL -->
+        <div id="tab-tw-multilingual" class="tab-panel">
+            <div class="card card-accent">
+                <h3>Multilingual Attacks</h3>
+                <p style="font-size:12px;color:var(--gray-500);margin-bottom:12px">Translate prompts to exploit weaker safety alignment in non-English languages</p>
+
+                <div class="form-group">
+                    <label>Mode</label>
+                    <select id="multilingual-mode" onchange="toggleMultilingualMode()">
+                        <option value="translate">Full Translation</option>
+                        <option value="mix">Mixed Language</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Model</label>
+                    <select id="multilingual-model"></select>
+                </div>
+
+                <div id="multilingual-translate-opts">
+                    <div class="form-group">
+                        <label>Target Language</label>
+                        <select id="multilingual-target-lang"></select>
+                    </div>
+                </div>
+
+                <div id="multilingual-mix-opts" style="display:none">
+                    <div class="form-group">
+                        <label>Select Languages <span style="font-size:11px;color:var(--gray-400)">(check multiple)</span></label>
+                        <div class="lang-group-label"><span class="lang-dot high"></span> High Resource</div>
+                        <div class="lang-grid" id="lang-grid-high"></div>
+                        <div class="lang-group-label"><span class="lang-dot medium"></span> Medium Resource</div>
+                        <div class="lang-grid" id="lang-grid-medium"></div>
+                        <div class="lang-group-label"><span class="lang-dot low"></span> Low Resource (weaker safety alignment)</div>
+                        <div class="lang-grid" id="lang-grid-low"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Mix Ratio: <span id="mix-ratio-val">50%</span></label>
+                        <input type="range" id="multilingual-mix-ratio" min="10" max="90" value="50" oninput="document.getElementById('mix-ratio-val').textContent=this.value+'%'">
+                    </div>
+                </div>
+
+                <div class="form-group" id="multilingual-prompt-source-area"></div>
+                <div class="form-group">
+                    <label>Prompts</label>
+                    <textarea id="multilingual-prompts" rows="4" placeholder="Enter prompts (one per line)"></textarea>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="executeMultilingual()">Translate</button>
+                </div>
+            </div>
+            <div id="multilingual-results" style="margin-top:16px"></div>
+        </div>
+
+        <!-- CHAINS -->
+        <div id="tab-tw-chains" class="tab-panel">
+            <div style="display:grid;grid-template-columns:1fr 320px;gap:16px">
+                <div>
+                    <div class="card card-accent">
+                        <h3>Attack Chain Builder</h3>
+                        <p style="color:var(--gray-500);font-size:12px;margin-bottom:12px">Compose multi-step transform pipelines. Steps execute in order.</p>
+                        <div class="form-row" style="margin-bottom:12px">
+                            <div class="form-group" style="margin-bottom:0">
+                                <label>Chain Name</label>
+                                <input type="text" id="chain-name" placeholder="e.g., Standard Red Team Combo">
+                            </div>
+                            <div class="form-group" style="margin-bottom:0">
+                                <label>Description</label>
+                                <input type="text" id="chain-desc" placeholder="Optional description">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Input Prompts (one per line)</label>
+                            <textarea id="chain-prompts" rows="3" placeholder="Enter prompts to transform through the chain..."></textarea>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+                            <strong style="font-size:13px">Steps</strong>
+                            <select id="chain-add-type" style="font-size:12px;padding:3px 6px">
+                                <option value="encode">Encode</option>
+                                <option value="obfuscate">Obfuscate</option>
+                                <option value="jailbreak_wrap">Jailbreak Wrap</option>
+                                <option value="regex">Regex</option>
+                                <option value="charpad">Char Pad</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <button class="btn btn-sm" onclick="addChainStep()">+ Add Step</button>
+                        </div>
+                        <div id="chain-steps"><div style="color:var(--gray-400);font-size:12px;padding:16px;text-align:center;border:1px dashed var(--gray-300);border-radius:6px">No steps added yet. Add a step to begin.</div></div>
+                        <div class="btn-group" style="margin-top:14px">
+                            <button class="btn" onclick="previewChain()">Preview (1st prompt)</button>
+                            <button class="btn btn-primary" onclick="executeChain()">Execute Chain</button>
+                            <button class="btn" onclick="saveChain()">Save Chain</button>
+                            <label style="font-size:12px;display:flex;align-items:center;gap:4px;margin-left:8px"><input type="checkbox" id="chain-save-pipeline" checked> Save to pipeline</label>
+                        </div>
+                        <div id="chain-results" style="margin-top:12px"></div>
+                    </div>
+                    <div id="chain-preview" style="margin-top:12px"></div>
+                </div>
+                <div>
+                    <div class="card">
+                        <h3 style="font-size:14px;margin-bottom:8px">Saved Chains</h3>
+                        <div id="saved-chains-list"><div style="color:var(--gray-400);font-size:12px;text-align:center;padding:16px">No saved chains</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PIPELINE -->
+        <div id="tab-tw-pipeline" class="tab-panel">
+            <div class="card card-accent-success">
+                <h3>Active Pipeline</h3>
+                <div id="pipeline-info"><div class="loading">Loading...</div></div>
+            </div>
+            <div class="btn-group" style="margin-bottom:16px">
+                <button class="btn btn-primary" onclick="buildPipeline()">Build Pipeline</button>
+                <button class="btn" onclick="loadPipeline()">Refresh</button>
+                <button class="btn" onclick="showSection('testing')" style="margin-left:auto">Run Tests &rarr;</button>
+            </div>
+            <!-- Pipeline flow visualization -->
+            <div id="pipeline-flow" style="margin-bottom:16px"></div>
+            <div class="card">
+                <h3>Spin Jobs</h3>
+                <div id="spin-jobs-list"><div class="loading">Loading...</div></div>
+            </div>
+        </div>
+
+        <!-- Preview Panel (right side) -->
+        <div class="preview-panel" id="transform-preview">
+            <div class="preview-panel-header">
+                <span>Preview</span>
+                <button class="btn btn-sm" onclick="copyPreviewResults()" id="preview-copy-btn" style="display:none">Copy All</button>
+            </div>
+            <div id="preview-content" style="padding:12px 16px;font-size:12px;color:var(--gray-500)">
+                Run a transform operation to see results here.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden alias sections for backward compat -->
+<div id="section-spin-local" class="section" style="display:none!important"></div>
+<div id="section-spin-llm" class="section" style="display:none!important"></div>
+<div id="section-spin-attack" class="section" style="display:none!important"></div>
+<div id="section-spin-custom" class="section" style="display:none!important"></div>
+<div id="section-pipeline" class="section" style="display:none!important"></div>

@@ -163,3 +163,13 @@ pip-delete-this-directory.txt
 # ==================================================
 docs/_build/
 site/
+
+# ==================================================
+# Runtime / Generated Data
+# ==================================================
+data/pipeline/
+data/scraper/
+data/wizard/
+data/generated/
+config/api_keys.json
+config/plugins.json

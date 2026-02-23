@@ -1,0 +1,123 @@
+<!-- ============================================================ -->
+<!-- PROMPT SETS -->
+<!-- ============================================================ -->
+<div id="section-prompt-sets" class="section">
+    <div class="page-header">
+        <h2>Prompt Sets</h2>
+        <p>Toggle default and imported prompt sets on/off</p>
+        <div class="section-hint">Step 2 of 6 &mdash; After setting up prompts, <a onclick="showSection('transform')">transform them with spinning tools</a></div>
+    </div>
+    <div id="prompt-sets-list"><div class="loading">Loading prompt sets...</div></div>
+
+    <!-- Inline Import -->
+    <div class="card" style="margin-top:16px">
+        <h3 style="cursor:pointer;display:flex;align-items:center;justify-content:space-between" onclick="this.parentElement.querySelector('.import-body').classList.toggle('collapsed')">
+            Import Prompts <span style="font-size:12px;color:var(--gray-400)">&#9660;</span>
+        </h3>
+        <div class="import-body">
+            <div class="form-row" style="margin-top:10px">
+                <div class="form-group" style="flex:1">
+                    <label>Upload File (JSON / TXT)</label>
+                    <input type="file" id="inline-import-file" accept=".json,.txt,.csv">
+                </div>
+                <div class="form-group" style="flex:0 0 auto;align-self:flex-end">
+                    <label><input type="checkbox" id="inline-import-merge" checked> Merge</label>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="importPromptsInline()" style="margin-bottom:12px">Upload &amp; Import</button>
+            <div style="border-top:1px solid var(--gray-100);padding-top:10px;margin-top:4px">
+                <label style="font-size:12px;font-weight:600">Or paste prompts (one per line):</label>
+                <textarea id="inline-import-paste" rows="4" placeholder="Enter one prompt per line..."></textarea>
+                <button class="btn" onclick="importPastedPrompts()">Import Pasted Prompts</button>
+            </div>
+            <div id="inline-import-result" style="margin-top:8px"></div>
+        </div>
+    </div>
+
+    <div class="section-next">
+        <div class="sn-text"><strong>Next:</strong> Transform and augment your prompts</div>
+        <button class="btn btn-primary" onclick="showSection('transform')">Go to Transform Workbench</button>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PROMPT PREPARATION -->
+<!-- ============================================================ -->
+<div id="section-prompt-prep" class="section">
+    <div class="page-header">
+        <h2>Prompt Preparation</h2>
+        <p>Preprocessing rules for prompt filtering and quality</p>
+    </div>
+    <div class="card">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Min Word Count</label>
+                <input type="number" id="prep-min-words" value="5">
+            </div>
+            <div class="form-group">
+                <label>Max Word Count</label>
+                <input type="number" id="prep-max-words" value="500">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Required Words (comma-separated)</label>
+            <input type="text" id="prep-required" placeholder="e.g. worker, contract">
+        </div>
+        <div class="form-group">
+            <label>Avoid Words (comma-separated)</label>
+            <input type="text" id="prep-avoid" placeholder="e.g. test, example">
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label><input type="checkbox" id="prep-dedup" checked> Filter Duplicates</label>
+            </div>
+            <div class="form-group">
+                <label>Dedup Threshold</label>
+                <input type="number" id="prep-threshold" value="0.95" step="0.01" min="0" max="1">
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="savePreparation()">Save Settings</button>
+    </div>
+    <div class="card">
+        <h3>Reference Data</h3>
+        <p style="font-size:13px;color:var(--gray-400);margin-bottom:12px">Categories, migration corridors, and ILO forced labor indicators available in this framework</p>
+        <div class="btn-group" style="margin-bottom:12px">
+            <button class="btn btn-sm" onclick="loadReferenceData('categories')">Load Categories</button>
+            <button class="btn btn-sm" onclick="loadReferenceData('corridors')">Load Corridors</button>
+            <button class="btn btn-sm" onclick="loadReferenceData('ilo-indicators')">Load ILO Indicators</button>
+        </div>
+        <div id="reference-data-display"></div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TEMPLATE LIBRARY -->
+<!-- ============================================================ -->
+<div id="section-template-library" class="section">
+    <div class="page-header">
+        <h2>Template Library</h2>
+        <p>Browse, search, and fork prompt templates into new sets</p>
+        <div class="section-hint">Step 2 &mdash; Find templates by category, corridor, or attack type, then fork selected ones into a prompt set for testing</div>
+    </div>
+    <div class="card">
+        <div class="form-row" style="flex-wrap:wrap;gap:8px;margin-bottom:12px">
+            <input type="text" id="tpl-search" placeholder="Search prompts..." style="flex:2;min-width:200px" oninput="loadTemplateLibrary()">
+            <select id="tpl-filter-category" onchange="loadTemplateLibrary()"><option value="">All Categories</option></select>
+            <select id="tpl-filter-corridor" onchange="loadTemplateLibrary()"><option value="">All Corridors</option></select>
+            <select id="tpl-filter-ilo" onchange="loadTemplateLibrary()"><option value="">All ILO Indicators</option></select>
+            <select id="tpl-filter-attack" onchange="loadTemplateLibrary()"><option value="">All Attack Types</option></select>
+            <select id="tpl-filter-difficulty" onchange="loadTemplateLibrary()"><option value="">All Difficulties</option></select>
+        </div>
+        <div style="font-size:12px;color:var(--gray-500);margin-bottom:8px">
+            <span id="tpl-result-count">0</span> templates found &middot; <span id="tpl-selected-count">0</span> selected
+        </div>
+        <div id="tpl-grid" class="tpl-grid"></div>
+        <div id="tpl-pagination" style="display:flex;justify-content:center;gap:8px;margin-top:12px"></div>
+    </div>
+    <div class="tpl-fork-bar" id="tpl-fork-bar" style="display:none">
+        <span style="font-size:13px;font-weight:500"><span id="tpl-fork-count">0</span> templates selected</span>
+        <input type="text" id="tpl-fork-name" placeholder="New set name..." style="width:200px">
+        <button class="btn btn-primary" onclick="forkSelectedTemplates()">Fork to Prompt Set</button>
+        <button class="btn btn-sm" onclick="clearTemplateSelection()">Clear</button>
+    </div>
+</div>

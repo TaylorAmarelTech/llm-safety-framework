@@ -1,0 +1,43 @@
+<div id="section-multi-turn" class="section">
+    <div class="page-header">
+        <h2>Multi-Turn Conversation Attacks</h2>
+        <p>Execute multi-turn strategies that gradually escalate through conversation</p>
+    </div>
+
+    <div class="card">
+        <h3>Strategy Selection</h3>
+        <div class="mt-strategy-grid" id="mt-strategy-grid"></div>
+    </div>
+
+    <div class="card">
+        <h3>Configuration</h3>
+        <div class="form-row">
+            <div class="form-group" style="flex:2">
+                <label>Target Prompt</label>
+                <textarea id="mt-prompt" rows="3" placeholder="Enter the harmful prompt to test..."></textarea>
+            </div>
+            <div class="form-group" style="flex:1">
+                <label>Target Model</label>
+                <select id="mt-model"></select>
+                <div style="margin-top:8px">
+                    <label>Strategy</label>
+                    <select id="mt-strategy-select"></select>
+                </div>
+            </div>
+        </div>
+        <div class="btn-group">
+            <button class="btn" onclick="previewMultiTurnPlan()">Preview Plan</button>
+            <button class="btn btn-primary" onclick="executeMultiTurn()">Execute Attack</button>
+        </div>
+    </div>
+
+    <div id="mt-plan-preview" style="margin-top:16px"></div>
+    <div id="mt-transcript-area" style="margin-top:16px"></div>
+
+    <div class="card" style="margin-top:20px">
+        <h3>Saved Results</h3>
+        <div id="mt-results-list" class="mt-results-list">
+            <div style="color:var(--gray-400);font-size:13px">No results yet</div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,141 @@
+"""Embassy notices, deployment bans, travel advisories, and consular services."""
+
+EMBASSY_NOTICE_FACTS: list[dict] = [
+    # ── Deployment Bans and Suspensions ───────────────────────────────
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "PH",
+        "title": "Philippines Deployment Ban to Kuwait (Multiple)",
+        "summary": "Philippines imposed deployment bans to Kuwait: 2018 (after Joanna Demafelis murder, found in freezer), 2020 (COVID), partial bans intermittently. Total ban on new HSW (household service workers) deployments. Lifted with enhanced bilateral protections. DMW maintains Kuwait on 'monitored' list. POLO Kuwait provides distressed worker assistance.",
+        "source": "DMW / Philippine Embassy Kuwait",
+    },
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "ET",
+        "title": "Ethiopia Deployment Ban to Gulf States (2013-2018)",
+        "summary": "Ethiopia banned labour migration to Middle East (2013-2018) after widespread abuse of domestic workers in Saudi Arabia and Lebanon. During ban: irregular migration surged via Djibouti-Yemen route, placing workers at greater risk. Ban lifted 2018 with bilateral agreement with Saudi Arabia. MoLSA introduced new pre-departure requirements. Effectiveness debated: irregular flows continued throughout ban.",
+        "source": "Ethiopia MoLSA / IOM",
+    },
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "ID",
+        "title": "Indonesia Deployment Moratorium to Saudi Arabia (2015)",
+        "summary": "Indonesia imposed moratorium on domestic worker deployment to Saudi Arabia (2015) following multiple execution cases and abuse reports. Partial lifting with bilateral MOU (2017) introducing standard contract, minimum wage SAR 1,500, and employer responsibility for recruitment costs. Full resumption ongoing with enhanced protections via BNP2MI.",
+        "source": "BNP2MI / Indonesian Embassy Riyadh",
+    },
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "NP",
+        "title": "Nepal Gulf State Deployment Restrictions",
+        "summary": "Nepal imposed various deployment restrictions: ban on women domestic workers to Gulf (2012, partially lifted 2015 with age restriction >25), QA construction deaths led to enhanced monitoring (2014), deployment freeze during COVID. Foreign Employment Board monitors destination country conditions. Critics: bans push workers to irregular channels with higher exploitation risk.",
+        "source": "Nepal Department of Foreign Employment / Pourakhi",
+    },
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "PH",
+        "title": "Philippines Alert Level System for Overseas Workers",
+        "summary": "DMW Alert Level system: Level 1 (voluntary repatriation advisory), Level 2 (forced/mandatory repatriation), Level 3 (voluntary evacuation), Level 4 (mandatory evacuation). Currently applied to: Libya (Level 4), Syria (Level 4), Iraq (Level 3 in some areas), Ukraine (Level 4), Sudan (Level 4). OWWA emergency repatriation fund covers transport costs.",
+        "source": "DMW / OWWA",
+    },
+    # ── Emergency Evacuations ────────────────────────────────────────
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "international",
+        "title": "Libya Emergency Evacuation (2011) — Mass Migrant Worker Rescue",
+        "summary": "2011 Libya civil war triggered emergency evacuation of 768,000+ migrant workers from 100+ nationalities. IOM assisted 212,000 workers. Philippines evacuated 28,000+. Bangladesh: 36,000+. Workers lost savings, wages, and possessions. Many had debts from recruitment still outstanding. Post-conflict: some workers trafficked during chaos. Highlighted need for emergency preparedness frameworks.",
+        "source": "IOM / OWWA / BMET",
+    },
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "international",
+        "title": "Yemen Conflict Evacuation of Migrant Workers (2015+)",
+        "summary": "Saudi-led coalition intervention in Yemen (2015) stranded thousands of Ethiopian, Somali, and South Asian migrant workers. IOM evacuated 28,000+ workers via Djibouti. Workers in Aden, Sana'a experienced bombing, food shortages, and inability to leave. Ethiopian workers trapped in Haradh border area. Ongoing: 100,000+ Ethiopian migrants stranded in Yemen (2023).",
+        "source": "IOM / UNHCR / ILO",
+    },
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "international",
+        "title": "Lebanon Economic Collapse Impact on Migrant Workers (2020+)",
+        "summary": "Lebanon's economic crisis (2019+): currency collapsed 90%+. Employers unable to pay domestic workers. Mass abandonment: employers dropped workers at embassy doorsteps or on streets. Ethiopian embassy shelter overwhelmed (hundreds sleeping outside). Workers stranded without salary, housing, or return ticket. COVID lockdowns compounded crisis. IOM assisted 25,000+ repatriations (2020-2023).",
+        "source": "IOM / ARM Lebanon / Amnesty International",
+    },
+    # ── Embassy and Consular Services ────────────────────────────────
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "PH",
+        "title": "POLO — Philippine Overseas Labor Office Network",
+        "summary": "34 POLO offices worldwide providing: pre-employment contract verification, workplace dispute mediation, legal assistance, shelter for distressed workers, repatriation coordination. Key locations: Riyadh, Jeddah, Dubai, Abu Dhabi, Kuwait City, Doha, Hong Kong, Singapore, Kuala Lumpur, Tokyo, Seoul. Labour attachés verify employment contracts and conduct employer inspections. Annual caseload: 30,000+ assistance cases.",
+        "source": "DMW / POLO",
+    },
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "PH",
+        "title": "Philippines One-Stop Service Centers for OFWs",
+        "summary": "DMW operates Migrant Workers Office (MWO, formerly POLO) providing: legal assistance, temporary shelter (Bahay Kalinga, 8 locations), medical assistance, repatriation, conciliation/mediation with employers. Workers can access services regardless of documentation status. 24/7 hotline: 1-800-1-888-8776 (from PH) or +63-917-872-2327 (WhatsApp). Annual repatriations: 20,000+ distressed workers.",
+        "source": "DMW",
+    },
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "BD",
+        "title": "Bangladesh Embassy Labour Wing Services in Gulf States",
+        "summary": "Bangladesh missions in Gulf states provide: contract verification, labour court representation, shelter for distressed workers, financial assistance for repatriation, death compensation processing (BDT 300,000 from Wage Earners Fund). Capacity constraints: Riyadh office handles 50,000+ cases annually with limited staff. Workers report long wait times and inconsistent assistance quality.",
+        "source": "BMET / Bangladesh Ministry of Expatriates",
+    },
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "ID",
+        "title": "Indonesian Embassy Shelter Services",
+        "summary": "Indonesian embassies operate shelters in: Riyadh, Jeddah, Kuala Lumpur, Damascus, Amman, Kuwait City. Shelters house distressed domestic workers awaiting repatriation or case resolution. Capacity: 50-500 workers per shelter. Average stay: 2-6 months. Workers provided food, medical care, legal assistance. Some shelters overcrowded. BNP2MI funds repatriation.",
+        "source": "BNP2MI / Indonesian MoFA",
+    },
+    # ── Travel Advisories for Workers ────────────────────────────────
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "international",
+        "title": "IOM Pre-Departure Orientation Country-Specific Warnings",
+        "summary": "IOM provides destination-specific warnings in pre-departure orientation: contract substitution risks (SA, AE), passport confiscation frequency (Gulf states), rest day denial patterns (HK, SG), wage deduction practices (MY, TH), exit permit requirements (historical QA, current OM), complaint mechanisms and hotlines. Materials in 30+ languages. Criticism: information reaches workers too late in recruitment process.",
+        "source": "IOM / IRIS",
+    },
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "US",
+        "title": "US State Department Trafficking in Persons Report — Tier Rankings",
+        "summary": "Annual TIP Report ranks 188 countries into Tier 1 (full compliance), Tier 2, Tier 2 Watch List, and Tier 3 (no effort). Tier 3 triggers sanctions (non-humanitarian foreign assistance cut). Key rankings (2023): Tier 2WL: SA, QA, MY, TH. Tier 2: AE, KW, SG, HK, BD. Tier 3: MM, CN, NK, CU, BY. Criticized for political bias but remains most comprehensive annual assessment.",
+        "source": "US State Department Office to Monitor and Combat TIP",
+    },
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "PH",
+        "title": "POEA/DMW Pre-Employment Advisory — Red Flag List",
+        "summary": "DMW publishes: list of banned/suspended recruitment agencies (updated weekly), countries with deployment restrictions, advisory on common scam patterns, verified job orders (POEA job registry). Workers can verify agency license status via DMW hotline or website. Despite system: 5,000-8,000 illegal recruitment complaints filed annually. Sub-agent networks bypass verification system entirely.",
+        "source": "DMW / POEA records",
+    },
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "international",
+        "title": "COVID-19 Travel Restrictions Impact on Migrant Workers (2020-2022)",
+        "summary": "COVID-19 lockdowns stranded millions of migrant workers: unable to travel home, unable to renew expired visas, locked in employer accommodation, terminated without repatriation. Gulf states: 500,000+ workers lost employment. South Asian origin countries: airports closed, no incoming flights. Workers forced to accept reduced wages or work without pay to maintain accommodation. Amnesty programs by some Gulf states.",
+        "source": "IOM / ILO / Migrant Forum in Asia",
+    },
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "international",
+        "title": "Bilateral Framework Agreements for Worker Protection",
+        "summary": "Key bilateral frameworks: PH-SA (Household Service Workers, 2013), PH-QA (domestic workers), NP-QA (construction), BD-MY (labour MOU), VN-JP (TITP/SSW), PH-KR (EPS), ID-SA (domestic MOU). Frameworks typically cover: recruitment fees, minimum wages, contract standards, dispute resolution, repatriation costs. Effectiveness varies: strong enforcement in KR-EPS, weak in SA bilateral agreements.",
+        "source": "ILO / National governments",
+    },
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "international",
+        "title": "Death Compensation for Migrant Workers Abroad",
+        "summary": "Worker death abroad: compensation varies by origin country. PH: OWWA death benefit PHP 200,000 + insurance (varies). BD: BDT 300,000 from Wage Earners Fund. NP: NPR 700,000 from Foreign Employment Promotion Board. Destination country obligations: SA pays diya (blood money) for employer negligence. QA: end-of-service benefits transferred to family. MY: Workmen's Compensation Act applies. Processing: 6-18 months, many families receive nothing.",
+        "source": "OWWA / BMET / Nepal FEB",
+    },
+    {
+        "type": "embassy_notice",
+        "jurisdiction": "international",
+        "title": "Consular Notification and Arrested Migrant Workers",
+        "summary": "Vienna Convention on Consular Relations (Art. 36): detained foreign nationals must be informed of right to contact embassy. In practice: many migrant workers arrested for absconding, overstay, or criminal charges never receive consular notification. Language barriers prevent understanding rights. Workers held in immigration detention for months without embassy contact. Gulf states and Malaysia have highest rates of migrant detention.",
+        "source": "Vienna Convention / IOM / OHCHR",
+    },
+]

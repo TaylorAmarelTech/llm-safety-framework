@@ -1,0 +1,46 @@
+<div id="section-integrations" class="section">
+    <div class="page-header">
+        <h2>Library Integrations</h2>
+        <p>Connect with external attack libraries: garak, PyRIT, and deepteam</p>
+    </div>
+
+    <div class="integration-grid" id="integration-status-grid"></div>
+
+    <div class="card">
+        <h3>Method Browser</h3>
+        <div class="form-group">
+            <label>Library</label>
+            <select id="int-library-select" onchange="loadLibraryMethods(this.value)">
+                <option value="">Select a library...</option>
+                <option value="garak">garak</option>
+                <option value="pyrit">PyRIT</option>
+                <option value="deepteam">deepteam</option>
+            </select>
+        </div>
+        <div id="int-methods-area"></div>
+    </div>
+
+    <div class="card">
+        <h3>Execute</h3>
+        <div class="form-row">
+            <div class="form-group" style="flex:1">
+                <label>Method ID</label>
+                <input type="text" id="int-method-id" placeholder="e.g., encoding or ascii_art">
+            </div>
+            <div class="form-group" style="flex:1">
+                <label>Library</label>
+                <select id="int-exec-library">
+                    <option value="garak">garak</option>
+                    <option value="pyrit">PyRIT</option>
+                    <option value="deepteam">deepteam</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Prompts (one per line)</label>
+            <textarea id="int-prompts" rows="4" placeholder="Enter prompts to run through the library method..."></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="executeIntegration()">Execute</button>
+        <div id="int-results-area" style="margin-top:16px"></div>
+    </div>
+</div>

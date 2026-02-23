@@ -1,0 +1,131 @@
+"""Repatriation systems, post-rescue services, and reintegration programs."""
+
+REPATRIATION_FACTS: list[dict] = [
+    {
+        "type": "advisory",
+        "jurisdiction": "PH",
+        "title": "Philippines Repatriation Assistance Program for OFWs",
+        "summary": "OWWA repatriation assistance: airport assistance (NAIA terminals 1, 2, 3), temporary shelter (Bahay Kalinga in 8 countries), airfare for distressed workers (PHP 15,000-50,000), medical assistance, legal assistance, counselling. Workers can request repatriation via: POLO/MWO abroad, OWWA hotline 1348, or DMW office. Annual repatriations: 15,000-25,000 distressed workers. COVID peak: 400,000+ repatriated (2020-2021).",
+        "source": "OWWA / DMW",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "BD",
+        "title": "Bangladesh Repatriation and Wage Earners Fund",
+        "summary": "Wage Earners Welfare Board provides: repatriation assistance (air ticket), death compensation (BDT 300,000), burial costs abroad, legal assistance, medical treatment (BDT 100,000 max). Fund financed by 0.2% levy on worker remittances. Annual disbursement: BDT 500M+. Criticism: slow processing (3-12 months), insufficient compensation amounts, bureaucratic barriers for rural families.",
+        "source": "BMET / Wage Earners Welfare Board",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "NP",
+        "title": "Nepal Foreign Employment Compensation System",
+        "summary": "Foreign Employment Promotion Board (FEPB) provides: death compensation (NPR 700,000), disability compensation (proportional), repatriation assistance, rescue operations. Fund financed by NPR 1,500 per worker contribution. Annual claims: 3,000+. Average processing: 6-12 months. Workers' families must provide extensive documentation (employment contract, death certificate, medical reports). Many claims rejected due to documentation gaps.",
+        "source": "Nepal FEPB / Pourakhi",
+    },
+    {
+        "type": "contact",
+        "jurisdiction": "international",
+        "title": "IOM Assisted Voluntary Return and Reintegration (AVRR)",
+        "organization": "IOM",
+        "contact_type": "program",
+        "details": "IOM AVRR: assists stranded or exploited migrants to return home voluntarily. Services: pre-departure counselling, travel arrangements, transit assistance, reintegration support (cash grant, vocational training, business start-up). 60,000+ returns annually across 170 countries. Reintegration package: USD 500-3,000 depending on vulnerability. Program funded by destination governments.",
+        "source": "IOM",
+    },
+    # ── Destination Country Services ─────────────────────────────────
+    {
+        "type": "advisory",
+        "jurisdiction": "US",
+        "title": "US T-Visa for Trafficking Victims",
+        "summary": "T nonimmigrant status (T-visa) for severe trafficking victims: 4-year stay, work authorization, access to federal benefits, path to permanent residency after 3 years. Requires: victim of severe trafficking, physically present in US, compliance with law enforcement (waived for trauma). Cap: 5,000/year (rarely filled, ~2,000 approved annually). Family members eligible for derivative T-visa. USCIS adjudicates.",
+        "source": "USCIS / DOJ Office for Victims of Crime",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "UK",
+        "title": "UK National Referral Mechanism (NRM) for Trafficking Victims",
+        "summary": "NRM: formal framework for identifying and supporting trafficking victims. Two decisions: 'reasonable grounds' (within 5 working days, 75%+ positive) → 'conclusive grounds' (within 45 days, 90%+ positive for those reaching this stage). Positive decision: 12 months discretionary leave, access to housing, counselling, legal aid. 17,000+ referrals (2023). Recovery and reflection period: minimum 30 days support.",
+        "source": "UK Home Office / Modern Slavery Unit",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "Post-Rescue Shelter Services at Destination Countries",
+        "summary": "Government shelters: QA (government-run shelter, capacity 500+), KW (PAM shelter, capacity 500), SA (limited, via embassies). Embassy shelters: PH (Bahay Kalinga in 8 countries, capacity 50-200 each), ID (embassy shelters in 6 countries), BD (limited capacity). NGO shelters: SG (HOME, capacity 40), HK (Bethune House, capacity 60, PathFinders). Gap: most shelters overcrowded, long waits for repatriation.",
+        "source": "IOM / ILO / National governments",
+    },
+    # ── Compensation Mechanisms ───────────────────────────────────────
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "Compensation for Trafficking Victims — Global Overview",
+        "summary": "Compensation pathways: criminal court restitution (rare: <5% of trafficking cases result in compensation), civil suits (effective in US, UK; difficult elsewhere), labour tribunal awards (most accessible), state compensation funds (UK: CICA, US: VOCA, DE: victim compensation). Average compensation when awarded: US USD 15,000-50,000, UK GBP 10,000-30,000. Gulf states: labour tribunal awards average QAR 15,000 (USD 4,100). Most victims receive zero compensation.",
+        "source": "OSCE / GAATW / La Strada International",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "QA",
+        "title": "Qatar Workers' Support and Insurance Fund — Repatriation",
+        "summary": "Fund covers: unpaid wages, end-of-service benefits, and repatriation costs when employers fail to pay or cannot be located. Workers apply through LDRC process. Fund disbursed QAR 350M+ (USD 96M) in first 2 years (2022-2024). Also covers temporary accommodation and subsistence for workers awaiting case resolution or repatriation. Model being studied by other Gulf states.",
+        "source": "Qatar Ministry of Labour / ILO",
+    },
+    # ── Reintegration Programs ───────────────────────────────────────
+    {
+        "type": "advisory",
+        "jurisdiction": "PH",
+        "title": "Philippines Balik-Manggagawa Reintegration Program",
+        "summary": "OWWA reintegration services for returning OFWs: livelihood assistance (PHP 20,000-50,000 for small business), skills training, job placement, NRCO (National Reintegration Center for OFWs) counselling. Targeted programs: Sa-Pinas (savings education), DOLE re-employment facilitation. Criticism: insufficient funds for meaningful business start-up, limited to OWWA members, no mental health component.",
+        "source": "OWWA / NRCO / DOLE",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "Psychosocial Support for Trafficked Persons",
+        "summary": "Trafficking victims experience: PTSD (40-80%), depression (50-70%), anxiety (60-80%), substance abuse (20-30%). Psychosocial support needs: immediate crisis counselling, long-term trauma therapy, group support, family reconnection support. Services available: US (OTIP-funded programs), UK (NRM support), PH (DSWD centres). Gap: most origin countries have no specialized trafficking trauma services. Average recovery period: 12-36 months.",
+        "source": "IOM / London School of Hygiene and Tropical Medicine",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "Re-Trafficking Prevention and Risk Factors",
+        "summary": "Re-trafficking rate estimated 20-40% within 2 years of return. Risk factors: outstanding debt from original recruitment, lack of alternative livelihood, family economic pressure, stigma in home community, unresolved trauma, targeting by same recruitment networks. Prevention: economic alternatives (vocational training, microfinance), community education, monitoring of known trafficking networks. Few origin countries have systematic re-trafficking prevention programs.",
+        "source": "IOM / GAATW / La Strada International",
+    },
+    # ── Special Issues ───────────────────────────────────────────────
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "Repatriation Costs and Who Bears Them",
+        "summary": "Repatriation costs: air ticket (USD 200-1,500 depending on route), exit permit/clearance fees, medical clearance, penalty fines for overstay, outstanding debts. Responsibility: under most bilateral agreements, employer must pay. In practice: workers frequently pay own repatriation or embassy/government fund covers. Workers who 'run away' from employers lose all entitlements including repatriation assistance.",
+        "source": "ILO / IOM / Bilateral agreements",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "Voluntary vs Involuntary Return — Key Distinctions",
+        "summary": "Voluntary return: worker chooses to leave, accesses AVRR or embassy assistance, receives reintegration support. Involuntary return: deportation after arrest, immigration detention, criminal proceedings. Key difference: voluntary returnees eligible for reintegration programs and can re-migrate; deported workers face re-entry bans (1-10 years) and may be blacklisted by recruitment agencies. COVID-19 created mass involuntary returns.",
+        "source": "IOM / UNHCR",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "Diplomatic Intervention for Distressed Migrant Workers",
+        "summary": "Diplomatic interventions for worker crises: Philippines (most active: DMW/POLO intervenes in individual cases, mass evacuations), Indonesia (BNP2MI coordinates with MoFA), Bangladesh (BMET/MoFA joint cases), Nepal (limited capacity). Effectiveness depends on: bilateral relationship strength, number of nationals in destination country, media attention, election cycle politics. Gulf states generally resistant to origin country diplomatic pressure.",
+        "source": "ILO / National foreign affairs ministries",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "Death of Migrant Workers Abroad — Repatriation of Remains",
+        "summary": "Worker deaths abroad: PH records 800-1,200 OFW deaths/year, NP records 1,500-2,000 deaths/year (many Gulf construction). Repatriation of remains: costs USD 2,000-10,000, processing 2-8 weeks. Employer obligations: pay costs (often evaded). Autopsy requirements vary. Cause of death frequently listed as 'cardiac arrest' or 'natural causes' for Gulf construction deaths (suspected heat-related). Families face bureaucratic barriers for insurance claims.",
+        "source": "OWWA / Nepal FEPB / Gulf Cooperation Council data",
+    },
+    {
+        "type": "contact",
+        "jurisdiction": "international",
+        "title": "Global Modern Slavery Helplines Directory",
+        "organization": "Global Modern Slavery Directory",
+        "contact_type": "helpline_directory",
+        "details": "Key helplines by country: US 1-888-373-7888, UK 08000 121 700, AU 1800 017 288, PH 1348 (OWWA), SG 1800-339-5505 (MOM), HK 2157 9537 (Justice Centre), QA +974 4406 7999 (NHRC), IOM counter-trafficking hotlines vary by country. Many accept anonymous reports. Languages: most operate in English + local languages + major migrant languages.",
+        "source": "Polaris / Unseen / IOM / National hotlines",
+    },
+]

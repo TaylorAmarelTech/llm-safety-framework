@@ -36,6 +36,15 @@ from src.generators.moral_religious_framing_generator import (
 from src.generators.mega_variation_generator import (
     MegaVariationGenerator,
 )
+from src.generators.tax_evasion_generator import (
+    TaxEvasionGenerator,
+)
+from src.generators.money_laundering_generator import (
+    MoneyLaunderingGenerator,
+)
+from src.generators.white_collar_crime_generator import (
+    WhiteCollarCrimeGenerator,
+)
 
 __all__ = [
     # Historical Precedent
@@ -52,6 +61,10 @@ __all__ = [
     "MoralReligiousFramingGenerator",
     # Mega Variations
     "MegaVariationGenerator",
+    # Financial Crime Extensions
+    "TaxEvasionGenerator",
+    "MoneyLaunderingGenerator",
+    "WhiteCollarCrimeGenerator",
 ]
 
 
@@ -63,6 +76,9 @@ GENERATOR_REGISTRY = {
     "regulatory_evasion": RegulatoryEvasionGenerator,
     "moral_religious_framing": MoralReligiousFramingGenerator,
     "mega_variation": MegaVariationGenerator,
+    "tax_evasion": TaxEvasionGenerator,
+    "money_laundering": MoneyLaunderingGenerator,
+    "white_collar_crime": WhiteCollarCrimeGenerator,
 }
 
 

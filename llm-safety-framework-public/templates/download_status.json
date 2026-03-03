@@ -1,0 +1,68 @@
+{
+  "ph-ra-10022": {
+    "status": "processed",
+    "timestamp": "2026-01-18T06:57:13.205706+00:00",
+    "size_bytes": 68913,
+    "cache_version": "1.0",
+    "url": "https://hrlibrary.umn.edu/research/Philippines/RA-10022.html",
+    "source_name": "Philippines RA 10022 - Migrant Workers Act",
+    "content_length": 61543
+  },
+  "ilo-c029": {
+    "status": "failed",
+    "timestamp": "2026-01-18T07:07:56.173710+00:00",
+    "error": "Download failed"
+  },
+  "iom-recruitment-fees-guidance": {
+    "status": "failed",
+    "timestamp": "2026-01-18T07:07:55.733490+00:00",
+    "error": "Download failed"
+  },
+  "ilo-c181": {
+    "status": "failed",
+    "timestamp": "2026-01-18T07:07:56.174552+00:00",
+    "error": "Download failed"
+  },
+  "ilo-c189": {
+    "status": "failed",
+    "timestamp": "2026-01-18T07:07:57.325903+00:00",
+    "error": "Download failed"
+  },
+  "iom-recruitment-fees-pdf": {
+    "status": "process_failed",
+    "timestamp": "2026-01-18T06:57:12.179267+00:00",
+    "size_bytes": 8846055,
+    "cache_version": "1.0",
+    "url": "https://portugal.iom.int/sites/g/files/tmzbdl521/files/documents/2024-05/recruitment-fees-and-related-costs.pdf",
+    "source_name": "IOM Recruitment Fees and Related Costs (PDF)",
+    "error": "pdfplumber not installed. Install with: pip install pdfplumber"
+  },
+  "ilo-c097": {
+    "status": "failed",
+    "timestamp": "2026-01-18T07:07:57.389826+00:00",
+    "error": "Download failed"
+  },
+  "ilo-forced-labor-indicators": {
+    "status": "process_failed",
+    "timestamp": "2026-01-18T06:57:13.890749+00:00",
+    "size_bytes": 4227043,
+    "cache_version": "1.0",
+    "url": "https://www.ilo.org/wcmsp5/groups/public/---ed_norm/---declaration/documents/publication/wcms_203832.pdf",
+    "source_name": "ILO Indicators of Forced Labour",
+    "error": "pdfplumber not installed. Install with: pip install pdfplumber"
+  },
+  "icij-trafficking-inc": {
+    "status": "processed",
+    "timestamp": "2026-01-18T06:57:14.021621+00:00",
+    "size_bytes": 121357,
+    "cache_version": "1.0",
+    "url": "https://www.icij.org/investigations/trafficking-inc/philippine-lenders-and-labor-agents-fleece-workers-seeking-overseas-jobs-interviews-and-confidential-documents-show/",
+    "source_name": "ICIJ Trafficking Inc Investigation",
+    "content_length": 21864
+  },
+  "ph-poea-rules": {
+    "status": "failed",
+    "timestamp": "2026-01-18T07:08:10.437123+00:00",
+    "error": "Download failed"
+  }
+}

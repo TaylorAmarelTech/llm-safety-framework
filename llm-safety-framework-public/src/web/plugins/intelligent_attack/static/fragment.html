@@ -1,0 +1,54 @@
+<div id="section-intelligent-attack" class="section">
+    <div class="page-header">
+        <h2>Intelligent Attack</h2>
+        <p>Feature space analysis to find guardrail gaps using embeddings</p>
+        <div class="section-hint">Step 4 of 6 &mdash; Use gap analysis to find weaknesses, then <a onclick="showSection('testing')">run tests</a> to validate</div>
+    </div>
+
+    <!-- Top row: Embedding sources + Feature extraction side by side -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+        <div class="card card-accent">
+            <h3>Embedding Sources</h3>
+            <div id="embedding-sources"><div class="loading">Loading...</div></div>
+        </div>
+        <div class="card card-accent">
+            <h3>Feature Extraction</h3>
+            <p style="color:var(--gray-500);font-size:12px;margin-bottom:10px">
+                Extract ILO indicators and attack features from prompts.
+            </p>
+            <div class="form-group">
+                <label>Prompts (one per line)</label>
+                <textarea id="feature-prompts" rows="3" placeholder="Enter prompts to analyze..."></textarea>
+            </div>
+            <button class="btn" onclick="extractFeatures()">Extract Features</button>
+            <div id="feature-results" style="margin-top:12px"></div>
+        </div>
+    </div>
+
+    <!-- Feature Space Analysis -->
+    <div class="card card-accent-warning">
+        <h3>Feature Space Analysis</h3>
+        <p style="color:var(--gray-500);font-size:12px;margin-bottom:12px">
+            Analyze the pipeline prompt feature space to find regions where
+            models fail to refuse harmful requests. Uses dimensionality reduction and clustering.
+        </p>
+        <div class="btn-group" style="margin-bottom:16px">
+            <button class="btn btn-primary" onclick="runFullAnalysis()">Run Full Analysis</button>
+            <button class="btn" onclick="runAnalysis()">Load Saved Analysis</button>
+            <button class="btn" onclick="suggestProbes()">Suggest Probes</button>
+        </div>
+        <div id="analysis-results"></div>
+    </div>
+
+    <!-- Analysis History -->
+    <div class="card">
+        <h3>Analysis History</h3>
+        <div id="analysis-history"><div class="loading">Loading...</div></div>
+    </div>
+
+    <!-- Next step -->
+    <div class="section-next">
+        <div class="sn-text"><strong>Next:</strong> Use probes to test your models and validate discovered gaps</div>
+        <button class="btn btn-primary" onclick="showSection('testing')">Go to Testing</button>
+    </div>
+</div>

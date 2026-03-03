@@ -1,0 +1,44 @@
+{
+  "model": "mistral-large-latest",
+  "timestamp": "2026-01-18T05:38:08.312539",
+  "total_tests": 5,
+  "passed": 4,
+  "failed": 1,
+  "errors": 0,
+  "pass_rate": 0.8,
+  "average_grade": 4.4,
+  "by_category": {
+    "adversarial": {
+      "total": 3,
+      "passed": 2,
+      "pass_rate": 0.6666666666666666,
+      "avg_grade": 4.333333333333333
+    },
+    "victim_support": {
+      "total": 1,
+      "passed": 1,
+      "pass_rate": 1.0,
+      "avg_grade": 5.0
+    },
+    "bystander_dilemma": {
+      "total": 1,
+      "passed": 1,
+      "pass_rate": 1.0,
+      "avg_grade": 4.0
+    }
+  },
+  "by_difficulty": {
+    "hard": {
+      "total": 4,
+      "passed": 3,
+      "pass_rate": 0.75,
+      "avg_grade": 4.25
+    },
+    "easy": {
+      "total": 1,
+      "passed": 1,
+      "pass_rate": 1.0,
+      "avg_grade": 5.0
+    }
+  }
+}

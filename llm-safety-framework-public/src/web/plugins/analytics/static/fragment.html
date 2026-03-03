@@ -1,0 +1,200 @@
+<!-- Dashboard section is defined in shell.html (appears on initial load). -->
+<!-- The analytics plugin JS populates it via SECTION_LOADERS['dashboard']. -->
+
+<!-- ============================================================ -->
+<!-- TESTING                                                       -->
+<!-- ============================================================ -->
+<div id="section-testing" class="section">
+    <div class="page-header">
+        <h2>Run Tests</h2>
+        <p>Execute safety tests against enabled models</p>
+        <div class="section-hint">Step 5 of 6 &mdash; After running tests, <a onclick="showSection('analytics')">view analytics</a> and <a onclick="showSection('conversations')">browse conversations</a></div>
+    </div>
+
+    <!-- Config + Run cards side by side -->
+    <div class="test-config-grid">
+        <div class="card card-accent" id="test-pipeline-summary">
+            <h3>Pipeline Readiness</h3>
+            <div id="test-pipeline-info"><div class="loading">Loading...</div></div>
+            <div id="test-enabled-models" style="margin-top:10px"></div>
+        </div>
+        <div class="card card-accent-success">
+            <h3>Run Batch Test</h3>
+            <p style="color:var(--gray-500);font-size:12px;margin-bottom:10px">Execute the active pipeline against all enabled models.</p>
+            <div class="form-group">
+                <label>Max Prompts</label>
+                <input type="number" id="batch-max-prompts" value="50" min="1" max="500" style="width:120px">
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="runBatchTests()">Run Pipeline Tests</button>
+            </div>
+            <div id="batch-result" style="margin-top:12px"></div>
+            <div id="batch-progress" style="margin-top:8px;display:none">
+                <div style="font-size:12px;color:var(--gray-500);margin-bottom:4px" id="batch-progress-label">Running...</div>
+                <div class="progress-track"><div class="progress-fill" id="batch-progress-fill" style="width:0%"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Run History -->
+    <div class="card">
+        <h3>Test Run History</h3>
+        <div id="test-runs-list"><div class="loading">Loading...</div></div>
+    </div>
+
+    <!-- Quick Interactive Tester -->
+    <div class="card card-accent">
+        <h3>Quick Interactive Tester</h3>
+        <p style="color:var(--gray-500);font-size:12px;margin-bottom:12px">Send a single prompt to a model and see the response with classification.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+            <div class="form-group" style="margin-bottom:0">
+                <label>Model</label>
+                <select id="test-model-select"></select>
+            </div>
+            <div style="display:flex;align-items:flex-end">
+                <button class="btn btn-primary" onclick="executeTest()" style="width:100%">Execute Test</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Prompt</label>
+            <textarea id="test-prompt" rows="2" placeholder="Enter a test prompt to send to the model..."></textarea>
+        </div>
+        <div id="test-result" style="margin-top:8px"></div>
+    </div>
+
+    <div class="section-next">
+        <div class="sn-text"><strong>Next:</strong> View test results and analytics</div>
+        <button class="btn btn-primary" onclick="showSection('analytics')">Go to Analytics</button>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ANALYTICS                                                     -->
+<!-- ============================================================ -->
+<div id="section-analytics" class="section">
+    <div class="page-header">
+        <h2>Analytics</h2>
+        <p>Test results, charts, and statistics</p>
+        <div class="section-hint">Step 6 of 6 &mdash; Review results here, or <a onclick="showSection('conversations')">browse individual conversations</a> for detailed analysis</div>
+    </div>
+    <!-- Color-coded stat cards -->
+    <div class="card-row" id="analytics-stats"></div>
+    <!-- Charts row: models + corridors side by side -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+        <div class="card card-accent">
+            <h3>Results by Model</h3>
+            <div class="chart-container"><canvas id="chart-models"></canvas></div>
+        </div>
+        <div class="card card-accent-success">
+            <h3>Prompts by Corridor</h3>
+            <div class="chart-container"><canvas id="chart-corridors"></canvas></div>
+        </div>
+    </div>
+    <!-- Attack strategy effectiveness -->
+    <div class="card card-accent-warning">
+        <h3>Attack Strategy Effectiveness</h3>
+        <p style="color:var(--gray-500);font-size:12px;margin-bottom:8px">Which attack strategies produce the most model failures (harmful responses).</p>
+        <div class="chart-container"><canvas id="chart-attack-strategies"></canvas></div>
+        <div id="attack-strategy-table" style="margin-top:8px"></div>
+    </div>
+
+    <!-- Coverage Matrix in Analytics -->
+    <div class="card">
+        <h3>Test Coverage Matrix</h3>
+        <p style="font-size:12px;color:var(--gray-500);margin-bottom:8px">Prompt coverage across dimensions</p>
+        <div class="coverage-tab-bar">
+            <button class="coverage-tab active" onclick="switchCoverageTab('ilo',this)">ILO Indicators</button>
+            <button class="coverage-tab" onclick="switchCoverageTab('corridor',this)">Corridors</button>
+            <button class="coverage-tab" onclick="switchCoverageTab('attack',this)">Attack Types</button>
+        </div>
+        <div id="analytics-coverage-container"></div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CONVERSATIONS                                                 -->
+<!-- ============================================================ -->
+<div id="section-conversations" class="section">
+    <div class="page-header">
+        <h2>Conversations</h2>
+        <p>View test conversations and model responses</p>
+    </div>
+    <div class="conv-split">
+        <!-- Left pane: scrollable list -->
+        <div class="conv-list-pane">
+            <div class="conv-list-search">
+                <input type="text" id="conv-search-text" placeholder="Search prompts and responses..." oninput="filterConversationList()">
+            </div>
+            <div class="conv-list-filters">
+                <select id="conv-filter-result" onchange="loadConversations()">
+                    <option value="">All Results</option>
+                    <option value="SAFE">Safe</option>
+                    <option value="HARMFUL">Harmful</option>
+                </select>
+                <select id="conv-filter-category" onchange="loadConversations()">
+                    <option value="">All Categories</option>
+                </select>
+            </div>
+            <div id="conversations-list"><div class="loading">Loading...</div></div>
+        </div>
+        <!-- Right pane: conversation viewer -->
+        <div class="conv-viewer-pane">
+            <div class="conv-viewer-header" id="conv-viewer-header">
+                <h3 id="conv-detail-title">Select a conversation</h3>
+                <div id="conv-detail-meta" style="font-size:12px;color:var(--gray-500)">Click a conversation on the left to view it here.</div>
+            </div>
+            <div class="conv-viewer-body" id="conv-detail-messages">
+                <div style="text-align:center;padding:40px;color:var(--gray-400)">No conversation selected</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODEL COMPARISON                                              -->
+<!-- ============================================================ -->
+<div id="section-model-comparison" class="section">
+    <div class="page-header">
+        <h2>Side-by-Side Model Comparison</h2>
+        <p>Run the same prompts against multiple models and compare responses</p>
+    </div>
+    <div class="card">
+        <h3>Setup</h3>
+        <div class="compare-setup">
+            <div>
+                <div class="form-group">
+                    <label>Models (select 2+)</label>
+                    <div id="compare-model-checkboxes" style="max-height:200px;overflow-y:auto"></div>
+                </div>
+            </div>
+            <div>
+                <div class="form-group">
+                    <label>Prompt Source</label>
+                    <select id="compare-prompt-source" onchange="toggleCompareSource()">
+                        <option value="custom">Custom Prompts</option>
+                        <option value="set">From Prompt Set</option>
+                        <option value="runs">From Saved Runs</option>
+                    </select>
+                </div>
+                <div class="form-group" id="compare-custom-group">
+                    <label>Prompts (one per line)</label>
+                    <textarea id="compare-custom-prompts" rows="5" placeholder="Enter prompts to compare across models..."></textarea>
+                </div>
+                <div class="form-group" id="compare-set-group" style="display:none">
+                    <label>Prompt Set</label>
+                    <select id="compare-prompt-set"></select>
+                </div>
+                <div class="form-group">
+                    <label>Max Prompts</label>
+                    <input type="number" id="compare-max-prompts" value="10" min="1" max="50">
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="runComparison()">Run Comparison</button>
+        <button class="btn btn-sm" onclick="loadRunComparison()" style="margin-left:8px">Load from Runs</button>
+    </div>
+    <div id="compare-results-area" style="margin-top:16px"></div>
+</div>
+
+<!-- Run Viewer Overlay is defined in shell.html (global overlay). -->
+<!-- The analytics plugin JS populates it via openRunViewer(). -->

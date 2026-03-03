@@ -1,0 +1,29 @@
+{
+  "last_updated": "2026-01-29T16:57:43.625171",
+  "total_records": 68804,
+  "format_version": "1.0",
+  "schema": {
+    "required_fields": [
+      "id",
+      "prompt",
+      "response",
+      "score",
+      "outcome"
+    ],
+    "optional_fields": [
+      "category",
+      "subcategory",
+      "attack_strategy",
+      "indicator",
+      "model",
+      "latency_ms",
+      "tokens_used"
+    ],
+    "metadata_fields": [
+      "source",
+      "source_file",
+      "has_full_response",
+      "timestamp"
+    ]
+  }
+}

@@ -1,0 +1,279 @@
+<div id="section-doc-agent" class="section">
+    <h2>Document Intelligence Agent</h2>
+    <p style="color:var(--gray-500);margin-bottom:16px">
+        Scrape authoritative sources (IOM, DMW, ILO, HK/SG regulators, NGOs),
+        archive documents, and extract structured facts into the knowledge base.
+    </p>
+
+    <!-- Tab bar -->
+    <div class="tab-bar" style="margin-bottom:16px">
+        <button class="tab-btn active" onclick="switchDocAgentTab('sources')">Sources</button>
+        <button class="tab-btn" onclick="switchDocAgentTab('documents')">Documents</button>
+        <button class="tab-btn" onclick="switchDocAgentTab('kb')">Knowledge Base</button>
+        <button class="tab-btn" onclick="switchDocAgentTab('jobs')">Jobs</button>
+        <button class="tab-btn" onclick="switchDocAgentTab('settings')">Settings</button>
+        <button class="tab-btn" onclick="switchDocAgentTab('indicator-matrix')">Indicator Matrix</button>
+    </div>
+
+    <!-- Sources Tab -->
+    <div id="da-tab-sources" class="da-tab">
+        <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+            <button class="btn btn-primary" onclick="triggerScrape()">Scrape All Enabled</button>
+            <button class="btn" onclick="toggleAddSourceForm()">+ Add Source</button>
+            <select id="da-tier-filter" onchange="loadScraperSources()" style="padding:6px 10px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:6px">
+                <option value="">All Tiers</option>
+                <option value="1">Tier 1 — IGOs</option>
+                <option value="2">Tier 2 — PH Govt</option>
+                <option value="3">Tier 3 — ID Govt</option>
+                <option value="4">Tier 4 — Dest Regulators</option>
+                <option value="5">Tier 5 — NGOs</option>
+                <option value="6">Tier 6 — Courts & Legal</option>
+                <option value="7">Tier 7 — Academic</option>
+            </select>
+        </div>
+
+        <div id="da-add-source-form" style="display:none;background:var(--gray-50);padding:16px;border-radius:8px;margin-bottom:16px;border:1px solid var(--gray-200)">
+            <h4>Add New Source</h4>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+                <input id="da-new-id" placeholder="Source ID (e.g. my-source)" style="padding:8px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:4px">
+                <input id="da-new-name" placeholder="Display Name" style="padding:8px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:4px">
+                <input id="da-new-url" placeholder="URL" style="padding:8px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:4px">
+                <select id="da-new-tier" style="padding:8px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:4px">
+                    <option value="1">Tier 1 — IGO</option>
+                    <option value="2">Tier 2 — PH Govt</option>
+                    <option value="3">Tier 3 — ID Govt</option>
+                    <option value="4">Tier 4 — Dest Regulator</option>
+                    <option value="5" selected>Tier 5 — NGO</option>
+                    <option value="6">Tier 6 — Courts & Legal</option>
+                    <option value="7">Tier 7 — Academic</option>
+                </select>
+            </div>
+            <input id="da-new-selectors" placeholder="CSS selectors (comma-separated)" style="width:100%;padding:8px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:4px;margin-bottom:10px">
+            <input id="da-new-desc" placeholder="Description" style="width:100%;padding:8px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:4px;margin-bottom:12px">
+            <button class="btn btn-primary" onclick="addScraperSource()">Save</button>
+            <button class="btn" onclick="toggleAddSourceForm()">Cancel</button>
+        </div>
+
+        <div id="da-sources-table"></div>
+    </div>
+
+    <!-- Documents Tab -->
+    <div id="da-tab-documents" class="da-tab" style="display:none">
+        <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
+            <select id="da-doc-source-filter" onchange="loadScraperDocs()" style="padding:6px 10px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:6px">
+                <option value="">All Sources</option>
+            </select>
+            <span id="da-doc-count" style="color:var(--gray-500)"></span>
+        </div>
+        <div id="da-docs-table"></div>
+        <div id="da-doc-detail" style="display:none;background:var(--gray-50);padding:16px;border-radius:8px;margin-top:16px;border:1px solid var(--gray-200)">
+            <h4 id="da-doc-title"></h4>
+            <div id="da-doc-meta" style="color:var(--gray-500);margin-bottom:12px"></div>
+            <div id="da-doc-facts" style="margin-bottom:12px"></div>
+            <pre id="da-doc-text" style="max-height:300px;overflow:auto;background:#fff;padding:12px;border-radius:6px;border:1px solid var(--gray-200);white-space:pre-wrap;font-size:12px;color:var(--gray-700)"></pre>
+            <button class="btn" onclick="document.getElementById('da-doc-detail').style.display='none'">Close</button>
+        </div>
+    </div>
+
+    <!-- Knowledge Base Tab -->
+    <div id="da-tab-kb" class="da-tab" style="display:none">
+        <div id="da-kb-stats" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:20px"></div>
+        <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+            <select id="da-kb-category" onchange="queryKB()" style="padding:6px 10px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:6px">
+                <option value="">All Categories</option>
+                <option value="fee_cap">Fee Caps</option>
+                <option value="law">Laws</option>
+                <option value="bilateral_agreement">Bilateral Agreements</option>
+                <option value="case_study">Case Studies</option>
+                <option value="statistic">Statistics</option>
+                <option value="advisory">Advisories</option>
+                <option value="regulation_change">Regulation Changes</option>
+                <option value="contact">Contacts</option>
+                <option value="court_ruling">Court Rulings</option>
+                <option value="embassy_notice">Embassy Notices</option>
+                <option value="recruitment_violation">Recruitment Violations</option>
+                <option value="policy_update">Policy Updates</option>
+                <option value="training_material">Training Materials</option>
+                <option value="complaint">Complaints</option>
+                <option value="penalty">Penalties</option>
+            </select>
+            <input id="da-kb-jurisdiction" placeholder="Jurisdiction (e.g. HK, SG)" style="padding:6px 10px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:6px;width:180px">
+            <input id="da-kb-corridor" placeholder="Corridor (e.g. PH-HK)" style="padding:6px 10px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:6px;width:180px">
+            <button class="btn" onclick="queryKB()">Search</button>
+            <button class="btn" onclick="rebuildKB()">Rebuild KB</button>
+            <button class="btn" onclick="exportKB()">Export JSON</button>
+        </div>
+        <div id="da-kb-facts-table"></div>
+    </div>
+
+    <!-- Jobs Tab -->
+    <div id="da-tab-jobs" class="da-tab" style="display:none">
+        <div id="da-active-job" style="display:none;background:var(--gray-50);padding:16px;border-radius:8px;margin-bottom:16px;border:1px solid var(--gray-200)">
+            <h4>Active Job</h4>
+            <div id="da-active-job-bar" style="background:var(--gray-100);border-radius:4px;height:24px;overflow:hidden;margin:10px 0">
+                <div id="da-active-job-progress" style="background:linear-gradient(90deg,var(--primary),#8b5cf6);height:100%;width:0%;transition:width 0.5s"></div>
+            </div>
+            <div id="da-active-job-label" style="color:var(--gray-500);font-size:13px"></div>
+        </div>
+        <div id="da-jobs-table"></div>
+    </div>
+
+    <!-- Settings Tab -->
+    <div id="da-tab-settings" class="da-tab" style="display:none">
+        <h3 style="margin-bottom:16px">Stealth & Anti-Detection Settings</h3>
+
+        <!-- Package status cards -->
+        <div id="da-stealth-packages" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:24px"></div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+            <!-- Left column: Core settings -->
+            <div>
+                <h4 style="margin-bottom:12px">Stealth Level</h4>
+                <select id="da-stealth-level" style="width:100%;padding:8px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:6px;margin-bottom:16px">
+                    <option value="0">Level 0 — None (raw httpx, bot UA)</option>
+                    <option value="1">Level 1 — Basic (rotated UA, browser headers, jitter, cookies)</option>
+                    <option value="2">Level 2 — Moderate (+ TLS fingerprint spoofing, proxy)</option>
+                    <option value="3">Level 3 — Full (+ playwright-stealth, viewport randomization)</option>
+                    <option value="4">Level 4 — Maximum (+ nodriver CDP direct)</option>
+                </select>
+
+                <h4 style="margin-bottom:12px">Timing & Jitter</h4>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+                    <div>
+                        <label style="font-size:12px;color:var(--gray-500)">Jitter Min (sec)</label>
+                        <input id="da-stealth-jitter-min" type="number" step="0.1" value="0.5" style="width:100%;padding:6px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:4px">
+                    </div>
+                    <div>
+                        <label style="font-size:12px;color:var(--gray-500)">Jitter Max (sec)</label>
+                        <input id="da-stealth-jitter-max" type="number" step="0.1" value="2.5" style="width:100%;padding:6px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:4px">
+                    </div>
+                </div>
+
+                <h4 style="margin-bottom:12px">TLS Fingerprint</h4>
+                <select id="da-stealth-tls" style="width:100%;padding:8px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:6px;margin-bottom:16px">
+                    <option value="chrome120">Chrome 120</option>
+                    <option value="chrome119">Chrome 119</option>
+                    <option value="chrome124">Chrome 124</option>
+                    <option value="firefox120">Firefox 120</option>
+                    <option value="safari17_0">Safari 17.0</option>
+                </select>
+
+                <h4 style="margin-bottom:12px">Browser Options</h4>
+                <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                        <input id="da-stealth-viewport" type="checkbox"> <span>Randomize viewport</span>
+                    </label>
+                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                        <input id="da-stealth-locale" type="checkbox"> <span>Randomize locale</span>
+                    </label>
+                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                        <input id="da-stealth-cookies" type="checkbox"> <span>Persist cookies per domain</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Right column: Proxy settings -->
+            <div>
+                <h4 style="margin-bottom:12px">Proxy Configuration</h4>
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:12px">
+                    <input id="da-stealth-proxy-enabled" type="checkbox"> <span>Enable proxy rotation</span>
+                </label>
+                <div style="margin-bottom:12px">
+                    <label style="font-size:12px;color:var(--gray-500)">Rotation Strategy</label>
+                    <select id="da-stealth-proxy-rotation" style="width:100%;padding:6px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:4px">
+                        <option value="round_robin">Round Robin</option>
+                        <option value="random">Random</option>
+                        <option value="least_failures">Least Failures</option>
+                    </select>
+                </div>
+                <div style="margin-bottom:16px">
+                    <label style="font-size:12px;color:var(--gray-500)">Proxy list (one per line, http:// or socks5://)</label>
+                    <textarea id="da-stealth-proxy-list" rows="6" style="width:100%;padding:8px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:4px;font-family:monospace;font-size:12px" placeholder="http://user:pass@proxy1:8080&#10;socks5://proxy2:1080"></textarea>
+                </div>
+
+                <div id="da-stealth-proxy-health" style="margin-top:16px"></div>
+            </div>
+        </div>
+
+        <div style="margin-top:20px;display:flex;gap:12px">
+            <button class="btn btn-primary" onclick="saveStealthConfig()">Save Settings</button>
+            <button class="btn" onclick="loadStealthConfig()">Reset</button>
+        </div>
+    </div>
+
+    <!-- Indicator Matrix Tab -->
+    <div id="da-tab-indicator-matrix" class="da-tab" style="display:none">
+        <h3 style="margin-bottom:8px">Indicator Stacking Matrix</h3>
+        <p style="color:var(--gray-500);margin-bottom:16px;font-size:13px">
+            Maps individually-legal actions across the migration journey. Single actions may be legal,
+            but when multiple indicators co-occur they form trafficking fingerprints
+            (Palermo Protocol: ACT + MEANS + PURPOSE).
+        </p>
+
+        <!-- Sub-tab bar -->
+        <div class="tab-bar" style="margin-bottom:16px">
+            <button class="tab-btn active" onclick="switchIMSubTab('grid')">Phase × Indicator Grid</button>
+            <button class="tab-btn" onclick="switchIMSubTab('scoring')">Interactive Scorer</button>
+            <button class="tab-btn" onclick="switchIMSubTab('patterns')">Known Patterns</button>
+            <button class="tab-btn" onclick="switchIMSubTab('corridors')">Corridor Profiles</button>
+            <button class="tab-btn" onclick="switchIMSubTab('palermo')">Palermo Mapping</button>
+        </div>
+
+        <!-- Sub: Phase × Indicator Grid -->
+        <div id="im-sub-grid" class="im-sub">
+            <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+                <select id="im-sector-filter" onchange="loadIMGrid()" style="padding:6px 10px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:6px">
+                    <option value="">All Sectors</option>
+                </select>
+                <select id="im-corridor-filter" onchange="loadIMGrid()" style="padding:6px 10px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:6px">
+                    <option value="">All Corridors</option>
+                </select>
+            </div>
+            <div id="im-grid-container" style="overflow-x:auto"></div>
+        </div>
+
+        <!-- Sub: Interactive Scorer -->
+        <div id="im-sub-scoring" class="im-sub" style="display:none">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+                <div>
+                    <h4 style="margin-bottom:12px">Select Observed Actions</h4>
+                    <div id="im-phase-groups" style="max-height:600px;overflow-y:auto"></div>
+                </div>
+                <div>
+                    <h4 style="margin-bottom:12px">Risk Assessment</h4>
+                    <div id="im-risk-gauge" style="margin-bottom:16px"></div>
+                    <div id="im-score-details"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sub: Known Patterns -->
+        <div id="im-sub-patterns" class="im-sub" style="display:none">
+            <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+                <select id="im-pattern-risk" onchange="loadIMPatterns()" style="padding:6px 10px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:6px">
+                    <option value="yellow_flag">Yellow Flag+</option>
+                    <option value="red_flag">Red Flag+</option>
+                    <option value="critical">Critical Only</option>
+                </select>
+                <select id="im-pattern-sector" onchange="loadIMPatterns()" style="padding:6px 10px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:6px">
+                    <option value="">All Sectors</option>
+                </select>
+            </div>
+            <div id="im-patterns-list"></div>
+        </div>
+
+        <!-- Sub: Corridor Profiles -->
+        <div id="im-sub-corridors" class="im-sub" style="display:none">
+            <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+                <select id="im-corridor-select-1" onchange="loadIMCorridorComparison()" style="padding:6px 10px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:6px"></select>
+                <select id="im-corridor-select-2" onchange="loadIMCorridorComparison()" style="padding:6px 10px;background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:6px"></select>
+            </div>
+            <div id="im-corridor-comparison"></div>
+        </div>
+
+        <!-- Sub: Palermo Mapping -->
+        <div id="im-sub-palermo" class="im-sub" style="display:none">
+            <div id="im-palermo-diagram"></div>
+        </div>
+    </div>
+</div>

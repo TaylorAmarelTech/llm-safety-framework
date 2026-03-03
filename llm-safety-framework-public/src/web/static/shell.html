@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Safety Testing Framework</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<!-- Mode Bar -->
+<div class="mode-bar">
+    <span class="mode-logo">LLM Safety Framework</span>
+    <button class="mode-btn" data-mode="streamlined" onclick="switchMode('streamlined')">Streamlined</button>
+    <button class="mode-btn active" data-mode="advanced" onclick="switchMode('advanced')">Advanced</button>
+</div>
+
+<div class="app">
+
+    <!-- Wizard placeholder (Streamlined Mode) — full wizard migrated later -->
+    <div id="wizard-container" class="wizard-container" style="display:none">
+        <div class="page-header" style="text-align:center">
+            <h2>LLM Safety Testing Wizard</h2>
+            <p>The streamlined wizard is being migrated to the new plugin system.</p>
+            <p style="margin-top:16px">
+                <button class="btn btn-primary" onclick="switchMode('advanced')">Switch to Advanced Mode</button>
+            </p>
+            <p style="margin-top:8px">
+                <a href="#" onclick="switchMode('advanced');return false" style="color:var(--primary);font-size:13px">Switch to advanced mode</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Sidebar Navigation (Advanced Mode) -->
+    <nav class="sidebar" id="adv-sidebar">
+        <h1>LLM Safety Framework <span>Migrant Worker Protection</span></h1>
+        <div id="sidebar-nav">
+            <!-- Hardcoded core nav items -->
+            <div class="nav-group">
+                <div class="nav-item active" onclick="showSection('modules')">
+                    <span class="icon">&#9638;</span> Modules
+                </div>
+                <div class="nav-item" onclick="showSection('dashboard')">
+                    <span class="icon">&#9636;</span> Dashboard
+                </div>
+            </div>
+            <!-- Plugin nav items injected here by buildSidebar() -->
+            <div id="sidebar-plugin-nav"></div>
+        </div>
+        <div class="sidebar-footer">
+            <a href="/api/docs" target="_blank">API Docs</a>
+        </div>
+    </nav>
+
+    <!-- Main Content (Advanced Mode) -->
+    <div class="main" id="adv-main">
+
+        <!-- Workflow Stage Bar -->
+        <div class="workflow-bar" id="workflow-bar">
+            <div class="workflow-stage active" data-stage="configure" onclick="showSection('endpoints')">
+                <span class="wf-num">1</span><span>Configure</span>
+            </div>
+            <div class="workflow-connector"></div>
+            <div class="workflow-stage" data-stage="design" onclick="showSection('prompt-sets')">
+                <span class="wf-num">2</span><span>Design</span>
+            </div>
+            <div class="workflow-connector"></div>
+            <div class="workflow-stage" data-stage="transform" onclick="showSection('transform')">
+                <span class="wf-num">3</span><span>Transform</span>
+            </div>
+            <div class="workflow-connector"></div>
+            <div class="workflow-stage" data-stage="analyze" onclick="showSection('intelligent-attack')">
+                <span class="wf-num">4</span><span>Analyze</span>
+            </div>
+            <div class="workflow-connector"></div>
+            <div class="workflow-stage" data-stage="test" onclick="showSection('testing')">
+                <span class="wf-num">5</span><span>Test</span>
+            </div>
+            <div class="workflow-connector"></div>
+            <div class="workflow-stage" data-stage="evaluate" onclick="showSection('analytics')">
+                <span class="wf-num">6</span><span>Evaluate</span>
+            </div>
+        </div>
+
+        <!-- Context Status Bar -->
+        <div class="context-bar" id="context-bar">
+            <span class="ctx-item"><span class="ctx-dot" id="ctx-dot-endpoints"></span> <span class="ctx-val" id="ctx-val-endpoints">0</span> endpoints</span>
+            <span class="ctx-item"><span class="ctx-dot" id="ctx-dot-models"></span> <span class="ctx-val" id="ctx-val-models">0</span> models</span>
+            <span class="ctx-item"><span class="ctx-dot" id="ctx-dot-prompts"></span> <span class="ctx-val" id="ctx-val-prompts">0</span> prompts</span>
+            <span class="ctx-item" style="cursor:pointer" onclick="togglePipelineDrawer()"><span class="ctx-dot" id="ctx-dot-pipeline"></span> Pipeline: <span class="ctx-val" id="ctx-val-pipeline">empty</span></span>
+            <span class="ctx-item"><span class="ctx-dot" id="ctx-dot-runs"></span> <span class="ctx-val" id="ctx-val-runs">0</span> test runs</span>
+        </div>
+
+        <!-- Scrollable content area -->
+        <div class="main-content">
+
+        <!-- MODULES (default landing page — stays in shell) -->
+        <div id="section-modules" class="section active">
+            <div class="page-header">
+                <h2>Modules</h2>
+                <p>Select a module to begin working with the LLM Safety Testing Framework</p>
+            </div>
+            <div class="module-grid" id="modules-grid">
+                <div class="module-tile" onclick="showSection('endpoints')">
+                    <div class="mt-icon">&#9881;</div>
+                    <div class="mt-title">API Configuration</div>
+                    <div class="mt-desc">Configure API endpoints, manage API keys, and enable LLM models for testing.</div>
+                    <div class="mt-features"><span class="mt-feature">Endpoints</span><span class="mt-feature">Models</span><span class="mt-feature">API Keys</span></div>
+                    <span class="mt-badge mt-badge-empty" id="mod-badge-endpoints">Setup</span>
+                </div>
+                <div class="module-tile" onclick="showSection('prompt-sets')">
+                    <div class="mt-icon">&#9997;</div>
+                    <div class="mt-title">Prompt Generation</div>
+                    <div class="mt-desc">Create, import, and manage test prompt sets covering trafficking scenarios and ILO indicators.</div>
+                    <div class="mt-features"><span class="mt-feature">Prompt Sets</span><span class="mt-feature">Import</span><span class="mt-feature">Categories</span><span class="mt-feature">Corridors</span></div>
+                    <span class="mt-badge mt-badge-empty" id="mod-badge-prompts">Setup</span>
+                </div>
+                <div class="module-tile" onclick="showSection('transform')">
+                    <div class="mt-icon">&#8634;</div>
+                    <div class="mt-title">Prompt Remixing</div>
+                    <div class="mt-desc">Transform prompts using spintax, regex, LLM rephrasing, attack augmentation, and custom rules.</div>
+                    <div class="mt-features"><span class="mt-feature">Spintax</span><span class="mt-feature">Regex</span><span class="mt-feature">LLM Rephrase</span><span class="mt-feature">Attack Augment</span><span class="mt-feature">Pipeline</span></div>
+                    <span class="mt-badge mt-badge-empty" id="mod-badge-pipeline">Setup</span>
+                </div>
+                <div class="module-tile" onclick="showSection('intelligent-attack')">
+                    <div class="mt-icon">&#9733;</div>
+                    <div class="mt-title">Intelligent Attack</div>
+                    <div class="mt-desc">Use feature space analysis, embeddings, and clustering to discover guardrail gaps and generate targeted probes.</div>
+                    <div class="mt-features"><span class="mt-feature">Embeddings</span><span class="mt-feature">Feature Extraction</span><span class="mt-feature">Clustering</span><span class="mt-feature">Gap Finding</span><span class="mt-feature">Probe Generation</span></div>
+                </div>
+                <div class="module-tile" onclick="showSection('testing')">
+                    <div class="mt-icon">&#9654;</div>
+                    <div class="mt-title">Test Execution</div>
+                    <div class="mt-desc">Run batch safety tests from the pipeline against enabled models, or execute single interactive tests.</div>
+                    <div class="mt-features"><span class="mt-feature">Batch Testing</span><span class="mt-feature">Quick Test</span><span class="mt-feature">Run History</span></div>
+                    <span class="mt-badge mt-badge-empty" id="mod-badge-runs">No runs</span>
+                </div>
+                <div class="module-tile" onclick="showSection('analytics')">
+                    <div class="mt-icon">&#9636;</div>
+                    <div class="mt-title">Evaluation &amp; Analytics</div>
+                    <div class="mt-desc">View safety results, model performance charts, attack strategy effectiveness, and browse conversations.</div>
+                    <div class="mt-features"><span class="mt-feature">Statistics</span><span class="mt-feature">Charts</span><span class="mt-feature">Conversations</span><span class="mt-feature">Attack Strategies</span></div>
+                </div>
+                <div class="module-tile" onclick="showSection('data-mgmt')">
+                    <div class="mt-icon">&#8693;</div>
+                    <div class="mt-title">Data Management</div>
+                    <div class="mt-desc">Import and export prompts, conversations, configuration, pipeline data, and graded responses.</div>
+                    <div class="mt-features"><span class="mt-feature">Import</span><span class="mt-feature">Export</span><span class="mt-feature">Backup</span></div>
+                </div>
+                <div class="module-tile" onclick="showSection('dashboard')">
+                    <div class="mt-icon">&#9632;</div>
+                    <div class="mt-title">Dashboard</div>
+                    <div class="mt-desc">Overview of system status with setup checklist, stat cards, and safety distribution charts.</div>
+                    <div class="mt-features"><span class="mt-feature">Overview</span><span class="mt-feature">Checklist</span><span class="mt-feature">Charts</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD (stays in shell) -->
+        <div id="section-dashboard" class="section">
+            <div class="page-header">
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                    <div><h2>Dashboard</h2><p>Overview of the LLM Safety Testing Framework</p></div>
+                    <button class="btn btn-sm" onclick="exportDashboardReport()">Export Report</button>
+                </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 2fr;gap:16px;margin-bottom:16px">
+                <div class="card card-accent">
+                    <h3>Setup Checklist</h3>
+                    <ul class="readiness-list" id="dashboard-readiness">
+                        <li class="readiness-item"><span class="readiness-check pending">-</span> Loading...</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="quick-actions" id="dashboard-quick-actions">
+                        <div class="quick-action-card" onclick="showSection('endpoints')"><div class="qa-icon">&#9881;</div><div class="qa-title">Configure Endpoints</div><div class="qa-desc">Add API keys and models</div></div>
+                        <div class="quick-action-card" onclick="showSection('prompt-sets')"><div class="qa-icon">&#9997;</div><div class="qa-title">Manage Prompts</div><div class="qa-desc">Enable or import test sets</div></div>
+                        <div class="quick-action-card" onclick="showSection('transform')"><div class="qa-icon">&#8634;</div><div class="qa-title">Transform Prompts</div><div class="qa-desc">Spin, rephrase, augment</div></div>
+                        <div class="quick-action-card" onclick="showSection('intelligent-attack')"><div class="qa-icon">&#9733;</div><div class="qa-title">Analyze Gaps</div><div class="qa-desc">Find guardrail weaknesses</div></div>
+                        <div class="quick-action-card" onclick="showSection('testing')"><div class="qa-icon">&#9654;</div><div class="qa-title">Run Tests</div><div class="qa-desc">Execute pipeline tests</div></div>
+                        <div class="quick-action-card" onclick="showSection('analytics')"><div class="qa-icon">&#9636;</div><div class="qa-title">View Analytics</div><div class="qa-desc">Charts and statistics</div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-row" id="dashboard-stats"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+                <div class="card"><h3>Safety Results Distribution</h3><div class="chart-container"><canvas id="chart-safety"></canvas></div></div>
+                <div class="card"><h3>Results by Category</h3><div class="chart-container"><canvas id="chart-categories"></canvas></div></div>
+            </div>
+            <div class="card" style="margin-bottom:16px"><h3>Recent Test Runs</h3><div id="dashboard-recent-runs"></div></div>
+            <div class="card" id="dashboard-heatmap-card">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                    <h3>Attack Effectiveness Heatmap</h3>
+                    <div style="display:flex;align-items:center;gap:8px">
+                        <label style="font-size:11px;color:var(--gray-500)">Min results:</label>
+                        <input type="number" id="heatmap-min-results" value="1" min="1" style="width:60px;font-size:12px;padding:4px 6px;border:1px solid var(--gray-200);border-radius:4px" onchange="loadHeatmap()">
+                    </div>
+                </div>
+                <div id="heatmap-container"></div>
+                <div style="margin-top:8px;display:flex;align-items:center;gap:12px;font-size:11px;color:var(--gray-500)">
+                    <span>Safety Rate:</span>
+                    <span style="display:inline-block;width:14px;height:10px;background:#dc2626;border-radius:2px"></span> 0-30%
+                    <span style="display:inline-block;width:14px;height:10px;background:#f59e0b;border-radius:2px"></span> 30-70%
+                    <span style="display:inline-block;width:14px;height:10px;background:#16a34a;border-radius:2px"></span> 70-100%
+                </div>
+            </div>
+            <div class="card" id="dashboard-coverage-card">
+                <h3>Test Coverage Matrix</h3>
+                <p style="font-size:12px;color:var(--gray-500);margin-bottom:8px">Which areas have been tested and which need attention</p>
+                <div class="coverage-tab-bar">
+                    <button class="coverage-tab active" onclick="switchCoverageTab('ilo',this)">ILO Indicators</button>
+                    <button class="coverage-tab" onclick="switchCoverageTab('corridor',this)">Corridors</button>
+                    <button class="coverage-tab" onclick="switchCoverageTab('attack',this)">Attack Types</button>
+                </div>
+                <div id="coverage-grid-container"></div>
+                <div style="margin-top:8px;display:flex;align-items:center;gap:12px;font-size:11px;color:var(--gray-500)">
+                    <span>Coverage:</span>
+                    <span class="coverage-cell coverage-cell-none" style="padding:2px 6px">Not tested</span>
+                    <span class="coverage-cell coverage-cell-low" style="padding:2px 6px">Partial</span>
+                    <span class="coverage-cell coverage-cell-good" style="padding:2px 6px">Good</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plugin fragment sections get injected here -->
+        <div id="plugin-fragments"></div>
+
+        </div><!-- /main-content -->
+    </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- Pipeline Drawer -->
+<div class="pipeline-drawer-overlay" id="pipeline-drawer-overlay" onclick="togglePipelineDrawer()"></div>
+<div class="pipeline-drawer" id="pipeline-drawer">
+    <div class="pipeline-drawer-header">
+        <h3>Active Pipeline</h3>
+        <button class="btn" onclick="togglePipelineDrawer()" style="font-size:18px;padding:0 6px">&times;</button>
+    </div>
+    <div class="pipeline-drawer-body" id="pipeline-drawer-body">
+        <div class="loading">Loading pipeline...</div>
+    </div>
+    <div class="pipeline-drawer-footer" id="pipeline-drawer-footer">
+        <button class="btn btn-primary" onclick="buildPipelineFromDrawer()">Build Pipeline</button>
+        <button class="btn btn-primary" onclick="showSection('testing');togglePipelineDrawer()">Run Tests</button>
+        <button class="btn" onclick="exportPipelineFromDrawer()">Export JSON</button>
+        <button class="btn" onclick="showSection('transform').then(()=>{if(typeof showTransformTab==='function')showTransformTab('tab-tw-pipeline')});togglePipelineDrawer()">View in Transform</button>
+    </div>
+</div>
+
+<!-- Run Viewer Overlay (global — populated by analytics plugin) -->
+<div id="run-viewer-overlay" onclick="if(event.target===this)closeRunViewer()">
+    <div id="run-viewer">
+        <button class="rv-close" onclick="closeRunViewer()">&times;</button>
+        <div class="rv-header">
+            <h3 id="rv-title">Test Run Results</h3>
+            <div id="rv-meta" style="font-size:12px;color:var(--gray-500)"></div>
+        </div>
+        <div class="rv-stat-row" id="rv-stats"></div>
+        <div class="rv-tab-bar">
+            <div class="rv-tab active" onclick="switchRunViewerTab('results',this)">Results</div>
+            <div class="rv-tab" onclick="switchRunViewerTab('compare',this)">Model Comparison</div>
+            <div class="rv-tab" onclick="switchRunViewerTab('deep-dive',this)">Deep Dive</div>
+        </div>
+        <div class="rv-panel active" id="rv-panel-results">
+            <div class="rv-filters">
+                <select id="rv-filter-model" onchange="filterRunResults()"><option value="">All Models</option></select>
+                <select id="rv-filter-class" onchange="filterRunResults()">
+                    <option value="">All Classifications</option>
+                    <option value="SAFE">Safe</option><option value="HARMFUL">Harmful</option>
+                    <option value="UNCLEAR">Unclear</option><option value="ERROR">Error</option>
+                </select>
+                <input type="text" id="rv-filter-search" placeholder="Search prompts..." oninput="filterRunResults()" style="flex:1;min-width:150px">
+                <button class="btn btn-sm" onclick="exportRunResults('json')">Export JSON</button>
+                <button class="btn btn-sm" onclick="exportRunResults('csv')">Export CSV</button>
+                <button class="btn btn-sm" onclick="exportRunResults('html')">HTML Report</button>
+            </div>
+            <div id="rv-results-table"></div>
+        </div>
+        <div class="rv-panel" id="rv-panel-compare"><div id="rv-compare-content"><div class="loading">Loading comparison...</div></div></div>
+        <div class="rv-panel" id="rv-panel-deep-dive">
+            <div class="deep-dive-nav">
+                <button onclick="deepDiveNav(-1)">&larr; Previous</button>
+                <span id="dd-counter" style="font-size:12px;color:var(--gray-500)">1 / 1</span>
+                <button onclick="deepDiveNav(1)">Next &rarr;</button>
+            </div>
+            <div id="dd-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<script>
+// =============================================================================
+// Core Helpers
+// =============================================================================
+
+const API = '/api';
+
+async function apiCall(path, options = {}) {
+    const url = API + path;
+    try {
+        const resp = await fetch(url, {
+            headers: { 'Content-Type': 'application/json', ...options.headers },
+            ...options,
+        });
+        if (!resp.ok && !options.allowError) {
+            const err = await resp.json().catch(() => ({ detail: resp.statusText }));
+            throw new Error(err.detail || resp.statusText);
+        }
+        return await resp.json();
+    } catch (e) {
+        if (!options.silent) toast(e.message, 'error');
+        throw e;
+    }
+}
+
+function toast(msg, type = 'info') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.style.background = type === 'error' ? 'var(--danger)' : 'var(--gray-900)';
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+function escHtml(s) {
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+}
+
+function switchTab(btn, containerId, tabId) {
+    const container = document.getElementById(containerId);
+    container.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.parentElement.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+}
+
+// =============================================================================
+// Section State — plugins extend these globals
+// =============================================================================
+
+// Maps section ID to workflow stage (plugins add entries on load)
+const SECTION_STAGES = {
+    'modules': null, 'dashboard': null,
+};
+
+// Maps section ID to plugin ID (built from /api/plugins/nav)
+const SECTION_PLUGIN_MAP = {};
+
+// Maps section ID to loader function (plugins register via SECTION_LOADERS[id] = fn)
+const SECTION_LOADERS = {
+    'modules': loadModules,
+    // 'dashboard' is registered by the analytics plugin when its fragment loads
+};
+
+// =============================================================================
+// Fragment Loader + Section Switching
+// =============================================================================
+
+const _fragmentCache = {};
+
+async function showSection(id) {
+    // Lazy-load plugin fragment if needed
+    const pluginId = SECTION_PLUGIN_MAP[id];
+    if (pluginId && !_fragmentCache[pluginId]) {
+        try {
+            const [html, js] = await Promise.all([
+                fetch(`/api/plugins/${pluginId}/fragment.html`).then(r => r.text()),
+                fetch(`/api/plugins/${pluginId}/fragment.js`).then(r => r.text()),
+            ]);
+            document.getElementById('plugin-fragments').insertAdjacentHTML('beforeend', html);
+            const script = document.createElement('script');
+            script.textContent = js;
+            document.head.appendChild(script);
+            _fragmentCache[pluginId] = true;
+        } catch (e) {
+            console.error('Failed to load plugin fragment:', pluginId, e);
+        }
+    }
+
+    // Show/hide sections
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const section = document.getElementById('section-' + id);
+    if (section) section.classList.add('active');
+
+    // Highlight nav item
+    document.querySelectorAll('.nav-item').forEach(n => {
+        if (n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + id + "'"))
+            n.classList.add('active');
+    });
+
+    updateWorkflowBar(id);
+    refreshContextBar();
+
+    // Trigger section loader
+    if (SECTION_LOADERS[id]) SECTION_LOADERS[id]();
+}
+
+function updateWorkflowBar(sectionId) {
+    const activeStage = SECTION_STAGES[sectionId];
+    const stages = ['configure', 'design', 'transform', 'analyze', 'test', 'evaluate'];
+    const activeIdx = stages.indexOf(activeStage);
+    document.querySelectorAll('.workflow-stage').forEach(el => {
+        const stage = el.dataset.stage;
+        const idx = stages.indexOf(stage);
+        el.classList.remove('active', 'completed');
+        if (stage === activeStage) el.classList.add('active');
+        else if (activeIdx > -1 && idx < activeIdx) el.classList.add('completed');
+    });
+    document.querySelectorAll('.workflow-connector').forEach((c, i) => {
+        c.classList.toggle('completed', activeIdx > -1 && i < activeIdx);
+    });
+}
+
+let _ctxTimer = null;
+function refreshContextBar() {
+    if (_ctxTimer) clearTimeout(_ctxTimer);
+    _ctxTimer = setTimeout(_doRefreshContext, 300);
+}
+async function _doRefreshContext() {
+    try {
+        const data = await apiCall('/analytics/stats', { silent: true });
+        const s = data.stats || data;
+        const ep = s.models?.configured || 0;
+        const models = s.models?.enabled || 0;
+        const prompts = s.prompts?.total || 0;
+        const runs = s.conversations?.total || 0;
+        _setCtx('endpoints', ep, ep > 0);
+        _setCtx('models', models, models > 0);
+        _setCtx('prompts', prompts, prompts > 0);
+        _setCtx('runs', runs, runs > 0);
+        try {
+            const pipe = await apiCall('/spinning/pipeline', { silent: true });
+            const pTotal = pipe.total || 0;
+            document.getElementById('ctx-val-pipeline').textContent = pTotal > 0 ? `${pTotal} prompts` : 'empty';
+            const dot = document.getElementById('ctx-dot-pipeline');
+            dot.className = 'ctx-dot' + (pTotal > 0 ? ' ready' : '');
+        } catch(e) {
+            document.getElementById('ctx-val-pipeline').textContent = 'empty';
+        }
+        const nc = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val > 0 ? val : ''; };
+        nc('nav-count-endpoints', ep);
+        nc('nav-count-prompts', prompts);
+        nc('nav-count-runs', runs);
+    } catch (e) { /* silent */ }
+}
+function _setCtx(key, val, ready) {
+    const valEl = document.getElementById('ctx-val-' + key);
+    const dotEl = document.getElementById('ctx-dot-' + key);
+    if (valEl) valEl.textContent = val;
+    if (dotEl) dotEl.className = 'ctx-dot' + (ready ? ' ready' : '');
+}
+
+// =============================================================================
+// Mode Switching
+// =============================================================================
+
+let currentMode = 'advanced';
+let _wizardLoaded = false;
+
+async function switchMode(mode) {
+    currentMode = mode;
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.mode-btn[data-mode="${mode}"]`).classList.add('active');
+    const wizard = document.getElementById('wizard-container');
+    const sidebar = document.getElementById('adv-sidebar');
+    const main = document.getElementById('adv-main');
+    if (mode === 'streamlined') {
+        wizard.style.display = 'block';
+        sidebar.style.display = 'none';
+        main.style.display = 'none';
+        // Lazy-load wizard plugin fragment on first activation
+        if (!_wizardLoaded) {
+            try {
+                const [html, js] = await Promise.all([
+                    fetch('/api/plugins/wizard/fragment.html').then(r => r.text()),
+                    fetch('/api/plugins/wizard/fragment.js').then(r => r.text()),
+                ]);
+                wizard.innerHTML = html;
+                const script = document.createElement('script');
+                script.textContent = js;
+                document.head.appendChild(script);
+                _wizardLoaded = true;
+            } catch (e) {
+                console.error('Failed to load wizard plugin:', e);
+            }
+        }
+    } else {
+        wizard.style.display = 'none';
+        sidebar.style.display = '';
+        main.style.display = '';
+        showSection('modules');
+        refreshContextBar();
+    }
+}
+
+// =============================================================================
+// Modules Page
+// =============================================================================
+
+async function loadModules() {
+    try {
+        const data = await apiCall('/analytics/stats', { silent: true });
+        const s = data.stats;
+        const setBadge = (id, count, readyLabel, emptyLabel) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (count > 0) { el.textContent = count + ' ' + readyLabel; el.className = 'mt-badge mt-badge-ready'; }
+            else { el.textContent = emptyLabel; el.className = 'mt-badge mt-badge-empty'; }
+        };
+        setBadge('mod-badge-endpoints', s.models.configured, 'configured', 'Setup');
+        setBadge('mod-badge-prompts', s.prompts.total, 'prompts', 'Setup');
+        setBadge('mod-badge-pipeline', s.pipeline.total, 'in pipeline', 'Setup');
+        setBadge('mod-badge-runs', s.conversations.total, 'results', 'No runs');
+    } catch (e) {}
+}
+
+// =============================================================================
+// Dashboard / Coverage / Heatmap — implemented by analytics plugin.
+// Shell declares globals so the plugin can assign to them without `let`.
+// =============================================================================
+
+var dashboardCharts = {};
+var _coverageData = null;
+var _coverageTab = 'ilo';
+
+// =============================================================================
+// Pipeline Drawer
+// =============================================================================
+
+function togglePipelineDrawer() {
+    const overlay = document.getElementById('pipeline-drawer-overlay');
+    const drawer = document.getElementById('pipeline-drawer');
+    const isOpen = drawer.classList.contains('open');
+    if (isOpen) { drawer.classList.remove('open'); overlay.classList.remove('open'); }
+    else { drawer.classList.add('open'); overlay.classList.add('open'); loadPipelineDrawer(); }
+}
+
+async function loadPipelineDrawer() {
+    const body = document.getElementById('pipeline-drawer-body');
+    try {
+        const status = await apiCall('/spinning/pipeline', { silent: true });
+        const p = status.pipeline;
+        if (!p || p.total === 0) {
+            body.innerHTML = `<div style="text-align:center;padding:32px 0;color:var(--gray-400)"><div style="font-size:32px;margin-bottom:8px">&#9679;</div><p>No active pipeline</p><p style="font-size:12px;margin-top:8px">Use the Transform Workbench to generate prompt variations, then build a pipeline.</p></div>`;
+            return;
+        }
+        let html = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px"><div class="stat-card"><div class="value">${p.total}</div><div class="label">Total Prompts</div></div><div class="stat-card"><div class="value">${(p.sources || []).length}</div><div class="label">Sources</div></div></div>`;
+        if (p.built_at) html += `<div style="font-size:11px;color:var(--gray-400);margin-bottom:12px">Built: ${new Date(p.built_at).toLocaleString()}</div>`;
+        if (p.sources && p.sources.length) {
+            html += '<h4 style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--gray-500);margin-bottom:8px">Sources</h4>';
+            for (const src of p.sources) html += `<div style="padding:8px 12px;border:1px solid var(--gray-200);border-radius:6px;margin-bottom:6px;font-size:13px"><strong>${escHtml(src.type || src.name || 'source')}</strong><span style="float:right;color:var(--gray-500)">${src.count || '?'} prompts</span></div>`;
+        }
+        if (p.prompts && p.prompts.length) {
+            html += '<h4 style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--gray-500);margin:12px 0 8px">Sample Prompts</h4>';
+            for (const pr of p.prompts.slice(0, 5)) {
+                const text = pr.text || pr.prompt || (typeof pr === 'string' ? pr : JSON.stringify(pr));
+                html += `<div style="padding:6px 10px;background:var(--gray-50);border-radius:4px;margin-bottom:4px;font-size:12px;color:var(--gray-700)">${escHtml(text.substring(0, 120))}${text.length > 120 ? '...' : ''}</div>`;
+            }
+            if (p.prompts.length > 5) html += `<div style="font-size:11px;color:var(--gray-400);text-align:center">... and ${p.prompts.length - 5} more</div>`;
+        }
+        body.innerHTML = html;
+    } catch (e) {
+        body.innerHTML = '<div style="color:var(--danger);padding:16px">Failed to load pipeline</div>';
+    }
+}
+
+async function buildPipelineFromDrawer() {
+    toast('Building pipeline...');
+    try {
+        const data = await apiCall('/spinning/pipeline/build', { method: 'POST', body: JSON.stringify({ include_spun: true, deduplicate: true }) });
+        toast(`Pipeline built: ${data.total} prompts from ${(data.sources || []).length} sources`);
+        loadPipelineDrawer();
+        refreshContextBar();
+    } catch (e) { toast('Build failed: ' + e.message, 'error'); }
+}
+
+async function exportPipelineFromDrawer() {
+    try {
+        const data = await apiCall('/spinning/pipeline');
+        if (!data.pipeline) return toast('No pipeline to export', 'error');
+        const blob = new Blob([JSON.stringify(data.pipeline, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'pipeline_export.json'; a.click();
+        toast('Pipeline exported');
+    } catch (e) { toast('Export failed', 'error'); }
+}
+
+// =============================================================================
+// Run Viewer stubs (real implementation in analytics plugin)
+// =============================================================================
+
+function closeRunViewer() {
+    document.getElementById('run-viewer-overlay').classList.remove('open');
+}
+function switchRunViewerTab(tab, btn) {
+    if (btn) {
+        btn.parentElement.querySelectorAll('.rv-tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    document.querySelectorAll('.rv-panel').forEach(p => p.classList.remove('active'));
+    const panel = document.getElementById('rv-panel-' + tab);
+    if (panel) panel.classList.add('active');
+}
+function filterRunResults() {}
+function exportRunResults() {}
+function deepDiveNav() {}
+
+// =============================================================================
+// Dynamic Sidebar Builder
+// =============================================================================
+
+async function buildSidebar() {
+    try {
+        const data = await apiCall('/plugins/nav', { silent: true });
+        const navItems = data.nav_items || [];
+        const sectionPluginMap = data.section_plugin_map || {};
+
+        // Merge plugin section stages and plugin map
+        for (const item of navItems) {
+            SECTION_STAGES[item.section_id] = item.workflow_stage || null;
+            SECTION_PLUGIN_MAP[item.section_id] = item.plugin_id;
+        }
+
+        // Group items by group label
+        const groups = {};
+        for (const item of navItems) {
+            const g = item.group || 'Other';
+            if (!groups[g]) groups[g] = [];
+            groups[g].push(item);
+        }
+
+        // Map section IDs to nav-count badge IDs expected by refreshContextBar
+        const countIdMap = { 'endpoints': 'nav-count-endpoints', 'prompt-sets': 'nav-count-prompts', 'testing': 'nav-count-runs', 'transform': 'nav-count-pipeline' };
+
+        // Build sidebar HTML
+        let html = '';
+        for (const [groupLabel, items] of Object.entries(groups)) {
+            html += `<div class="nav-group"><div class="nav-group-label">${escHtml(groupLabel)}</div>`;
+            for (const item of items) {
+                const countId = countIdMap[item.section_id];
+                const badge = countId ? ` <span class="nav-count" id="${countId}"></span>` : '';
+                html += `<div class="nav-item" onclick="showSection('${item.section_id}')"><span class="icon">${item.icon || '&#9679;'}</span> ${escHtml(item.label)}${badge}</div>`;
+            }
+            html += '</div>';
+        }
+
+        document.getElementById('sidebar-plugin-nav').innerHTML = html;
+    } catch (e) {
+        console.error('Failed to load plugin nav:', e);
+    }
+}
+
+// =============================================================================
+// Init
+// =============================================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    buildSidebar();
+    showSection('modules');
+    refreshContextBar();
+});
+</script>
+</body>
+</html>

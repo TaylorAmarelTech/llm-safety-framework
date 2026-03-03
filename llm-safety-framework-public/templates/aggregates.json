@@ -1,0 +1,26 @@
+{
+  "iteration.pass_rate": {
+    "count": 29,
+    "sum": 12.477358943577435,
+    "min": 0.14,
+    "max": 0.7647058823529411,
+    "last": 0.26,
+    "last_timestamp": "2026-01-20 09:00:32.217171"
+  },
+  "iteration.tests_run": {
+    "count": 29,
+    "sum": 1433.0,
+    "min": 34.0,
+    "max": 50.0,
+    "last": 50.0,
+    "last_timestamp": "2026-01-20 09:00:32.217204"
+  },
+  "iteration.attacks_evolved": {
+    "count": 29,
+    "sum": 435.0,
+    "min": 15.0,
+    "max": 15.0,
+    "last": 15.0,
+    "last_timestamp": "2026-01-20 09:00:32.217215"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "start_time": "2026-01-21T09:02:15.774320",
+  "iterations": 958,
+  "tasks_completed": 0,
+  "tasks_failed": 0,
+  "last_evaluation_time": null,
+  "last_report_time": null,
+  "last_alert_time": "2026-01-21T09:02:35.859651",
+  "current_failure_rate": 0.306,
+  "best_failure_rate": 0.306,
+  "corridors_count": 32,
+  "schemes_count": 29,
+  "test_cases_count": 28967,
+  "breakthroughs_detected": 1
+}

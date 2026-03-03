@@ -1,0 +1,13 @@
+{
+  "agent_name": "financial_crime",
+  "domain": "financial_crime",
+  "findings": [],
+  "generated_tests": [],
+  "summary": "Deep-dived into 6 financial crime topics. Found 0 schemes ({}), generated 0 test prompts.",
+  "run_duration_seconds": 362.142245,
+  "llm_calls_made": 0,
+  "tokens_used": 0,
+  "started_at": "2026-02-28T09:23:50.228174",
+  "completed_at": "2026-02-28T09:29:52.370434",
+  "error": null
+}

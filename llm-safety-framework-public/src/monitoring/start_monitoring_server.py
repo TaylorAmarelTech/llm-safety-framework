@@ -1,4 +1,4 @@
-""""""
+"""
 NOTICE: This is a sanitized version for public release.
 Actual test content and exploitation techniques have been removed.
 This framework provides the infrastructure for safety testing.

@@ -302,25 +302,30 @@ cp .env.example .env
 
 ## Next Steps / TODO
 
-### High Priority
-1. [ ] Implement prompt database with graded examples
-2. [ ] Create attack strategy registry system
-3. [ ] Build chat viewer with annotations
-4. [ ] Add real world cases import system
-5. [ ] Create documentation index (ILO, IOM, laws)
+### Completed
+1. [x] Implement prompt database with graded examples *(chain detection seeds — 126 chains)*
+2. [x] Create attack strategy registry system *(ChainRegistry, 16 seed modules)*
+3. [x] Build chat viewer with annotations *(analytics plugin)*
+4. [x] Add real world cases import system *(174 scraper seed modules, 20,460 facts)*
+5. [x] Create documentation index (ILO, IOM, laws) *(SourceRegistry, 54+ sources)*
+6. [x] Add multi-turn conversation support *(6 strategies: Crescendo, FITD, etc.)*
+7. [x] Implement embedding-based evaluation *(EmbeddingMapper, intelligent_attack)*
+8. [x] Create visualization dashboard *(analytics plugin with heatmap, coverage matrix)*
+9. [x] Dimensional response matrix *(35 dimensions, 6 operations)*
+10. [x] Multi-LLM debate judge *(adversarial evaluation system)*
+11. [x] Prompt injection mutations *(40 mutators, 6 categories)*
+12. [x] Research agents *(7 autonomous agents + coordinator)*
+13. [x] Multi-endpoint support *(13 endpoints with key rotation)*
 
-### Medium Priority
-6. [ ] Add multi-turn conversation support
-7. [ ] Implement embedding-based evaluation
-8. [ ] Create PyPI package
-9. [ ] Add authentication to web UI
-10. [ ] Build export to PDF/HTML reports
-
-### Low Priority
-11. [ ] Add ML-based classification
-12. [ ] Create visualization dashboard
-13. [ ] Implement A/B testing for prompts
-14. [ ] Add webhook notifications
+### Remaining
+- [ ] Create PyPI package
+- [ ] Add authentication to web UI
+- [ ] Build export to PDF/HTML reports
+- [ ] Add ML-based classification
+- [ ] Implement A/B testing for prompts
+- [ ] Add webhook notifications
+- [ ] Web plugin for dimensional matrix/debate UI
+- [ ] Tests for dimensional_matrix and prompt_injection modules
 
 ---
 

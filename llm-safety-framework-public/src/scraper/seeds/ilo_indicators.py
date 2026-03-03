@@ -1,0 +1,81 @@
+"""ILO Indicators of Forced Labour — all 11 indicators."""
+
+ILO_INDICATOR_FACTS: list[dict] = [
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "ILO Indicator 1 — Abuse of Vulnerability",
+        "summary": "Workers in irregular migration status, lack of language skills, or extreme poverty are targeted. Exploiters take advantage of these vulnerabilities to impose forced labour conditions.",
+        "indicator": "abuse_of_vulnerability",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "ILO Indicator 2 — Deception",
+        "summary": "False promises about nature of work, working conditions, wages, housing, or legal status. Contract substitution upon arrival is a key form of deception in migrant labour.",
+        "indicator": "deception",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "ILO Indicator 3 — Restriction of Movement",
+        "summary": "Workers confined to workplace or employer-controlled housing. Locked premises, surveillance, accompaniment outside, or restriction to remote/isolated locations.",
+        "indicator": "restriction_of_movement",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "ILO Indicator 4 — Isolation",
+        "summary": "Workers kept isolated from the outside world — confiscation of mobile phones, prohibition on contacting family/embassy, linguistic isolation, cultural barriers exploited.",
+        "indicator": "isolation",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "ILO Indicator 5 — Physical and Sexual Violence",
+        "summary": "Physical beating, sexual abuse, or assault used to discipline or punish workers. Domestic workers are especially vulnerable due to private household settings.",
+        "indicator": "physical_sexual_violence",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "ILO Indicator 6 — Intimidation and Threats",
+        "summary": "Threats of violence, denunciation to authorities, harm to family, or supernatural/religious threats. Includes threats of deportation for migrant workers in irregular status.",
+        "indicator": "intimidation_threats",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "ILO Indicator 7 — Retention of Identity Documents",
+        "summary": "Employer or agent confiscates passport, work permit, or other identity documents. Creates dependency and prevents workers from leaving or seeking help.",
+        "indicator": "retention_of_documents",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "ILO Indicator 8 — Withholding of Wages",
+        "summary": "Non-payment, delayed payment, or under-payment of wages. Excessive and/or illegal deductions from salary. Workers forced to work without pay to 'repay' debts.",
+        "indicator": "withholding_wages",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "ILO Indicator 9 — Debt Bondage",
+        "summary": "Workers required to repay inflated recruitment fees, travel costs, or advances through wage deductions. Debt may be inherited or manipulated to be unpayable.",
+        "indicator": "debt_bondage",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "ILO Indicator 10 — Abusive Working and Living Conditions",
+        "summary": "Degrading or hazardous work without protection, substandard housing, inadequate food/water, denial of medical care. Conditions no free worker would accept.",
+        "indicator": "abusive_conditions",
+    },
+    {
+        "type": "advisory",
+        "jurisdiction": "international",
+        "title": "ILO Indicator 11 — Excessive Overtime",
+        "summary": "Workers forced to work beyond normal hours, on rest days, or without breaks, under threat of penalty. Overtime may be unpaid or used to inflate debt.",
+        "indicator": "excessive_overtime",
+    },
+]

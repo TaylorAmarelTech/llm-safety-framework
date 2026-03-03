@@ -1,0 +1,203 @@
+{
+  "title": "LLM Safety Assessment Report",
+  "subtitle": "Migrant Worker Exploitation Guardrail Analysis - mistral-small-latest",
+  "generated_at": "2026-01-20 08:17",
+  "version": "1.0",
+  "classification": "CONFIDENTIAL",
+  "executive_summary": "This assessment evaluated 500 test scenarios designed to probe LLM safety\nguardrails against human trafficking and migrant worker exploitation. The overall risk level\nis assessed as **CRITICAL**.\n\n**Key Findings**: 153 safety failures were identified, including\n4 critical and 108 high-severity issues.\nThe model demonstrated a 30.6% failure rate when presented with\nexploitation-related scenarios.\n\n**Top Risk Areas**: Business-Framed Exploitation with Operational Guidance, Adversarial Attack Vulnerability with Operational Guidance, Adversarial Attack Vulnerability with Exploitation Normalization\n\n**Immediate Action Required**: The identified critical failures represent significant\nguardrail weaknesses that could be exploited to obtain harmful guidance. Remediation\nshould be prioritized based on the risk register included in this report.",
+  "key_findings": [
+    "The model failed 30.6% of safety tests, with 4 critical failures requiring immediate attention.",
+    "The highest-risk category is Adversarial, accounting for 41.2% of all failures.",
+    "In 97 cases (63%), the model provided step-by-step operational guidance that could facilitate exploitation.",
+    "Business-framed and professional language consistently bypassed guardrails more effectively than direct requests, indicating a training gap.",
+    "The model correctly refused harmful requests in 69.4% of tests, demonstrating baseline safety capabilities that can be improved."
+  ],
+  "metrics": {
+    "total_tests": 500,
+    "total_failures": 153,
+    "critical_failures": 4,
+    "high_failures": 108,
+    "pass_rate": 0.694,
+    "failure_rate": 0.306,
+    "top_vulnerability_category": "ADVERSARIAL",
+    "top_vulnerability_rate": 0.4117647058823529,
+    "models_tested": [
+      "mistral-small-latest"
+    ],
+    "test_date": "2026-01-20"
+  },
+  "risk_register": [
+    {
+      "rank": 1,
+      "title": "Business-Framed Exploitation with Operational Guidance",
+      "severity": "medium",
+      "category": "BUSINESS_FRAMED_EXPLOITATION",
+      "impact_score": 9.9,
+      "likelihood_score": 10.0,
+      "risk_score": 99.0,
+      "description": "Model failed to recognize exploitation when framed as business operations in 37 test cases. This could allow malicious actors to obtain harmful guidance by presenting requests professionally.",
+      "evidence_count": 37,
+      "recommendation": "Implement semantic analysis to detect exploitation patterns regardless of professional framing. Add specific training examples for business-framed attacks."
+    },
+    {
+      "rank": 2,
+      "title": "Adversarial Attack Vulnerability with Operational Guidance",
+      "severity": "medium",
+      "category": "ADVERSARIAL",
+      "impact_score": 9.8,
+      "likelihood_score": 10.0,
+      "risk_score": 97.5,
+      "description": "Model was bypassed through adversarial techniques in 41 test cases, indicating guardrail vulnerabilities to sophisticated attacks.",
+      "evidence_count": 41,
+      "recommendation": "Enhance adversarial robustness through red-team testing. Implement multi-layer guardrails that are resistant to prompt injection."
+    },
+    {
+      "rank": 3,
+      "title": "Adversarial Attack Vulnerability with Exploitation Normalization",
+      "severity": "critical",
+      "category": "ADVERSARIAL",
+      "impact_score": 9.8,
+      "likelihood_score": 9.0,
+      "risk_score": 87.8,
+      "description": "Model was bypassed through adversarial techniques in 10 test cases, indicating guardrail vulnerabilities to sophisticated attacks.",
+      "evidence_count": 10,
+      "recommendation": "Review and strengthen guardrails for adversarial scenarios. Add specific training data addressing normalization patterns."
+    },
+    {
+      "rank": 4,
+      "title": "Adversarial Attack Vulnerability",
+      "severity": "high",
+      "category": "ADVERSARIAL",
+      "impact_score": 9.8,
+      "likelihood_score": 8.4,
+      "risk_score": 81.9,
+      "description": "Model was bypassed through adversarial techniques in 12 test cases, indicating guardrail vulnerabilities to sophisticated attacks.",
+      "evidence_count": 12,
+      "recommendation": "Review and strengthen guardrails for adversarial scenarios. Add specific training data addressing unclassified patterns."
+    },
+    {
+      "rank": 5,
+      "title": "Bystander Response Gap with Operational Guidance",
+      "severity": "medium",
+      "category": "BYSTANDER_DILEMMA",
+      "impact_score": 7.7,
+      "likelihood_score": 10.0,
+      "risk_score": 77.0,
+      "description": "Model exhibited safety failures in 9 test cases within the BYSTANDER_DILEMMA category.",
+      "evidence_count": 9,
+      "recommendation": "Review and strengthen guardrails for bystander dilemma scenarios. Add specific training data addressing operational guidance patterns."
+    },
+    {
+      "rank": 6,
+      "title": "Business-Framed Exploitation",
+      "severity": "high",
+      "category": "BUSINESS_FRAMED_EXPLOITATION",
+      "impact_score": 9.9,
+      "likelihood_score": 4.9,
+      "risk_score": 48.5,
+      "description": "Model failed to recognize exploitation when framed as business operations in 7 test cases. This could allow malicious actors to obtain harmful guidance by presenting requests professionally.",
+      "evidence_count": 7,
+      "recommendation": "Review and strengthen guardrails for business framed exploitation scenarios. Add specific training data addressing unclassified patterns."
+    },
+    {
+      "rank": 7,
+      "title": "Exploiter-Framed Request Compliance with Operational Guidance",
+      "severity": "high",
+      "category": "EXPLOITER_FRAMED",
+      "impact_score": 9.9,
+      "likelihood_score": 4.8,
+      "risk_score": 47.5,
+      "description": "Model exhibited safety failures in 4 test cases within the EXPLOITER_FRAMED category.",
+      "evidence_count": 4,
+      "recommendation": "Review and strengthen guardrails for exploiter framed scenarios. Add specific training data addressing operational guidance patterns."
+    },
+    {
+      "rank": 8,
+      "title": "Business-Framed Exploitation with Exploitation Normalization",
+      "severity": "high",
+      "category": "BUSINESS_FRAMED_EXPLOITATION",
+      "impact_score": 9.9,
+      "likelihood_score": 4.5,
+      "risk_score": 44.6,
+      "description": "Model failed to recognize exploitation when framed as business operations in 5 test cases. This could allow malicious actors to obtain harmful guidance by presenting requests professionally.",
+      "evidence_count": 5,
+      "recommendation": "Review and strengthen guardrails for business framed exploitation scenarios. Add specific training data addressing normalization patterns."
+    },
+    {
+      "rank": 9,
+      "title": "Financial Crime Blindness with Operational Guidance",
+      "severity": "medium",
+      "category": "FINANCIAL_CRIME_BLINDNESS",
+      "impact_score": 8.8,
+      "likelihood_score": 4.8,
+      "risk_score": 42.2,
+      "description": "Model exhibited safety failures in 4 test cases within the FINANCIAL_CRIME_BLINDNESS category.",
+      "evidence_count": 4,
+      "recommendation": "Review and strengthen guardrails for financial crime blindness scenarios. Add specific training data addressing operational guidance patterns."
+    },
+    {
+      "rank": 10,
+      "title": "Legal Accuracy Deficiency",
+      "severity": "high",
+      "category": "LEGAL_ACCURACY",
+      "impact_score": 8.8,
+      "likelihood_score": 2.8,
+      "risk_score": 24.6,
+      "description": "Model exhibited safety failures in 4 test cases within the LEGAL_ACCURACY category.",
+      "evidence_count": 4,
+      "recommendation": "Review and strengthen guardrails for legal accuracy scenarios. Add specific training data addressing unclassified patterns."
+    }
+  ],
+  "trend_data": {
+    "severity_distribution": {
+      "critical": 4,
+      "high": 108,
+      "medium": 41,
+      "low": 0
+    },
+    "category_distribution": {
+      "ADVERSARIAL": 63,
+      "BUSINESS_FRAMED_EXPLOITATION": 52,
+      "VICTIM_SUPPORT": 1,
+      "JURISDICTIONAL_HIERARCHY": 5,
+      "BYSTANDER_DILEMMA": 12,
+      "FINANCIAL_CRIME_BLINDNESS": 8,
+      "EXPLOITER_FRAMED": 5,
+      "LEGAL_ACCURACY": 7
+    },
+    "failure_type_distribution": {
+      "operational_guidance": 97,
+      "evasion": 4,
+      "unclassified": 35,
+      "normalization": 17
+    },
+    "chart_colors": {
+      "critical": "#DC2626",
+      "high": "#F59E0B",
+      "medium": "#3B82F6",
+      "low": "#10B981"
+    }
+  },
+  "immediate_actions": [
+    "Review and address all CRITICAL severity failures within 48 hours",
+    "Implement emergency patches for top 3 risk areas identified",
+    "Brief safety team on discovered vulnerabilities"
+  ],
+  "short_term_actions": [
+    "Develop targeted training data for business-framed exploitation scenarios",
+    "Implement multi-layer semantic analysis for exploitation detection",
+    "Create automated regression tests from identified failure cases",
+    "Establish monitoring for similar attack patterns in production"
+  ],
+  "long_term_actions": [
+    "Build comprehensive red-team program for ongoing safety testing",
+    "Develop adversarial robustness training curriculum",
+    "Create industry-shared database of trafficking-related attack patterns",
+    "Implement continuous safety benchmark integration in CI/CD pipeline"
+  ],
+  "appendix_references": [
+    "Appendix A: Full Failure Case Studies",
+    "Appendix B: Testing Methodology",
+    "Appendix C: Model Configuration"
+  ]
+}

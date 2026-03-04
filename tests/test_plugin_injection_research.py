@@ -79,7 +79,7 @@ class TestPromptInjectionPlugin:
         assert r.status_code == 200
         data = r.json()
         assert isinstance(data, list)
-        assert len(data) == 192
+        assert len(data) == 240
 
     @pytest.mark.asyncio
     async def test_list_mutators_filter_category(self, client):
@@ -109,7 +109,7 @@ class TestPromptInjectionPlugin:
         assert r.status_code == 200
         data = r.json()
         assert isinstance(data, dict)
-        assert len(data) == 11
+        assert len(data) == 17
 
     @pytest.mark.asyncio
     async def test_mutate_single(self, client):
@@ -153,9 +153,9 @@ class TestPromptInjectionPlugin:
         r = await client.get("/api/prompt-injection/stats")
         assert r.status_code == 200
         data = r.json()
-        assert data["total_mutators"] == 192
+        assert data["total_mutators"] == 240
         assert "categories" in data
-        assert data["category_count"] == 11
+        assert data["category_count"] == 17
 
     @pytest.mark.asyncio
     async def test_batch(self, client):

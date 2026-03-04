@@ -529,10 +529,10 @@ class TestRegistration:
         actual = set(get_mutators_by_category("output_evasion"))
         assert actual == expected
 
-    def test_total_mutator_count_is_192(self):
+    def test_total_mutator_count_is_240(self):
         all_mutators = list_mutators()
-        assert len(all_mutators) == 192, (
-            f"Expected 192 total mutators, got {len(all_mutators)}"
+        assert len(all_mutators) == 240, (
+            f"Expected 240 total mutators, got {len(all_mutators)}"
         )
 
     def test_all_output_evasion_are_base_mutator_subclass(self):

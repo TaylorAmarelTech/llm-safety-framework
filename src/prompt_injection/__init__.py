@@ -1,7 +1,7 @@
 """
 Prompt Injection Mutation System
 
-A collection of 190+ specialized mutators that take an input prompt and
+A collection of 250+ specialized mutators that take an input prompt and
 transform it using various injection, obfuscation, and adversarial techniques.
 
 Each mutator is deterministic (no LLM calls needed) and operates purely on
@@ -19,6 +19,12 @@ Categories:
     structural_injection   - XML/JSON/YAML policy injection, system message spoofing
     advanced_obfuscation   - FlipAttack, DrAttack, CodeAttack, ASCII art, token smuggling
     application_injection  - RAG poisoning, indirect injection, stored injection, agent tasks
+    step_decomposition     - 20 step-by-step breakdown variants (plain, mixed-obfusc, escalation, etc.)
+    puzzle_game            - Word search, jigsaw, crossword, anagram, escape room, guessing game
+    cognitive_exploit      - Ethical dilemma, anchoring bias, sunk cost, gaslighting, self-persuasion
+    multilingual_attack    - Low-resource languages, script mixing, code-switching, romanization
+    steganographic_encode  - Acrostic, Braille, NATO phonetic, BitBypass, musical notation
+    named_jailbreak_v2     - Skeleton Key, Echo Chamber, Adversarial Poetry, Sockpuppet, Refusal Suppression
 
 Usage:
     from src.prompt_injection import MutationPipeline, list_mutators
@@ -216,6 +222,12 @@ def _import_all_mutators():
         structural_injection,
         advanced_obfuscation,
         application_injection,
+        step_decomposition,
+        puzzle_game,
+        cognitive_exploit,
+        multilingual_attack,
+        steganographic_encode,
+        named_jailbreaks_v2,
     )
 
 # Lazy import to avoid circular issues

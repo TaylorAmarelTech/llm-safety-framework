@@ -133,10 +133,10 @@ class TestMutationResult:
 class TestMutatorRegistry:
     """Tests for the mutator registry functions."""
 
-    def test_list_mutators_returns_all_192(self):
+    def test_list_mutators_returns_all_240(self):
         all_mutators = list_mutators()
-        assert len(all_mutators) == 192, (
-            f"Expected 192 mutators, got {len(all_mutators)}: {sorted(all_mutators)}"
+        assert len(all_mutators) == 240, (
+            f"Expected 240 mutators, got {len(all_mutators)}: {sorted(all_mutators)}"
         )
 
     def test_list_mutators_structure(self):
@@ -177,6 +177,12 @@ class TestMutatorRegistry:
             "structural_injection": 10,
             "advanced_obfuscation": 10,
             "application_injection": 8,
+            "step_decomposition": 20,
+            "puzzle_game": 6,
+            "cognitive_exploit": 5,
+            "multilingual_attack": 5,
+            "steganographic_encode": 5,
+            "named_jailbreak_v2": 7,
         }
         for cat, count in expected_counts.items():
             names = get_mutators_by_category(cat)

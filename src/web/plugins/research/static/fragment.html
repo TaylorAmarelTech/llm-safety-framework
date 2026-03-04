@@ -1,0 +1,90 @@
+<!-- Research Hub Plugin — 3 tabs: Search, Saved Results, API Status -->
+
+<!-- ===== Search ===== -->
+<div id="section-research-search" class="plugin-section" style="display:none;">
+  <h2>Research Search</h2>
+  <p class="text-muted">Search academic papers, GitHub repos, datasets, and models for LLM safety research.</p>
+
+  <!-- Search bar -->
+  <div class="d-flex gap-2 mb-3 flex-wrap align-items-end">
+    <div style="flex:1; min-width:250px;">
+      <input id="research-query" type="text" class="form-control" placeholder="Enter search query..." autocomplete="off">
+    </div>
+    <button id="research-search-btn" class="btn btn-primary">Search</button>
+  </div>
+
+  <!-- API checkboxes -->
+  <div class="d-flex gap-3 mb-3 flex-wrap small">
+    <label class="form-check-label"><input type="checkbox" class="form-check-input research-api-cb" value="semantic_scholar" checked> Semantic Scholar</label>
+    <label class="form-check-label"><input type="checkbox" class="form-check-input research-api-cb" value="arxiv" checked> arXiv</label>
+    <label class="form-check-label"><input type="checkbox" class="form-check-input research-api-cb" value="openalex" checked> OpenAlex</label>
+    <label class="form-check-label"><input type="checkbox" class="form-check-input research-api-cb" value="github" checked> GitHub</label>
+    <label class="form-check-label"><input type="checkbox" class="form-check-input research-api-cb" value="huggingface" checked> HuggingFace</label>
+  </div>
+
+  <!-- Quick search buttons -->
+  <div id="research-suggestions" class="d-flex gap-2 mb-4 flex-wrap"></div>
+
+  <!-- Results panel with tabs -->
+  <div id="research-results-panel" style="display:none;">
+    <div class="d-flex gap-2 mb-3">
+      <button class="btn btn-sm btn-outline-primary research-tab-btn active" data-tab="papers">Papers <span id="research-count-papers" class="badge bg-secondary ms-1">0</span></button>
+      <button class="btn btn-sm btn-outline-primary research-tab-btn" data-tab="repos">Repos <span id="research-count-repos" class="badge bg-secondary ms-1">0</span></button>
+      <button class="btn btn-sm btn-outline-primary research-tab-btn" data-tab="datasets">Datasets <span id="research-count-datasets" class="badge bg-secondary ms-1">0</span></button>
+      <button class="btn btn-sm btn-outline-primary research-tab-btn" data-tab="models">Models <span id="research-count-models" class="badge bg-secondary ms-1">0</span></button>
+    </div>
+    <div id="research-errors" class="mb-2"></div>
+    <div id="research-tab-papers" class="research-tab-content"></div>
+    <div id="research-tab-repos" class="research-tab-content" style="display:none;"></div>
+    <div id="research-tab-datasets" class="research-tab-content" style="display:none;"></div>
+    <div id="research-tab-models" class="research-tab-content" style="display:none;"></div>
+  </div>
+
+  <!-- Loading spinner -->
+  <div id="research-loading" style="display:none;" class="text-center py-4">
+    <div class="spinner-border spinner-border-sm"></div> Searching...
+  </div>
+</div>
+
+<!-- ===== Saved Results ===== -->
+<div id="section-research-saved" class="plugin-section" style="display:none;">
+  <h2>Saved Results</h2>
+  <p class="text-muted">Bookmarked research findings for later reference.</p>
+
+  <div class="d-flex gap-2 mb-3">
+    <button id="research-refresh-saved" class="btn btn-sm btn-primary">Refresh</button>
+    <button id="research-export-saved" class="btn btn-sm btn-outline-secondary">Export JSON</button>
+  </div>
+
+  <div id="saved-group-papers" class="mb-4">
+    <h5>Papers</h5>
+    <div id="saved-list-papers"></div>
+  </div>
+  <div id="saved-group-repos" class="mb-4">
+    <h5>Repos</h5>
+    <div id="saved-list-repos"></div>
+  </div>
+  <div id="saved-group-datasets" class="mb-4">
+    <h5>Datasets</h5>
+    <div id="saved-list-datasets"></div>
+  </div>
+  <div id="saved-group-models" class="mb-4">
+    <h5>Models</h5>
+    <div id="saved-list-models"></div>
+  </div>
+</div>
+
+<!-- ===== API Status ===== -->
+<div id="section-research-status" class="plugin-section" style="display:none;">
+  <h2>API Status</h2>
+  <p class="text-muted">Research API adapter health and connectivity.</p>
+
+  <button id="research-check-status" class="btn btn-sm btn-primary mb-3">Test Connectivity</button>
+  <div id="research-status-loading" style="display:none;" class="mb-3">
+    <div class="spinner-border spinner-border-sm"></div> Checking APIs...
+  </div>
+
+  <div id="research-status-cards" class="row g-3"></div>
+
+  <div id="research-status-summary" class="mt-3 small text-muted"></div>
+</div>

@@ -1,0 +1,129 @@
+<!-- Prompt Injection Plugin — 4 tabs: Mutator Library, Mutation Lab, Pipeline Builder, Batch Results -->
+
+<!-- ===== Mutator Library ===== -->
+<div id="section-mutator-library" class="plugin-section" style="display:none;">
+  <h2>Mutator Library</h2>
+  <p class="text-muted">Browse all adversarial mutators grouped by category. Each mutator transforms prompts using injection, obfuscation, or social-engineering techniques.</p>
+
+  <div class="d-flex gap-2 mb-3 flex-wrap">
+    <select id="pi-lib-category" class="form-select form-select-sm" style="max-width:200px">
+      <option value="">All Categories</option>
+    </select>
+    <input id="pi-lib-search" type="text" class="form-control form-control-sm" placeholder="Search mutators..." style="max-width:260px">
+    <button id="pi-lib-filter-btn" class="btn btn-sm btn-primary">Filter</button>
+  </div>
+
+  <div id="pi-lib-stats" class="mb-3 p-2 bg-light rounded d-flex gap-3 flex-wrap small"></div>
+  <div id="pi-lib-grid" class="row g-3"></div>
+
+  <!-- Mutator detail modal -->
+  <div id="pi-lib-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1050;">
+    <div style="margin:5% auto; max-width:640px; max-height:85vh; overflow-y:auto; background:var(--bg-primary,#fff); border-radius:8px; padding:24px; position:relative;">
+      <button id="pi-lib-modal-close" style="position:absolute; top:8px; right:12px; background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+      <div id="pi-lib-modal-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Mutation Lab ===== -->
+<div id="section-mutation-lab" class="plugin-section" style="display:none;">
+  <h2>Mutation Lab</h2>
+  <p class="text-muted">Apply one or more mutators to a prompt and inspect the results.</p>
+
+  <div class="row g-3 mb-4">
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <div class="mb-2">
+          <label class="form-label">Input Prompt</label>
+          <textarea id="pi-lab-prompt" class="form-control form-control-sm" rows="4" placeholder="Enter the prompt to mutate..."></textarea>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Mutators</label>
+          <select id="pi-lab-mutator-select" class="form-select form-select-sm" multiple size="6"></select>
+          <div class="form-text">Hold Ctrl / Cmd to select multiple mutators.</div>
+        </div>
+        <div class="mb-2 d-flex gap-3 align-items-center">
+          <label class="form-label mb-0">Mode</label>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="pi-lab-mode" id="pi-lab-mode-parallel" value="parallel" checked>
+            <label class="form-check-label" for="pi-lab-mode-parallel">Parallel</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="pi-lab-mode" id="pi-lab-mode-sequential" value="sequential">
+            <label class="form-check-label" for="pi-lab-mode-sequential">Sequential</label>
+          </div>
+        </div>
+        <button id="pi-lab-mutate-btn" class="btn btn-primary">Mutate</button>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <h5>Results</h5>
+        <div id="pi-lab-status" class="mb-2 small text-muted"></div>
+        <div id="pi-lab-results" style="max-height:500px; overflow-y:auto;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Pipeline Builder ===== -->
+<div id="section-pipeline-builder" class="plugin-section" style="display:none;">
+  <h2>Pipeline Builder</h2>
+  <p class="text-muted">Build a chain of mutators and run them sequentially or in parallel against a prompt.</p>
+
+  <div class="row g-3 mb-4">
+    <div class="col-lg-5">
+      <div class="card p-3">
+        <h5>Mutator Chain</h5>
+        <div class="mb-2 d-flex gap-2">
+          <select id="pi-pipe-add-select" class="form-select form-select-sm"></select>
+          <button id="pi-pipe-add-btn" class="btn btn-sm btn-outline-primary" style="white-space:nowrap;">+ Add</button>
+        </div>
+        <div id="pi-pipe-chain" class="mb-3" style="min-height:60px;"></div>
+        <div class="mb-2 d-flex gap-3 align-items-center">
+          <label class="form-label mb-0">Mode</label>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="pi-pipe-mode" id="pi-pipe-mode-parallel" value="parallel" checked>
+            <label class="form-check-label" for="pi-pipe-mode-parallel">Parallel</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="pi-pipe-mode" id="pi-pipe-mode-sequential" value="sequential">
+            <label class="form-check-label" for="pi-pipe-mode-sequential">Sequential</label>
+          </div>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Prompt</label>
+          <textarea id="pi-pipe-prompt" class="form-control form-control-sm" rows="3" placeholder="Enter prompt..."></textarea>
+        </div>
+        <button id="pi-pipe-run-btn" class="btn btn-primary">Run Pipeline</button>
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <div class="card p-3">
+        <h5>Pipeline Output</h5>
+        <div id="pi-pipe-status" class="mb-2 small text-muted"></div>
+        <div id="pi-pipe-results" style="max-height:500px; overflow-y:auto;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Batch Results ===== -->
+<div id="section-batch-results" class="plugin-section" style="display:none;">
+  <h2>Batch Results</h2>
+  <p class="text-muted">View saved batch mutation results and statistics.</p>
+
+  <div id="pi-batch-stats" class="row g-3 mb-4"></div>
+
+  <button id="pi-batch-refresh" class="btn btn-sm btn-primary mb-3">Refresh</button>
+
+  <div id="pi-batch-list"></div>
+
+  <!-- Batch detail modal -->
+  <div id="pi-batch-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1050;">
+    <div style="margin:3% auto; max-width:900px; max-height:90vh; overflow-y:auto; background:var(--bg-primary,#fff); border-radius:8px; padding:24px; position:relative;">
+      <button id="pi-batch-modal-close" style="position:absolute; top:8px; right:12px; background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+      <div id="pi-batch-modal-content"></div>
+    </div>
+  </div>
+</div>

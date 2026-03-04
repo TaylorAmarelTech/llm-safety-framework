@@ -99,8 +99,8 @@ nano .env  # or use your preferred editor
 ### Step 5: Verify Installation
 
 ```bash
-# Run all tests (should see 51 passing)
-pytest tests/ -v
+# Run all tests (should see 671 passing)
+pytest tests/ -v  # 671 tests should pass
 
 # Run demo
 python scripts/demo.py
@@ -173,9 +173,9 @@ docker-compose up api
 ```
 
 Access at:
-- API: http://localhost:8000
-- Health check: http://localhost:8000/health
-- Docs: http://localhost:8000/docs
+- Web Dashboard: http://localhost:8080
+- Health check: http://localhost:8080/api/health
+- API Docs: http://localhost:8080/api/docs
 
 ---
 
@@ -223,13 +223,14 @@ pytest tests/test_api_models.py -v
 
 ```
 ============================= test session starts =============================
-collected 51 items
+collected 671 items
 
-tests/test_api_models.py ....................                            [ 39%]
-tests/test_base_agent.py .....................                           [ 80%]
-tests/test_integration.py ..........                                     [100%]
-
-======================= 51 passed in 0.75s =====================================
+tests/test_api_models.py ....................                             [  3%]
+tests/test_base_agent.py .....................                            [  6%]
+tests/test_chain_detection.py ............................................[  ...%]
+tests/test_scraper.py ....................................................
+...
+======================= 671 passed ============================================
 ```
 
 ### Verify Components
@@ -307,5 +308,5 @@ After setup, you can:
 
 ---
 
-*Framework Version: 1.0.0*
-*Last Updated: 2026-02-02*
+*Framework Version: 2.0.0*
+*Last Updated: 2026-02-23*

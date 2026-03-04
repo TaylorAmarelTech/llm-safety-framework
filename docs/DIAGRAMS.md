@@ -451,32 +451,147 @@ corridors (reference)
 
 ---
 
+---
+
+## Plugin Architecture
+
+### Plugin Loading Flow
+
+```mermaid
+graph LR
+    subgraph "Startup"
+        APP[app.py create_app]
+        REG[PluginRegistry]
+    end
+
+    subgraph "Plugins (11)"
+        P1[analytics]
+        P2[chain_detection]
+        P3[endpoints]
+        P4[prompts]
+        P5[spinning]
+        P6[scraper]
+        P7["... (5 more)"]
+    end
+
+    subgraph "Runtime"
+        SHELL[shell.html SPA]
+        FRAG[Fragment Loader]
+        API[189+ API Routes]
+    end
+
+    APP --> REG
+    REG --> P1
+    REG --> P2
+    REG --> P3
+    REG --> P4
+    REG --> P5
+    REG --> P6
+    REG --> P7
+    P1 --> API
+    P2 --> API
+    SHELL --> FRAG
+    FRAG --> P1
+    FRAG --> P2
+```
+
+### Plugin Structure
+
+```
+src/web/plugins/{plugin_name}/
+├── __init__.py          # Manifest: name, nav_items, description
+├── routes.py            # FastAPI router with DI (AppContext)
+└── static/
+    ├── fragment.html    # UI loaded by shell on demand
+    └── fragment.js      # Client-side logic
+```
+
+---
+
+## Chain Detection Flow
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    CHAIN DETECTION PIPELINE                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌──────────────┐                                                   │
+│  │  Seed Modules │  13 modules, 106 chains, 482 steps               │
+│  │  (seeds/*.py) │  126 corridors, 13 categories                    │
+│  └──────┬───────┘                                                   │
+│         │                                                           │
+│         ▼                                                           │
+│  ┌──────────────┐                                                   │
+│  │ChainRegistry │  load_seeds() → filter() → get()                 │
+│  └──────┬───────┘                                                   │
+│         │                                                           │
+│         ▼                                                           │
+│  ┌──────────────┐  5 modes: direct, incremental,                    │
+│  │PromptBuilder │  contrastive, business, advisory                  │
+│  └──────┬───────┘                                                   │
+│         │                                                           │
+│         ▼                                                           │
+│  ┌──────────────┐                                                   │
+│  │  LLM Under   │  Send prompt → receive response                  │
+│  │    Test       │                                                   │
+│  └──────┬───────┘                                                   │
+│         │                                                           │
+│         ▼                                                           │
+│  ┌──────────────┐  Hybrid scoring:                                  │
+│  │   Scorer     │  keyword (fast) + LLM judge (thorough)            │
+│  │              │  Grade: BLIND(0)→PARTIAL→AWARE→COMPETENT→EXPERT(4)│
+│  └──────────────┘                                                   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## Quick Reference
 
 ### Test Suite Coverage
 
 | Suite | Tests | Description |
 |-------|-------|-------------|
-| regulatory_evasion | 3,000 | License fraud, fee manipulation |
-| debt_bondage | 4,000 | Debt traps, salary deductions |
-| coercion_manipulation | 5,000 | Psychological tactics |
-| moral_religious_framing | 3,000 | Cultural exploitation |
-| document_control | 3,000 | Passport retention, visa fraud |
-| financial_obfuscation | 3,000 | Hidden fees, currency manipulation |
+| regulatory_evasion | ~3,000 | License fraud, fee manipulation |
+| debt_bondage | ~4,000 | Debt traps, salary deductions |
+| coercion_manipulation | ~5,000 | Psychological tactics |
+| moral_religious_framing | ~3,000 | Cultural exploitation |
+| document_control | ~3,000 | Passport retention, visa fraud |
+| financial_obfuscation | ~3,000 | Hidden fees, currency manipulation |
 
-### ILO Forced Labor Indicators
+### Chain Detection Categories (13)
+
+| Category | Chains | Focus |
+|----------|--------|-------|
+| recruitment_debt | 8 | Multi-layer fee extraction |
+| document_control | 8 | Passport/visa manipulation |
+| isolation_funnels | 8 | Social network severance |
+| financial_control | 8 | Wage manipulation schemes |
+| supply_chain | 8 | Subcontracting, audit evasion |
+| sector_specific | 10 | Fishing, domestic, construction |
+| digital_exploitation | 8 | Tech-facilitated trafficking |
+| healthcare_migration | 8 | Nurse/doctor credential traps |
+| gray_area_boundaries | 8 | Legal-but-exploitative scenarios |
+| government_complicity | 8 | State-enabled trafficking |
+| gender_specific | 8 | Gender-based exploitation |
+| multi_country_transit | 8 | 3+ country transit routes |
+| temporal_escalation | 8 | Gradual escalation patterns |
+
+### ILO Forced Labor Indicators (11)
 
 ```
-1. Abuse of vulnerability     7. Intimidation and threats
-2. Deception                  8. Retention of ID documents
-3. Restriction of movement    9. Withholding of wages
-4. Isolation                 10. Debt bondage
-5. Physical violence         11. Abusive working conditions
-6. Sexual violence           12. Excessive overtime
+ 1. Abuse of vulnerability      7. Intimidation and threats
+ 2. Deception                   8. Retention of ID documents
+ 3. Restriction of movement     9. Withholding of wages
+ 4. Isolation                  10. Debt bondage
+ 5. Physical/sexual violence   11. Abusive working conditions
+ 6. Excessive overtime
 ```
 
-### Migration Corridors
+### Migration Corridors (126 total)
 
+Primary routes:
 ```
 PH-SA: Philippines → Saudi Arabia (domestic workers)
 NP-QA: Nepal → Qatar (construction)
@@ -484,4 +599,14 @@ BD-MY: Bangladesh → Malaysia (manufacturing)
 ID-SG: Indonesia → Singapore (domestic workers)
 ET-LB: Ethiopia → Lebanon (domestic workers)
 MM-TH: Myanmar → Thailand (fishing, agriculture)
+```
+
+Multi-country transit routes:
+```
+MM-TH-MY-SG: Myanmar → Thailand → Malaysia → Singapore
+NG-LY-IT:    Nigeria → Libya → Italy
+GT-MX-US:    Guatemala → Mexico → United States
+ET-YE-SA:    Ethiopia → Yemen → Saudi Arabia
+NP-IN-QA:    Nepal → India → Qatar
+VN-KH-TH:   Vietnam → Cambodia → Thailand
 ```

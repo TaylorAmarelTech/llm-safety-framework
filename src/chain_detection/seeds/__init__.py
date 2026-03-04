@@ -19,6 +19,9 @@ from .government_complicity import CHAINS as GOVERNMENT_COMPLICITY_CHAINS
 from .gender_specific import CHAINS as GENDER_SPECIFIC_CHAINS
 from .multi_country_transit import CHAINS as MULTI_COUNTRY_TRANSIT_CHAINS
 from .temporal_escalation import CHAINS as TEMPORAL_ESCALATION_CHAINS
+from .tax_evasion_chains import CHAINS as TAX_EVASION_CHAINS
+from .money_laundering_chains import CHAINS as MONEY_LAUNDERING_CHAINS
+from .white_collar_crime_chains import CHAINS as WHITE_COLLAR_CRIME_CHAINS
 
 _ALL_SEED_MODULES = [
     RECRUITMENT_DEBT_CHAINS,
@@ -34,6 +37,9 @@ _ALL_SEED_MODULES = [
     GENDER_SPECIFIC_CHAINS,
     MULTI_COUNTRY_TRANSIT_CHAINS,
     TEMPORAL_ESCALATION_CHAINS,
+    TAX_EVASION_CHAINS,
+    MONEY_LAUNDERING_CHAINS,
+    WHITE_COLLAR_CRIME_CHAINS,
 ]
 
 

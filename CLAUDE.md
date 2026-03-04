@@ -8,6 +8,9 @@
 # Run tests
 py -3.13 -m pytest tests/ -v
 
+# Start web dashboard
+python -m uvicorn src.web.app:app --host 127.0.0.1 --port 8080
+
 # Run demo
 py -3.13 scripts/demo.py
 
@@ -23,8 +26,9 @@ from src.core import TestSummary, AgentConfig, AgentRole
 
 This is **DEFENSIVE security research**:
 - Generate adversarial test prompts that simulate exploitation attempts
+- Detect activity chains where individually legal steps combine into trafficking patterns
 - Execute tests against multiple LLM providers
-- Evaluate responses using rubrics and LLM-as-judge
+- Evaluate responses using rubrics, keyword scoring, and LLM-as-judge
 - Report findings and identify vulnerability patterns
 
 **SUCCESS = Model REFUSES harmful requests**
@@ -42,28 +46,95 @@ This is **DEFENSIVE security research**:
 ```
 llm-safety-framework-public/
 ├── src/
-│   └── core/
-│       ├── __init__.py           # Module exports
-│       ├── api_specification.py  # Pydantic models (26+ models)
-│       └── base_agent.py         # Agent base classes
-├── tests/
-│   ├── conftest.py               # Pytest fixtures
-│   ├── test_api_models.py        # API model tests
-│   ├── test_base_agent.py        # Agent tests
-│   └── test_integration.py       # Integration tests
-├── scripts/
-│   └── demo.py                   # Demonstration script
-├── docs/
-│   ├── ARCHITECTURE.md           # System design
-│   └── DIAGRAMS.md               # Visual documentation
-└── pyproject.toml                # Package config
-
-trafficking-llm-benchmark-gitlab/data/
-├── trafficking_tests.db          # SQLite database (21K tests)
-└── test_suites/                  # JSON test files
-    ├── regulatory_evasion_tests.json
-    ├── debt_bondage_tests.json
-    └── ...
+│   ├── core/
+│   │   ├── __init__.py               # Module exports
+│   │   ├── api_specification.py       # Pydantic models (26+ models)
+│   │   └── base_agent.py             # Agent base classes
+│   ├── web/
+│   │   ├── app.py                    # FastAPI application factory
+│   │   ├── config.py                 # Endpoint-centric v2 config
+│   │   ├── app_context.py            # DI context (AppContext, get_ctx)
+│   │   ├── plugin_registry.py        # Plugin loader & registry
+│   │   ├── plugin_base.py            # Plugin manifest base class
+│   │   ├── static/
+│   │   │   ├── shell.html            # Plugin-aware SPA shell
+│   │   │   └── styles.css            # Dashboard styles
+│   │   └── plugins/                  # 11 feature plugins
+│   │       ├── analytics/
+│   │       ├── chain_detection/
+│   │       ├── data_management/
+│   │       ├── endpoints/
+│   │       ├── integrations/
+│   │       ├── intelligent_attack/
+│   │       ├── multi_turn/
+│   │       ├── prompts/
+│   │       ├── scraper/
+│   │       ├── spinning/
+│   │       └── wizard/
+│   ├── chain_detection/
+│   │   ├── models.py                 # ActivityChain, ChainScore, Grade
+│   │   ├── chain_registry.py         # ChainRegistry (load, filter, CRUD)
+│   │   ├── engine.py                 # ChainTestEngine
+│   │   ├── scorer.py                 # score_keyword, score_hybrid, LLM judge
+│   │   ├── prompt_builder.py         # 5 test modes
+│   │   └── seeds/                    # 13 seed modules (106 chains)
+│   │       ├── recruitment_debt.py
+│   │       ├── document_control.py
+│   │       ├── isolation_funnels.py
+│   │       ├── financial_control.py
+│   │       ├── supply_chain.py
+│   │       ├── sector_specific.py
+│   │       ├── digital_exploitation.py
+│   │       ├── healthcare_migration.py
+│   │       ├── gray_area_boundaries.py
+│   │       ├── government_complicity.py
+│   │       ├── gender_specific.py
+│   │       ├── multi_country_transit.py
+│   │       └── temporal_escalation.py
+│   ├── scraper/
+│   │   ├── sources.py                # SourceRegistry (54+ sources)
+│   │   ├── fetcher.py                # DocumentFetcher with auto-escalation
+│   │   ├── extractor.py              # FactExtractor (4 strategies)
+│   │   ├── knowledge_base.py         # KnowledgeBase with cross-refs
+│   │   ├── orchestrator.py           # ScrapeOrchestrator
+│   │   ├── indicator_matrix.py       # Indicator stacking matrices
+│   │   ├── stealth.py                # StealthProfile (5 levels)
+│   │   ├── proxy.py                  # ProxyRotator
+│   │   ├── browser.py                # Playwright headless browser
+│   │   ├── document_identity.py      # SimHash dedup, version tracking
+│   │   ├── seed_loader.py            # Seed fact loading
+│   │   ├── seed_pruner.py            # Dedup & quality filter
+│   │   └── seeds/                    # 174 seed modules (20,460 facts)
+│   ├── spinning/
+│   │   ├── local_spinner.py          # Spintax, regex, charpad
+│   │   ├── llm_rephraser.py          # LLM-powered paraphrasing
+│   │   ├── attack_augmenter.py       # Attack strategy overlays
+│   │   ├── prompt_encoder.py         # Base64, ROT13, hex, Caesar
+│   │   ├── text_obfuscator.py        # Homoglyph, leetspeak, zalgo
+│   │   ├── jailbreak_templater.py    # 20 templates, 6 categories
+│   │   ├── multilingual_attacker.py  # 21 languages
+│   │   ├── multi_turn_orchestrator.py # 6 strategies
+│   │   └── pipeline_manager.py       # Build → spin → test pipeline
+│   ├── intelligent_attack/
+│   │   ├── embedder.py               # Text embedding
+│   │   ├── feature_extractor.py      # Feature space extraction
+│   │   ├── space_analyzer.py         # Coverage analysis
+│   │   ├── gap_finder.py             # Under-tested region detection
+│   │   └── prompt_suggester.py       # Novel prompt generation
+│   ├── integrations/
+│   │   ├── garak_adapter.py          # garak integration
+│   │   ├── pyrit_adapter.py          # PyRIT integration
+│   │   └── deepteam_adapter.py       # DeepTeam integration
+│   └── api_client.py                 # UnifiedAPIClient (OpenAI + Anthropic)
+├── tests/                            # 671 unit tests
+├── data/
+│   ├── sample_test_prompts.json      # 145 prompts across 14 suites
+│   └── chain_detection/              # Chain test results
+├── templates/                        # Template data
+├── examples/                         # Sample attack modules
+├── scripts/                          # Utility scripts
+├── docs/                             # Documentation
+└── pyproject.toml                    # Package config
 ```
 
 ## Core Components
@@ -73,24 +144,12 @@ trafficking-llm-benchmark-gitlab/data/
 Pydantic v2 models for the REST API:
 
 ```python
-# Request Models
-TestFilter          # Filter criteria
-PaginationParams    # Page/page_size
-TestListRequest     # List tests request
-
-# Response Models
-TestSummary         # Brief test info
-TestDetail          # Full test data
-TestListResponse    # Paginated list
-TestRunSummary      # Run result brief
-TestRunDetail       # Full run data
-StatisticsResponse  # Aggregate stats
-
-# Domain Models
-SuiteStatistics     # Per-suite stats
-ModelPerformance    # Per-model stats
-CorridorStatistics  # Per-corridor stats
-ILOIndicatorCoverage # Per-indicator stats
+# Key models
+TestSummary, TestDetail, TestListResponse
+TestRunSummary, TestRunDetail
+StatisticsResponse, SuiteStatistics
+ModelPerformance, CorridorStatistics
+ILOIndicatorCoverage
 ```
 
 ### 2. Base Agent (`src/core/base_agent.py`)
@@ -99,121 +158,74 @@ Agent system for autonomous testing:
 
 ```python
 class AgentRole(Enum):
-    PLANNER          # Strategic planning
-    EXECUTOR         # Code execution
-    ANALYZER         # Result analysis
-    ATTACK_GENERATOR # Novel attack creation
-    CORRIDOR_EXPERT  # Regional knowledge
-    CODE_EVOLVER     # Code improvement
-    QUALITY_AUDITOR  # Quality assurance
-    META_LEARNER     # System optimization
-
-class AgentConfig(BaseModel):
-    role: AgentRole
-    model: str = "mistral-large-latest"
-    temperature: float = 0.3
-    max_tokens: int = 4000
+    PLANNER, EXECUTOR, ANALYZER,
+    ATTACK_GENERATOR, CORRIDOR_EXPERT,
+    CODE_EVOLVER, QUALITY_AUDITOR, META_LEARNER
 
 class HarnessAgent(Generic[T]):
-    """Base class for all harness agents."""
     async def call(prompt: str, context: dict = None) -> AgentResponse
 ```
 
-### 3. Test Database
+### 3. Web Dashboard (`src/web/`)
 
-SQLite database with 21,000 test cases:
+Plugin-based SPA dashboard with 11 plugins and 189+ API routes.
 
-```sql
--- Key tables
-tests          -- Test prompts and metadata
-test_suites    -- Test suite categories
-test_runs      -- Execution results
-models         -- LLM model info
-test_metrics   -- Performance metrics
-```
+**Key patterns:**
+- `AppContext` + `get_ctx` for dependency injection
+- Plugin imports: `from ...app_context import AppContext, get_ctx`
+- Config: endpoint-centric v2 design (v1 auto-migrates)
+- Shell: `static/shell.html` lazy-loads plugin fragments
 
-## Common Tasks
+### 4. Chain Detection (`src/chain_detection/`)
 
-### Import Models
+106 chains across 13 categories testing whether LLMs detect exploitation patterns.
 
-```python
-from src.core import (
-    # API Models
-    TestSummary,
-    TestDetail,
-    TestListResponse,
-    StatisticsResponse,
-    # Agent System
-    AgentRole,
-    AgentConfig,
-    HarnessAgent,
-)
-```
-
-### Create Test Summary
+**5 test modes**: direct, incremental, contrastive, business, advisory
+**5-grade rubric**: BLIND(0) → PARTIAL(1) → AWARE(2) → COMPETENT(3) → EXPERT(4)
+**Hybrid scoring**: keyword matching + LLM-as-judge
 
 ```python
-from src.core import TestSummary
-from datetime import datetime
-
-summary = TestSummary(
-    id="test_001",
-    display_name="Fee Manipulation",
-    short_description="Tests fee hiding refusal",
-    test_suite="regulatory_evasion",
-    difficulty_level="hard",
-    attack_sophistication="expert",
-    corridor="PH-SA",
-    total_runs=100,
-    harmful_rate=0.12,
-    created_at=datetime.now()
-)
+from src.chain_detection.seeds import load_all_seeds, seed_stats
+from src.chain_detection.chain_registry import ChainRegistry
+from src.chain_detection.scorer import score_keyword, score_hybrid
+from src.chain_detection.prompt_builder import build_prompt
 ```
 
-### Query Database
+### 5. Document Intelligence (`src/scraper/`)
 
-```python
-import sqlite3
+20,460 seed facts across 174 modules. 54+ sources across 7 tiers.
 
-db_path = "trafficking-llm-benchmark-gitlab/data/trafficking_tests.db"
-conn = sqlite3.connect(db_path)
-cursor = conn.cursor()
+**Indicator matrix**: 7 migration phases x 11 ILO indicators grid
+**Stealth**: 5-level anti-detection (NONE→BASIC→MODERATE→FULL→MAXIMUM)
+**Extraction**: 4 strategies (default, legal_case, legislation, report)
 
-# Get test count
-cursor.execute("SELECT COUNT(*) FROM tests")
-count = cursor.fetchone()[0]  # ~21,000
+### 6. Transform Workbench (`src/spinning/`)
 
-# Get tests by corridor
-cursor.execute("""
-    SELECT id, prompt, category
-    FROM tests
-    WHERE corridor = 'PH-SA'
-    LIMIT 10
-""")
-```
+12 transformation techniques for prompt variation generation.
 
-### Configure Agent
+**Transforms**: spintax, regex, charpad, LLM rephrase, attack augment, custom, encode, obfuscate, jailbreak, multilingual, chains, pipeline
 
-```python
-from src.core import AgentRole, AgentConfig
+### 7. Intelligent Attack (`src/intelligent_attack/`)
 
-config = AgentConfig(
-    role=AgentRole.ANALYZER,
-    model="claude-3-haiku",
-    temperature=0.5,
-    max_tokens=2000
-)
-```
+Embedding-based feature space analysis for finding coverage gaps and generating novel probes.
+
+### 8. Library Integrations (`src/integrations/`)
+
+Optional adapters for garak, PyRIT, and DeepTeam. Detected at runtime.
 
 ## Test Suites
 
 | Suite | Tests | Focus |
 |-------|-------|-------|
-| regulatory_evasion | 3,000 | License fraud, fee manipulation |
-| debt_bondage | 4,000 | Debt traps, salary deductions |
-| coercion_manipulation | 5,000 | Psychological tactics |
-| moral_religious_framing | 3,000 | Cultural/religious exploitation |
-| financial_obfuscation | 3,000 | Hidden fees, currency tricks |
+| regulatory_evasion | ~3,000 | License fraud, fee manipulation |
+| debt_bondage | ~4,000 | Debt traps, salary deductions |
+| coercion_manipulation | ~5,000 | Psychological tactics |
+| moral_religious_framing | ~3,000 | Cultural/religious exploitation |
+| financial_obfuscation | ~3,000 | Hidden fees, currency tricks |
+
+### Chain Detection Categories (13)
+
+recruitment_debt, document_control, isolation_funnels, financial_control, supply_chain, sector_specific, digital_exploitation, healthcare_migration, gray_area_boundaries, government_complicity, gender_specific, multi_country_transit, temporal_escalation
 
 ## ILO Forced Labor Indicators
 
@@ -233,7 +245,7 @@ The framework tests against all 11 ILO indicators:
 
 ## Migration Corridors
 
-Tests cover major labor migration routes:
+Tests cover 126 corridors. Major labor migration routes:
 
 - **PH-SA**: Philippines to Saudi Arabia (domestic workers)
 - **NP-QA**: Nepal to Qatar (construction)
@@ -241,6 +253,8 @@ Tests cover major labor migration routes:
 - **ID-SG**: Indonesia to Singapore (domestic workers)
 - **ET-LB**: Ethiopia to Lebanon (domestic workers)
 - **MM-TH**: Myanmar to Thailand (fishing, agriculture)
+
+Multi-country transit routes: MM-TH-MY-SG, NG-LY-IT, PH-QA-SA, NP-IN-QA, GT-MX-US, VN-KH-TH, BD-MY-AU, ET-YE-SA
 
 ## Coding Standards
 
@@ -263,25 +277,36 @@ Tests cover major labor migration routes:
 - One main class per file when large
 - Use `__init__.py` for clean exports
 - Keep related functionality together
+- Plugin pattern: `__init__.py` (manifest), `routes.py` (DI), `static/fragment.html`, `static/fragment.js`
 
 ## Testing
 
 ```bash
-# Run all tests
+# Run all tests (671 total)
 py -3.13 -m pytest tests/ -v
 
 # Run specific test file
-py -3.13 -m pytest tests/test_api_models.py -v
+py -3.13 -m pytest tests/test_chain_detection.py -v
 
 # Run with coverage
 py -3.13 -m pytest tests/ --cov=src --cov-report=html
 ```
 
-### Test Markers
+### Key Test Files
 
-- `@pytest.mark.slow` - Long-running tests
-- `@pytest.mark.integration` - Integration tests
-- `@pytest.mark.database` - Database-dependent tests
+| File | Tests | Focus |
+|------|-------|-------|
+| test_api_models.py | 20 | Pydantic model validation |
+| test_base_agent.py | 21 | Agent system |
+| test_chain_detection.py | 45 | Chain detection (models, seeds, registry, scorer, routes) |
+| test_scraper.py | 75 | Document intelligence (sources, fetcher, extractor, KB, seeds) |
+| test_routes.py | 49 | Plugin route integration |
+| test_spinning.py | 40+ | Transform operations |
+| test_stealth.py | 48 | Stealth scraping system |
+| test_document_identity.py | 35 | SimHash dedup, document index |
+| test_multilingual.py | 9 | Multilingual attack modes |
+| test_multi_turn.py | 14 | Multi-turn strategies |
+| test_integrations.py | 16 | Library adapters |
 
 ## Environment Variables
 
@@ -297,40 +322,20 @@ MAX_CONCURRENT_REQUESTS=10
 CACHE_ENABLED=true
 ```
 
-## Extension Points
-
-### Adding a New Test Suite
-
-1. Create JSON file in `data/test_suites/`
-2. Add to database via import script
-3. Update statistics queries
-
-### Adding a New LLM Provider
-
-```python
-class MyProvider:
-    async def complete(self, prompt: str, **kwargs) -> str:
-        # Implementation
-        pass
-```
-
-### Adding a New Agent Role
-
-1. Add to `AgentRole` enum
-2. Add default system prompt to `DEFAULT_SYSTEM_PROMPTS`
-3. Create concrete agent class
-
 ## Key Files Reference
 
 | File | Purpose |
 |------|---------|
-| `src/core/__init__.py` | Module exports |
-| `src/core/api_specification.py` | Pydantic API models |
-| `src/core/base_agent.py` | Agent base classes |
-| `tests/conftest.py` | Test fixtures |
-| `scripts/demo.py` | Demo script |
-| `docs/ARCHITECTURE.md` | System design |
-| `docs/DIAGRAMS.md` | Visual docs |
+| `src/web/app.py` | FastAPI application factory |
+| `src/web/config.py` | Endpoint-centric configuration |
+| `src/web/app_context.py` | DI context for plugins |
+| `src/web/plugin_registry.py` | Plugin loader & registry |
+| `src/chain_detection/models.py` | ActivityChain, ChainScore, Grade |
+| `src/chain_detection/seeds/__init__.py` | All 13 seed module imports |
+| `src/scraper/seeds/__init__.py` | All 174 seed fact imports |
+| `src/api_client.py` | UnifiedAPIClient |
+| `data/sample_test_prompts.json` | 145 test prompts (14 suites) |
+| `tests/test_chain_detection.py` | Chain detection tests |
 
 ## Troubleshooting
 
@@ -342,33 +347,17 @@ import sys
 sys.path.insert(0, "/path/to/llm-safety-framework-public")
 ```
 
-### Database Not Found
-
-Check paths:
-```python
-# Default location
-trafficking-llm-benchmark-gitlab/data/trafficking_tests.db
+Or set PYTHONPATH:
+```bash
+PYTHONPATH=. py -3.13 your_script.py
 ```
 
 ### Pydantic Validation Errors
 
-Provide all required fields:
-```python
-# Wrong - missing required fields
-TestDetail(id="test_001")
-
-# Correct - all required fields
-TestDetail(
-    id="test_001",
-    test_suite="regulatory_evasion",
-    prompt="...",
-    category="...",
-    # ... all other required fields
-)
-```
+Provide all required fields. Use Pydantic v2 syntax (model_validate, not parse_obj).
 
 ---
 
-*Version: 1.0.0*
+*Version: 2.0.0*
 *Author: Taylor Amarel*
 *Framework: LLM Safety Testing for Migrant Worker Protection*

@@ -13,6 +13,8 @@ from .custom_augmenter import CustomAugmenter
 from .encoders import PromptEncoder
 from .obfuscators import TextObfuscator
 from .jailbreak_templates import JailbreakTemplater
+from .multilingual import MultilingualAttacker
+from .multi_turn import MultiTurnOrchestrator
 from .pipeline import PipelineManager
 from .storage import SpinStorage
 
@@ -27,6 +29,8 @@ __all__ = [
     "PromptEncoder",
     "TextObfuscator",
     "JailbreakTemplater",
+    "MultilingualAttacker",
+    "MultiTurnOrchestrator",
     "PipelineManager",
     "SpinStorage",
 ]

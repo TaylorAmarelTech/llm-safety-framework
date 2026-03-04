@@ -3,19 +3,23 @@ LLM Safety Framework - Standalone API Server
 
 A lightweight API server without the web dashboard UI.
 Ideal for programmatic access and integration with other tools.
+
+Uses the same plugin registry as the full dashboard, but serves
+only JSON API routes (no static files, no SPA shell).
 """
 
 import os
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, APIRouter, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-# Import routes from web module
-from .web.routes import router as web_router
-from .web.config import get_settings
+from .web.config import Settings, ConfigManager, get_settings
+from .web.app_context import AppContext
+from .web.plugin_registry import PluginRegistry
 
 
 @asynccontextmanager
@@ -33,37 +37,65 @@ async def lifespan(app: FastAPI):
     print("Shutting down API Server")
 
 
+def create_api(settings: Optional[Settings] = None) -> FastAPI:
+    """Create the standalone API application."""
+    if settings is None:
+        settings = get_settings()
+
+    api = FastAPI(
+        title="LLM Safety Testing API",
+        description="""
+        Standalone API for LLM Safety Testing Framework.
+
+        This API provides programmatic access to:
+        - Test prompt management
+        - LLM safety testing
+        - Result evaluation
+        - Data import/export
+
+        For the full web dashboard, use the `web` service instead.
+        """,
+        version="1.0.0",
+        lifespan=lifespan,
+        docs_url="/docs",
+        redoc_url="/redoc",
+    )
+
+    # CORS middleware - allow all origins for API server
+    api.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    # ── Shared AppContext ──────────────────────────────────────────────
+    config_manager = ConfigManager(config_path=settings.config_file)
+    ctx = AppContext(
+        settings=settings,
+        config_manager=config_manager,
+        data_dir=Path(settings.data_dir),
+    )
+    api.state.ctx = ctx
+
+    # ── Plugin Registry (same plugins as full dashboard) ───────────────
+    plugins_dir = Path(__file__).parent / "web" / "plugins"
+    config_plugins = Path("config/plugins.json")
+    disabled = PluginRegistry.load_disabled(config_plugins)
+    registry = PluginRegistry(disabled=disabled)
+    registry.discover(plugins_dir)
+
+    # Mount all plugin routes under /api
+    plugin_router = APIRouter()
+    registry.mount_all(plugin_router)
+    api.include_router(plugin_router, prefix="/api")
+
+    return api
+
+
 # Create FastAPI app
-app = FastAPI(
-    title="LLM Safety Testing API",
-    description="""
-    Standalone API for LLM Safety Testing Framework.
-
-    This API provides programmatic access to:
-    - Test prompt management
-    - LLM safety testing
-    - Result evaluation
-    - Data import/export
-
-    For the full web dashboard, use the `web` service instead.
-    """,
-    version="1.0.0",
-    lifespan=lifespan,
-    docs_url="/docs",
-    redoc_url="/redoc",
-)
-
-# CORS middleware - allow all origins for API server
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Include the main API routes
-app.include_router(web_router, prefix="/api")
+app = create_api()
 
 
 # =============================================================================
@@ -128,8 +160,6 @@ async def quick_test(request: QuickTestRequest):
     This is a simplified endpoint for testing a single prompt without
     needing to create prompts in the database first.
     """
-    # For now, return a placeholder response
-    # Full implementation requires LLM provider integration
     return QuickTestResponse(
         prompt=request.prompt,
         model=request.model,
@@ -157,7 +187,6 @@ async def batch_test(request: BatchTestRequest):
 
     Returns a job ID for tracking progress.
     """
-    # Placeholder - full implementation requires background task system
     return {
         "status": "accepted",
         "job_id": "batch_" + str(hash(str(request.prompts)))[:8],
@@ -183,5 +212,8 @@ async def version():
             "safety_testing",
             "evaluation",
             "import_export",
+            "chain_detection",
+            "dimensional_matrix",
+            "debate_evaluation",
         ]
     }

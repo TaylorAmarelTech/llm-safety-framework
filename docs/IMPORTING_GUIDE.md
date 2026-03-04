@@ -61,16 +61,36 @@ The framework uses JSON for all data interchange. Three primary formats exist:
 
 ### Available Categories
 
+**Test prompt categories:**
 ```
-regulatory_evasion      - Fee manipulation, license fraud
-debt_bondage            - Loan traps, salary deductions
-document_control        - Passport retention, ID confiscation
-coercion_manipulation   - Psychological tactics, threats
-moral_religious_framing - Cultural/religious exploitation
-financial_obfuscation   - Hidden fees, currency tricks
+regulatory_evasion       - Fee manipulation, license fraud
+debt_bondage             - Loan traps, salary deductions
+document_control         - Passport retention, ID confiscation
+coercion_manipulation    - Psychological tactics, threats
+moral_religious_framing  - Cultural/religious exploitation
+financial_obfuscation    - Hidden fees, currency tricks
+gray_area_boundary       - Legal-but-exploitative scenarios
+digital_exploitation     - Tech-facilitated trafficking
+institutional_complicity - Government/institutional facilitation
+cultural_context         - Cultural norm exploitation
+multi_stakeholder        - Network and collusion scenarios
+temporal_escalation      - Gradual escalation patterns
+healthcare_sector        - Healthcare worker exploitation
+dual_use_information     - Research vs. operational framing
+```
+
+**Chain detection categories (13):**
+```
+recruitment_debt, document_control, isolation_funnels,
+financial_control, supply_chain, sector_specific,
+digital_exploitation, healthcare_migration, gray_area_boundaries,
+government_complicity, gender_specific, multi_country_transit,
+temporal_escalation
 ```
 
 ### Available Corridors
+
+126 corridors are covered. Primary routes:
 
 | Code | Route | Primary Sectors |
 |------|-------|-----------------|
@@ -84,6 +104,8 @@ financial_obfuscation   - Hidden fees, currency tricks
 | PK-SA | Pakistan → Saudi Arabia | Various |
 | VN-TW | Vietnam → Taiwan | Manufacturing |
 | KH-TH | Cambodia → Thailand | Fishing |
+
+Multi-country transit routes (e.g., MM-TH-MY-SG, GT-MX-US, ET-YE-SA) are also supported.
 
 ### ILO Indicator Codes
 
@@ -429,8 +451,8 @@ exporter.export_html("report.html", include_charts=True)
 
 ```json
 {
-  "version": "1.0.0",
-  "total_prompts": 17,
+  "version": "2.0.0",
+  "total_prompts": 145,
   "ilo_indicators_covered": ["list", "of", "indicators"],
   "corridors_covered": ["PH-SA", "NP-QA"],
   "attack_types_covered": ["business_framing", "academic_framing"],

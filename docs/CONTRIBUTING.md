@@ -144,7 +144,7 @@ How were these changes tested?
 
 ### 1. New Test Generators
 
-Create new test generation strategies in `src/core/`:
+Create new test generation strategies or chain detection seed modules:
 
 ```python
 from src.core.base import BaseTestGenerator
@@ -218,12 +218,29 @@ Improve documentation in `docs/`:
 - API documentation
 - Tutorials
 
-### 5. Test Coverage
+### 5. Chain Detection Seeds
+
+Add new exploitation chain patterns in `src/chain_detection/seeds/`:
+
+```python
+# Each seed module exports CHAINS: list[dict]
+CHAINS = [
+    {
+        "id": "category_001",
+        "name": "Chain Name",
+        "category": "category",
+        "steps": [...],
+        "chain_context": "...",
+        "emergent_risk": "...",
+    }
+]
+```
+
+### 6. Test Coverage
 
 Add tests for existing code:
 
-- Unit tests in `tests/unit/`
-- Integration tests in `tests/integration/`
+- Unit tests in `tests/`
 - End-to-end tests in `tests/e2e/`
 
 ## Coding Standards

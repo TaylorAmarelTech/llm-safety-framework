@@ -133,10 +133,10 @@ class TestMutationResult:
 class TestMutatorRegistry:
     """Tests for the mutator registry functions."""
 
-    def test_list_mutators_returns_all_240(self):
+    def test_list_mutators_returns_all(self):
         all_mutators = list_mutators()
-        assert len(all_mutators) == 240, (
-            f"Expected 240 mutators, got {len(all_mutators)}: {sorted(all_mutators)}"
+        assert len(all_mutators) == 488, (
+            f"Expected 438 mutators, got {len(all_mutators)}: {sorted(all_mutators)}"
         )
 
     def test_list_mutators_structure(self):
@@ -172,8 +172,8 @@ class TestMutatorRegistry:
             "social_engineering": 6,
             "context_manipulation": 5,
             "hybrid": 6,
-            "output_evasion": 109,
-            "named_jailbreak": 15,
+            "output_evasion": 107,
+            "named_jailbreak": 14,
             "structural_injection": 10,
             "advanced_obfuscation": 10,
             "application_injection": 8,
@@ -183,6 +183,30 @@ class TestMutatorRegistry:
             "multilingual_attack": 5,
             "steganographic_encode": 5,
             "named_jailbreak_v2": 7,
+            "logical_fallacy": 10,
+            "distraction": 10,
+            "rhetorical": 10,
+            "legal_persona": 10,
+            "professional_persona": 10,
+            "analytical_framing": 10,
+            "special_token": 10,
+            "emoji_smuggling": 10,
+            "entropy_noise": 10,
+            "control_char": 10,
+            "encoding_exploit": 10,
+            "adversarial_tokenization": 10,
+            "bijection_cipher": 10,
+            "context_position": 10,
+            "mathematical_encoding": 10,
+            "evaluation_manipulation": 10,
+            "payload_splitting": 10,
+            "code_steganography": 10,
+            "combination": 21,
+            "prefill_completion": 10,
+            "few_shot_attack": 10,
+            "template_fuzzing": 10,
+            "reasoning_hijack": 10,
+            "authority_exploit": 10,
         }
         for cat, count in expected_counts.items():
             names = get_mutators_by_category(cat)

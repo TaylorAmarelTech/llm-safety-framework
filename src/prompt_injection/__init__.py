@@ -1,7 +1,7 @@
 """
 Prompt Injection Mutation System
 
-A collection of 250+ specialized mutators that take an input prompt and
+A collection of 488 specialized mutators across 41 categories that take an input prompt and
 transform it using various injection, obfuscation, and adversarial techniques.
 
 Each mutator is deterministic (no LLM calls needed) and operates purely on
@@ -25,6 +25,30 @@ Categories:
     multilingual_attack    - Low-resource languages, script mixing, code-switching, romanization
     steganographic_encode  - Acrostic, Braille, NATO phonetic, BitBypass, musical notation
     named_jailbreak_v2     - Skeleton Key, Echo Chamber, Adversarial Poetry, Sockpuppet, Refusal Suppression
+    logical_fallacy        - Appeal to authority, false dilemma, straw man, slippery slope, and more
+    distraction            - Question bundling, narrative embed, bombardment, topic drift, task switching
+    rhetorical             - Loaded question, false premise, reverse psychology, double bind, scarcity
+    legal_persona          - Judge, attorney, prosecutor, paralegal, compliance, expert witness personas
+    professional_persona   - Journalist, social worker, NGO researcher, auditor, HR, diplomat
+    analytical_framing     - Threshold analysis, profit model, motive, risk-reward, counterfactual
+    special_token          - Reserve token injection, chat template hijack, reasoning interruption
+    emoji_smuggling        - Variation selector encoding, ZWJ chains, tag sequences, skin tone
+    entropy_noise          - GCG-style suffixes, diacritical rain, math symbol swap, script noise
+    control_char           - NULL bytes, ANSI escapes, bidi overrides, exotic whitespace, BOM
+    encoding_exploit       - UTF-7, Punycode, ISO-8859, EBCDIC, HTML entities, URL percent
+    adversarial_tokenization - Non-canonical BPE, ASCII smuggling, ArtPrompt, subword fragmentation
+    bijection_cipher       - Bijection learning, grid cipher, keyboard cipher, Atbash, Vigenere
+    context_position       - Lost-in-the-middle, attention dilution, safety burial, recency/primacy bias
+    mathematical_encoding  - LaTeX, coordinates, functions, set theory, matrices, logic gates
+    evaluation_manipulation - Bad Likert Judge, rubric, grading, QA framing, debate, moderation test
+    payload_splitting      - Cross-reference, variable assembly, temporal, list, conditional, table splits
+    code_steganography     - Code comments, JSON/YAML/XML/CSV, markdown, regex, variable/function names
+    combination            - 20 multi-technique compositions: operators, multi-phase, synergistic recipes
+    prefill_completion     - 10 prefill/forced completion attacks: assistant prefill, refusal suppression v2
+    few_shot_attack        - 10 in-context/few-shot attacks: ICA, many-shot, gradient examples, citation
+    template_fuzzing       - 10 GPTFuzzer-style mutations: crossover, expansion, shrinkage, adaptive, evolutionary
+    reasoning_hijack       - 10 reasoning model exploits: H-CoT, ExtendAttack, thought poisoning, meta-reasoning
+    authority_exploit      - 10 authority/trust exploits: markup injection, GOAT, Mousetrap, Best-of-N, Hydra
 
 Usage:
     from src.prompt_injection import MutationPipeline, list_mutators
@@ -203,6 +227,28 @@ class MutationPipeline:
         """Apply mutations to a batch of prompts."""
         return [self.mutate(p, **kwargs) for p in prompts]
 
+    @classmethod
+    def all_combinations(cls) -> "MutationPipeline":
+        """Create a pipeline with all combination-engine mutators."""
+        combo_names = get_mutators_by_category("combination")
+        return cls(combo_names, mode="parallel")
+
+    @classmethod
+    def multi_layer_attack(
+        cls,
+        obfuscation: str,
+        social: str,
+        output: str,
+    ) -> "MutationPipeline":
+        """Create a custom 3-layer sequential pipeline.
+
+        Args:
+            obfuscation: Mutator targeting input filter (e.g. 'base64_encode')
+            social: Mutator targeting alignment (e.g. 'authority_claim')
+            output: Mutator targeting output filter (e.g. 'fake_completion')
+        """
+        return cls([obfuscation, social, output], mode="sequential")
+
 
 # ---------------------------------------------------------------------------
 # Import all mutators to trigger registration
@@ -228,6 +274,30 @@ def _import_all_mutators():
         multilingual_attack,
         steganographic_encode,
         named_jailbreaks_v2,
+        logical_fallacy,
+        distraction_attack,
+        rhetorical_manipulation,
+        legal_persona,
+        professional_persona,
+        analytical_framing,
+        special_token_injection,
+        emoji_smuggling,
+        entropy_noise,
+        control_char_exploit,
+        encoding_exploitation,
+        adversarial_tokenization,
+        bijection_cipher,
+        context_position_exploit,
+        mathematical_encoding,
+        evaluation_manipulation,
+        payload_splitting,
+        code_format_steganography,
+        combination_engine,
+        prefill_forced_completion,
+        few_shot_attack,
+        template_fuzzing,
+        reasoning_hijack,
+        authority_exploit,
     )
 
 # Lazy import to avoid circular issues

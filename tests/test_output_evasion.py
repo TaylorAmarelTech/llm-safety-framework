@@ -452,10 +452,10 @@ class TestAutoDecoder:
 
 
 class TestRegistration:
-    def test_output_evasion_category_has_109_mutators(self):
+    def test_output_evasion_category_has_107_mutators(self):
         names = get_mutators_by_category("output_evasion")
-        assert len(names) == 109, (
-            f"Expected 109 output_evasion mutators, got {len(names)}: {names}"
+        assert len(names) == 107, (
+            f"Expected 107 output_evasion mutators, got {len(names)}: {names}"
         )
 
     def test_all_output_evasion_mutator_names(self):
@@ -466,8 +466,8 @@ class TestRegistration:
             "first_letter_steg", "nth_word_extract", "paragraph_initial",
             "a1z26_cipher", "custom_sub_cipher", "coordinate_encode",
             "multicolumn_fragment", "nested_format_encode",
-            # Family 6: Historical Cipher Roleplay
-            "caesar_shift", "atbash_cipher", "vigenere_cipher",
+            # Family 6: Historical Cipher Roleplay (atbash/vigenere moved to bijection_cipher)
+            "caesar_shift",
             "rail_fence_cipher", "enigma_roleplay", "pigpen_describe",
             # Family 7: Narrative Camouflage
             "recipe_steg", "playlist_steg", "bedtime_story_steg",
@@ -529,10 +529,10 @@ class TestRegistration:
         actual = set(get_mutators_by_category("output_evasion"))
         assert actual == expected
 
-    def test_total_mutator_count_is_240(self):
+    def test_total_mutator_count(self):
         all_mutators = list_mutators()
-        assert len(all_mutators) == 240, (
-            f"Expected 240 total mutators, got {len(all_mutators)}"
+        assert len(all_mutators) == 488, (
+            f"Expected 488 total mutators, got {len(all_mutators)}"
         )
 
     def test_all_output_evasion_are_base_mutator_subclass(self):
@@ -562,13 +562,19 @@ class TestHistoricalCiphers:
 
     def test_atbash_produces_results(self):
         results = get_mutator("atbash_cipher").mutate(TEST_PROMPT)
-        _assert_valid_results(results, "atbash_cipher", min_count=1)
+        assert len(results) >= 1
+        for r in results:
+            assert r.mutator_name == "atbash_cipher"
+            assert r.technique_category == "bijection_cipher"
+            assert r.mutated and r.mutated != TEST_PROMPT
 
     def test_vigenere_produces_results(self):
         results = get_mutator("vigenere_cipher").mutate(TEST_PROMPT)
-        _assert_valid_results(results, "vigenere_cipher", min_count=2)
+        assert len(results) >= 2
         for r in results:
-            assert "keyword" in r.metadata
+            assert r.mutator_name == "vigenere_cipher"
+            assert r.technique_category == "bijection_cipher"
+            assert "vigenere" in r.metadata.get("variant", "")
 
     def test_rail_fence_produces_results(self):
         results = get_mutator("rail_fence_cipher").mutate(TEST_PROMPT)

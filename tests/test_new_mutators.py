@@ -69,7 +69,7 @@ def _assert_valid_results(
 
 
 # ===================================================================
-# Named Jailbreak mutator names (15)
+# Named Jailbreak mutator names (14)
 # ===================================================================
 
 NAMED_JAILBREAK_MUTATORS = [
@@ -81,7 +81,6 @@ NAMED_JAILBREAK_MUTATORS = [
     "deep_inception",
     "many_shot_jailbreak",
     "cognitive_overload",
-    "bad_likert_judge",
     "deceptive_delight",
     "sequential_break",
     "virtualization_attack",
@@ -503,7 +502,7 @@ class TestNewMutatorCommon:
 
     def test_category_counts(self):
         """Each new category should have the expected number of mutators."""
-        assert len(get_mutators_by_category("named_jailbreak")) == 15
+        assert len(get_mutators_by_category("named_jailbreak")) == 14
         assert len(get_mutators_by_category("structural_injection")) == 10
         assert len(get_mutators_by_category("advanced_obfuscation")) == 10
         assert len(get_mutators_by_category("application_injection")) == 8

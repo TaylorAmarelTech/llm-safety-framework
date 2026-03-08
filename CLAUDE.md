@@ -59,7 +59,7 @@ llm-safety-framework-public/
 │   │   ├── static/
 │   │   │   ├── shell.html            # Plugin-aware SPA shell
 │   │   │   └── styles.css            # Dashboard styles
-│   │   └── plugins/                  # 11 feature plugins
+│   │   └── plugins/                  # 14 feature plugins
 │   │       ├── analytics/
 │   │       ├── chain_detection/
 │   │       ├── data_management/
@@ -69,7 +69,10 @@ llm-safety-framework-public/
 │   │       ├── multi_turn/
 │   │       ├── prompts/
 │   │       ├── scraper/
+│   │       ├── prompt_injection/
+│   │       ├── research/
 │   │       ├── spinning/
+│   │       ├── training/
 │   │       └── wizard/
 │   ├── chain_detection/
 │   │   ├── models.py                 # ActivityChain, ChainScore, Grade
@@ -77,7 +80,7 @@ llm-safety-framework-public/
 │   │   ├── engine.py                 # ChainTestEngine
 │   │   ├── scorer.py                 # score_keyword, score_hybrid, LLM judge
 │   │   ├── prompt_builder.py         # 5 test modes
-│   │   └── seeds/                    # 13 seed modules (106 chains)
+│   │   └── seeds/                    # 16 seed modules (126 chains)
 │   │       ├── recruitment_debt.py
 │   │       ├── document_control.py
 │   │       ├── isolation_funnels.py
@@ -121,12 +124,79 @@ llm-safety-framework-public/
 │   │   ├── space_analyzer.py         # Coverage analysis
 │   │   ├── gap_finder.py             # Under-tested region detection
 │   │   └── prompt_suggester.py       # Novel prompt generation
+│   ├── prompt_injection/              # 488 mutators across 41 categories
+│   │   ├── __init__.py               # Registry, list_mutators, MutationPipeline
+│   │   ├── instruction_override.py   # 5 mutators
+│   │   ├── encoding_format.py        # 10 mutators
+│   │   ├── obfuscation.py            # 8 mutators
+│   │   ├── social_engineering.py     # 6 mutators
+│   │   ├── context_manipulation.py   # 5 mutators
+│   │   ├── hybrid.py                 # 6 mutators
+│   │   ├── output_evasion.py         # 109 mutators
+│   │   ├── named_jailbreaks.py       # 15 mutators
+│   │   ├── structural_injection.py   # 10 mutators
+│   │   ├── advanced_obfuscation.py   # 10 mutators
+│   │   ├── application_injection.py  # 8 mutators
+│   │   ├── step_decomposition.py     # 20 mutators
+│   │   ├── puzzle_game.py            # 6 mutators
+│   │   ├── cognitive_exploit.py      # 5 mutators
+│   │   ├── multilingual_attack.py    # 5 mutators
+│   │   ├── steganographic_encode.py  # 5 mutators
+│   │   ├── named_jailbreaks_v2.py    # 7 mutators
+│   │   ├── logical_fallacy.py        # 10 mutators
+│   │   ├── distraction_attack.py     # 10 mutators
+│   │   ├── rhetorical_manipulation.py # 10 mutators
+│   │   ├── legal_persona.py          # 10 mutators
+│   │   ├── professional_persona.py   # 10 mutators
+│   │   ├── analytical_framing.py     # 10 mutators
+│   │   ├── special_token_injection.py # 10 mutators
+│   │   ├── emoji_smuggling.py        # 10 mutators
+│   │   ├── entropy_noise.py          # 10 mutators
+│   │   ├── control_char_exploit.py   # 10 mutators
+│   │   ├── encoding_exploitation.py  # 10 mutators
+│   │   ├── adversarial_tokenization.py # 10 mutators
+│   │   ├── bijection_cipher.py       # 10 mutators
+│   │   ├── context_position_exploit.py # 10 mutators
+│   │   ├── mathematical_encoding.py  # 10 mutators
+│   │   ├── evaluation_manipulation.py # 10 mutators
+│   │   ├── payload_splitting.py      # 10 mutators
+│   │   ├── code_format_steganography.py # 10 mutators
+│   │   ├── combination_engine.py     # 21 multi-technique compositions
+│   │   ├── prefill_forced_completion.py # 10 mutators
+│   │   ├── few_shot_attack.py        # 10 mutators
+│   │   ├── template_fuzzing.py       # 10 mutators
+│   │   ├── reasoning_hijack.py       # 10 mutators
+│   │   ├── authority_exploit.py      # 10 mutators
+│   │   ├── fitness.py                # FitnessTracker (adaptive selection)
+│   │   ├── coverage.py               # CoverageAnalyzer (defense matrix)
+│   │   └── output_decoders.py        # OutputDecoder for encoded results
+│   ├── training/                      # 23 modules, 81 exports
+│   │   ├── __init__.py               # Central exports (81 symbols)
+│   │   ├── exporter.py               # TrainingDataExporter (9 formats)
+│   │   ├── finetune_config.py        # FinetuneConfigGenerator (4 frameworks)
+│   │   ├── red_team_generator.py     # RedTeamGenerator (4 backends)
+│   │   ├── feedback_loop.py          # FeedbackLoop
+│   │   ├── attack_quality.py         # AttackQualityScorer
+│   │   ├── mutation_augmenter.py     # MutationAugmenter
+│   │   ├── progress_tracker.py       # ProgressTracker
+│   │   ├── reward_modeling.py        # 4 reward model trainers
+│   │   ├── safety_evaluator.py       # SafetyEvaluator, BenchmarkRunner
+│   │   └── dataset_generator.py      # SyntheticDatasetGenerator
+│   ├── dimensional_matrix/            # 35-dimension scoring, debate judge
+│   ├── research/                      # 7 autonomous research agents
+│   │   └── agents/                   # Agent coordinator + 7 agents
 │   ├── integrations/
 │   │   ├── garak_adapter.py          # garak integration
 │   │   ├── pyrit_adapter.py          # PyRIT integration
-│   │   └── deepteam_adapter.py       # DeepTeam integration
+│   │   ├── deepteam_adapter.py       # DeepTeam integration
+│   │   └── research_apis.py          # 5 API adapters (Semantic Scholar, arXiv, etc.)
+│   ├── py.typed                      # PEP 561 type marker
 │   └── api_client.py                 # UnifiedAPIClient (OpenAI + Anthropic)
-├── tests/                            # 671 unit tests
+├── tests/                            # 4,031 unit tests
+├── .github/workflows/ci.yml          # GitHub Actions CI (test, lint, typecheck, coverage)
+├── .pre-commit-config.yaml           # Pre-commit hooks (black, ruff, mypy)
+├── Makefile                          # 13 build targets
+├── SECURITY.md                       # Responsible disclosure policy
 ├── data/
 │   ├── sample_test_prompts.json      # 145 prompts across 14 suites
 │   └── chain_detection/              # Chain test results
@@ -168,7 +238,7 @@ class HarnessAgent(Generic[T]):
 
 ### 3. Web Dashboard (`src/web/`)
 
-Plugin-based SPA dashboard with 11 plugins and 189+ API routes.
+Plugin-based SPA dashboard with 14 plugins and 267 API routes.
 
 **Key patterns:**
 - `AppContext` + `get_ctx` for dependency injection
@@ -178,7 +248,7 @@ Plugin-based SPA dashboard with 11 plugins and 189+ API routes.
 
 ### 4. Chain Detection (`src/chain_detection/`)
 
-106 chains across 13 categories testing whether LLMs detect exploitation patterns.
+126 chains across 16 categories testing whether LLMs detect exploitation patterns.
 
 **5 test modes**: direct, incremental, contrastive, business, advisory
 **5-grade rubric**: BLIND(0) → PARTIAL(1) → AWARE(2) → COMPETENT(3) → EXPERT(4)
@@ -209,9 +279,53 @@ from src.chain_detection.prompt_builder import build_prompt
 
 Embedding-based feature space analysis for finding coverage gaps and generating novel probes.
 
-### 8. Library Integrations (`src/integrations/`)
+### 8. Prompt Injection Mutations (`src/prompt_injection/`)
 
-Optional adapters for garak, PyRIT, and DeepTeam. Detected at runtime.
+488 deterministic mutators across 41 categories. Pure string transforms, no LLM calls.
+
+**Categories:** instruction_override, encoding_format, obfuscation, social_engineering, context_manipulation, hybrid, output_evasion, named_jailbreak, structural_injection, advanced_obfuscation, application_injection, step_decomposition, puzzle_game, cognitive_exploit, multilingual_attack, steganographic_encode, named_jailbreak_v2, logical_fallacy, distraction, rhetorical, legal_persona, professional_persona, analytical_framing, special_token, emoji_smuggling, entropy_noise, control_char, encoding_exploit, adversarial_tokenization, bijection_cipher, context_position, mathematical_encoding, evaluation_manipulation, payload_splitting, code_steganography, combination_engine, prefill_completion, few_shot_attack, template_fuzzing, reasoning_hijack, authority_exploit
+
+```python
+from src.prompt_injection import list_mutators, get_mutators_by_category, MutationPipeline
+```
+
+### 9. Dimensional Response Matrix (`src/dimensional_matrix/`)
+
+35-dimension severity scoring with 6 operations (Rate, Calibrate, Probe Boundary, Map Embeddings, Debate). Multi-LLM adversarial debate judge.
+
+### 10. Research Agents (`src/research/`)
+
+7 autonomous agents + coordinator for literature review, gap analysis, and trend monitoring.
+
+### 11. Training Pipeline (`src/training/`)
+
+23 modules exporting 81 symbols. Full training data generation and evaluation.
+
+**Export formats (9):** SFT, DPO, RLHF, ChatML, Alpaca, ShareGPT, ORPO, KTO, Llama3
+**Finetune frameworks (4):** Unsloth, Axolotl, TRL, LLaMA-Factory
+**Reward modeling (4):** Bradley-Terry, SteerLM, RLOO, RAFT
+**Safety evaluation:** SafetyMetrics, BenchmarkRunner, HTML reports
+**Synthetic data:** ContrastivePair generator, EdgeCaseGenerator, 60 templates
+
+```python
+from src.training import (
+    TrainingDataExporter, FinetuneConfigGenerator,
+    RewardModelTrainer, SteerLMTrainer, RLOOTrainer, RAFTTrainer,
+    SafetyEvaluator, BenchmarkRunner, SafetyMetrics,
+    SyntheticDatasetGenerator, EdgeCaseGenerator,
+)
+```
+
+### 12. Library Integrations (`src/integrations/`)
+
+Optional adapters for garak, PyRIT, and DeepTeam. 5 research API adapters (Semantic Scholar, arXiv, GitHub, HuggingFace, OpenAlex). Detected at runtime.
+
+### 13. CI/CD & Quality
+
+- **GitHub Actions** (`.github/workflows/ci.yml`): test matrix (ubuntu/windows x 3.11/3.12/3.13), lint, typecheck, coverage
+- **Pre-commit** (`.pre-commit-config.yaml`): black, ruff, mypy hooks
+- **Makefile**: 13 targets (test, lint, format, typecheck, coverage, serve, docker, etc.)
+- **SECURITY.md**: Responsible disclosure policy
 
 ## Test Suites
 
@@ -223,9 +337,9 @@ Optional adapters for garak, PyRIT, and DeepTeam. Detected at runtime.
 | moral_religious_framing | ~3,000 | Cultural/religious exploitation |
 | financial_obfuscation | ~3,000 | Hidden fees, currency tricks |
 
-### Chain Detection Categories (13)
+### Chain Detection Categories (16)
 
-recruitment_debt, document_control, isolation_funnels, financial_control, supply_chain, sector_specific, digital_exploitation, healthcare_migration, gray_area_boundaries, government_complicity, gender_specific, multi_country_transit, temporal_escalation
+recruitment_debt, document_control, isolation_funnels, financial_control, supply_chain, sector_specific, digital_exploitation, healthcare_migration, gray_area_boundaries, government_complicity, gender_specific, multi_country_transit, temporal_escalation, education_sector, fishing_maritime, whistleblower_retaliation
 
 ## ILO Forced Labor Indicators
 
@@ -282,8 +396,8 @@ Multi-country transit routes: MM-TH-MY-SG, NG-LY-IT, PH-QA-SA, NP-IN-QA, GT-MX-U
 ## Testing
 
 ```bash
-# Run all tests (671 total)
-py -3.13 -m pytest tests/ -v
+# Run all tests (4,031 total)
+py -3.13 -m pytest tests/ -v -W ignore::SyntaxWarning --ignore=tests/e2e
 
 # Run specific test file
 py -3.13 -m pytest tests/test_chain_detection.py -v
@@ -296,17 +410,20 @@ py -3.13 -m pytest tests/ --cov=src --cov-report=html
 
 | File | Tests | Focus |
 |------|-------|-------|
-| test_api_models.py | 20 | Pydantic model validation |
-| test_base_agent.py | 21 | Agent system |
-| test_chain_detection.py | 45 | Chain detection (models, seeds, registry, scorer, routes) |
-| test_scraper.py | 75 | Document intelligence (sources, fetcher, extractor, KB, seeds) |
-| test_routes.py | 49 | Plugin route integration |
-| test_spinning.py | 40+ | Transform operations |
-| test_stealth.py | 48 | Stealth scraping system |
-| test_document_identity.py | 35 | SimHash dedup, document index |
-| test_multilingual.py | 9 | Multilingual attack modes |
-| test_multi_turn.py | 14 | Multi-turn strategies |
-| test_integrations.py | 16 | Library adapters |
+| test_step_and_new_mutators.py | 725 | Step decomposition + all new mutator categories |
+| test_new_mutators.py | 284 | Batch 1-3 mutator categories |
+| test_output_evasion.py | 277 | Output evasion mutators |
+| test_training_v6.py | 192 | Reward modeling, safety evaluator, dataset generator |
+| test_plugin_routes.py | 80+ | Plugin route integration |
+| test_scraper.py | 75 | Document intelligence |
+| test_prompt_injection.py | 66 | Core prompt injection |
+| test_training.py | 42 | Training export formats |
+| test_training_v2.py | 52 | Training v2 (scoring, augmentation) |
+| test_chain_detection.py | 45 | Chain detection |
+| test_routes.py | 49 | Core route tests |
+| test_stealth.py | 48 | Stealth scraping |
+| test_dimensional_matrix.py | 80 | Dimensional matrix |
+| test_research_apis.py | 33 | Research API adapters |
 
 ## Environment Variables
 
@@ -333,9 +450,13 @@ CACHE_ENABLED=true
 | `src/chain_detection/models.py` | ActivityChain, ChainScore, Grade |
 | `src/chain_detection/seeds/__init__.py` | All 13 seed module imports |
 | `src/scraper/seeds/__init__.py` | All 174 seed fact imports |
+| `src/training/__init__.py` | Training pipeline (81 exports, 23 modules) |
 | `src/api_client.py` | UnifiedAPIClient |
 | `data/sample_test_prompts.json` | 145 test prompts (14 suites) |
-| `tests/test_chain_detection.py` | Chain detection tests |
+| `.github/workflows/ci.yml` | GitHub Actions CI pipeline |
+| `Makefile` | 13 build/test targets |
+| `SECURITY.md` | Responsible disclosure policy |
+| `docs/examples/` | Sample HTML reports |
 
 ## Troubleshooting
 
@@ -358,6 +479,6 @@ Provide all required fields. Use Pydantic v2 syntax (model_validate, not parse_o
 
 ---
 
-*Version: 2.0.0*
+*Version: 4.0.0*
 *Author: Taylor Amarel*
 *Framework: LLM Safety Testing for Migrant Worker Protection*

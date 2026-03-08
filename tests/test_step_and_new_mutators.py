@@ -199,11 +199,11 @@ ALL_NEW_MUTATORS = (
 class TestRegistryCounts:
     """Verify the total mutator count and per-category counts."""
 
-    def test_total_mutator_count_is_240(self):
-        """With 48 new mutators added, total should be 240."""
+    def test_total_mutator_count(self):
+        """Total should be 488 after all expansion batches."""
         all_m = list_mutators()
-        assert len(all_m) == 240, (
-            f"Expected 240 total mutators, got {len(all_m)}"
+        assert len(all_m) == 488, (
+            f"Expected 488 total mutators, got {len(all_m)}"
         )
 
     def test_step_decomposition_count(self):

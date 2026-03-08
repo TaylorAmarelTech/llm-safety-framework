@@ -429,7 +429,7 @@
       "name": "Mistral Large",
       "endpoint_id": "mistral",
       "model_id": "mistral-large-latest",
-      "enabled": false,
+      "enabled": true,
       "temperature": 0.7,
       "max_tokens": 2048
     },

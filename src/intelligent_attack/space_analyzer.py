@@ -8,7 +8,7 @@ Falls back to PCA + KMeans if those aren't installed.
 from typing import List, Dict, Any, Optional, Tuple
 import json
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class SpaceAnalyzer:
@@ -167,7 +167,7 @@ class SpaceAnalyzer:
     def save_analysis(self, analysis: Dict[str, Any], name: str = "latest") -> str:
         """Save analysis results to disk."""
         self.analysis_dir.mkdir(parents=True, exist_ok=True)
-        analysis["created_at"] = datetime.now().isoformat()
+        analysis["created_at"] = datetime.now(tz=timezone.utc).isoformat()
         filename = f"{name}_analysis.json"
         filepath = self.analysis_dir / filename
         with open(filepath, 'w', encoding='utf-8') as f:

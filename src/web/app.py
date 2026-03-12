@@ -5,7 +5,7 @@ Main application factory and configuration.
 """
 
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 from contextlib import asynccontextmanager
@@ -66,7 +66,7 @@ def create_app(settings: Optional[Settings] = None) -> FastAPI:
         - Import/export test data and results
         - Manage prompts and attack modules
         """,
-        version="1.0.0",
+        version="4.0.0",
         lifespan=lifespan,
         docs_url="/api/docs",
         redoc_url="/api/redoc",
@@ -106,7 +106,7 @@ def create_app(settings: Optional[Settings] = None) -> FastAPI:
     # Health check (too small for a full plugin)
     @app.get("/api/health", tags=["Health"])
     async def health_check():
-        return {"status": "healthy", "timestamp": datetime.now().isoformat()}
+        return {"status": "healthy", "timestamp": datetime.now(tz=timezone.utc).isoformat()}
 
     # ── Plugin Meta Endpoints ─────────────────────────────────────────
     @app.get("/api/plugins/nav")

@@ -14,7 +14,7 @@ arbitrage, authority impersonation) work across all illicit domains.
 from __future__ import annotations
 
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from src.research.agents import (
@@ -210,7 +210,7 @@ Return JSON:
             source_domains: Source domains. Default: all.
             target_domains: Target domains. Default: all.
         """
-        start = datetime.now()
+        start = datetime.now(tz=timezone.utc)
         target_techniques = techniques or list(self.TECHNIQUE_BRIDGES.keys())
         sources = source_domains or ["trafficking", "tax_evasion", "money_laundering", "white_collar_crime"]
         targets = target_domains or ["trafficking", "tax_evasion", "money_laundering", "white_collar_crime"]
@@ -230,7 +230,7 @@ Return JSON:
                     all_findings.extend(findings)
                     all_tests.extend(tests)
 
-        elapsed = (datetime.now() - start).total_seconds()
+        elapsed = (datetime.now(tz=timezone.utc) - start).total_seconds()
 
         report = ResearchReport(
             agent_name=self.NAME,
@@ -245,7 +245,7 @@ Return JSON:
             run_duration_seconds=elapsed,
             llm_calls_made=self._call_count,
             started_at=start.isoformat(),
-            completed_at=datetime.now().isoformat(),
+            completed_at=datetime.now(tz=timezone.utc).isoformat(),
         )
 
         self.save_report(report)

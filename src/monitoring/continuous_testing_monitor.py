@@ -10,7 +10,7 @@ Users must provide their own domain-specific test content.
 import json
 import time
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, List
 import subprocess
 import sys
@@ -46,7 +46,7 @@ def monitor_testing_progress():
     """Monitor continuous testing progress"""
 
     print(f"\n{'='*80}")
-    print(f"CONTINUOUS TESTING MONITOR - Started {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"CONTINUOUS TESTING MONITOR - Started {datetime.now(tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"{'='*80}\n")
 
     iteration = 0
@@ -55,7 +55,7 @@ def monitor_testing_progress():
         iteration += 1
 
         print(f"\n{'='*80}")
-        print(f"STATUS UPDATE #{iteration} - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"STATUS UPDATE #{iteration} - {datetime.now(tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"{'='*80}\n")
 
         # Check generation progress

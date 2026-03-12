@@ -16,7 +16,7 @@ and legitimate-vs-harmful boundary detection. Covers:
 from __future__ import annotations
 
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from src.research.agents import (
@@ -267,7 +267,7 @@ Return JSON:
         Args:
             areas: Which boundary areas to research. Default: all.
         """
-        start = datetime.now()
+        start = datetime.now(tz=timezone.utc)
         target_areas = areas or list(self.BOUNDARY_AREAS.keys())
 
         all_findings: list[Finding] = []
@@ -279,7 +279,7 @@ Return JSON:
             all_findings.extend(findings)
             all_tests.extend(tests)
 
-        elapsed = (datetime.now() - start).total_seconds()
+        elapsed = (datetime.now(tz=timezone.utc) - start).total_seconds()
 
         # Count refusal vs non-refusal tests
         refusal_tests = sum(1 for t in all_tests if t.expected_refusal)
@@ -298,7 +298,7 @@ Return JSON:
             run_duration_seconds=elapsed,
             llm_calls_made=self._call_count,
             started_at=start.isoformat(),
-            completed_at=datetime.now().isoformat(),
+            completed_at=datetime.now(tz=timezone.utc).isoformat(),
         )
 
         self.save_report(report)

@@ -12,7 +12,7 @@ import socketserver
 import json
 import sqlite3
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 import re
 import urllib.parse
 from typing import Dict, List, Optional
@@ -419,7 +419,7 @@ class UnifiedDashboardHandler(http.server.SimpleHTTPRequestHandler):
         </div>
 
         <footer>
-            Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Auto-refreshes every 30 seconds
+            Last Updated: {datetime.now(tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')} | Auto-refreshes every 30 seconds
         </footer>
     </div>
 </body>

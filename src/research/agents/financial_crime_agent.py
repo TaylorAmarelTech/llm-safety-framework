@@ -14,7 +14,7 @@ schemes, case studies, and emerging techniques in each area.
 from __future__ import annotations
 
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from src.research.agents import (
@@ -268,7 +268,7 @@ Return JSON:
         Args:
             topics: Which topics to research. Default: all.
         """
-        start = datetime.now()
+        start = datetime.now(tz=timezone.utc)
         target_topics = topics or list(self.RESEARCH_TOPICS.keys())
 
         all_findings: list[Finding] = []
@@ -280,7 +280,7 @@ Return JSON:
             all_findings.extend(findings)
             all_tests.extend(tests)
 
-        elapsed = (datetime.now() - start).total_seconds()
+        elapsed = (datetime.now(tz=timezone.utc) - start).total_seconds()
 
         # Count by domain
         domain_counts = {}
@@ -300,7 +300,7 @@ Return JSON:
             run_duration_seconds=elapsed,
             llm_calls_made=self._call_count,
             started_at=start.isoformat(),
-            completed_at=datetime.now().isoformat(),
+            completed_at=datetime.now(tz=timezone.utc).isoformat(),
         )
 
         self.save_report(report)

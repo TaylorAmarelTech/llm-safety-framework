@@ -19,7 +19,7 @@ from __future__ import annotations
 import json
 import logging
 from collections import Counter
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -268,7 +268,7 @@ Return JSON:
         Args:
             project_root: Path to project root. Default: current directory.
         """
-        start = datetime.now()
+        start = datetime.now(tz=timezone.utc)
         root = Path(project_root) if project_root else Path(".")
 
         # Load and analyze existing tests
@@ -321,7 +321,7 @@ Return JSON:
             all_findings.extend(findings)
             all_tests.extend(new_tests)
 
-        elapsed = (datetime.now() - start).total_seconds()
+        elapsed = (datetime.now(tz=timezone.utc) - start).total_seconds()
 
         report = ResearchReport(
             agent_name=self.NAME,
@@ -337,7 +337,7 @@ Return JSON:
             run_duration_seconds=elapsed,
             llm_calls_made=self._call_count,
             started_at=start.isoformat(),
-            completed_at=datetime.now().isoformat(),
+            completed_at=datetime.now(tz=timezone.utc).isoformat(),
         )
 
         self.save_report(report)

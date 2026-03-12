@@ -1,11 +1,12 @@
 """
 Dimensional Response Matrix — multi-dimensional severity scoring for LLM safety.
 
-36 dimensions across 4 categories:
+46 dimensions across 5 categories:
   A. Prompt (12) — input properties
   B. Response (7) — output properties
   C. Scenario (11) — ILO forced labor indicators
   D. Systemic (5) — structural factors
+  E. Agent (10) — AI agent / code-generation risk factors
 
 Five operations:
   1. RATE   — score a prompt+response on all dimensions (LLM judge)
@@ -16,6 +17,7 @@ Five operations:
 """
 
 from .dimensions import (
+    AGENT_DIMENSIONS,
     ALL_DIMENSIONS,
     DIMENSION_BY_ID,
     DIMENSIONS_BY_CATEGORY,
@@ -46,6 +48,7 @@ from .debate_judge import DebateJudge, DebateResult, DebateVerdict, save_debate
 
 __all__ = [
     # Dimensions
+    "AGENT_DIMENSIONS",
     "ALL_DIMENSIONS",
     "DIMENSION_BY_ID",
     "DIMENSIONS_BY_CATEGORY",

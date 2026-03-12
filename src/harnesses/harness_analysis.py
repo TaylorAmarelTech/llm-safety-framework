@@ -10,7 +10,7 @@ Users must provide their own domain-specific test content.
 import sys
 import time
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 if sys.platform == 'win32':
     import io
@@ -32,12 +32,12 @@ class AnalysisHarness:
 
     def __init__(self, duration_hours=336):
         self.duration_hours = duration_hours
-        self.start_time = datetime.now()
+        self.start_time = datetime.now(tz=timezone.utc)
         self.end_time = self.start_time + timedelta(hours=duration_hours)
         self.analyses_completed = 0
 
     def should_continue(self):
-        return datetime.now() < self.end_time
+        return datetime.now(tz=timezone.utc) < self.end_time
 
     def run_analysis(self):
         """Run feature space analysis"""

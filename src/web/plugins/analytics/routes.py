@@ -14,7 +14,7 @@ import re
 import tempfile
 import uuid
 import random
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Optional
 
@@ -36,6 +36,19 @@ def _validate_id(value: str, label: str = "ID") -> str:
     if not _SAFE_ID.match(value):
         raise HTTPException(status_code=400, detail=f"Invalid {label} format")
     return value
+
+
+def _resolve_data_file(data_dir: str, *candidates: str) -> Optional[Path]:
+    """Resolve a data file by checking data_dir first, then project-relative fallbacks."""
+    for c in candidates:
+        p = Path(data_dir) / c
+        if p.exists():
+            return p
+    for c in candidates:
+        p = Path(c)
+        if p.exists():
+            return p
+    return None
 
 
 # =============================================================================
@@ -96,7 +109,11 @@ async def get_statistics(ctx: AppContext = Depends(get_ctx)):
     """Get overall statistics."""
     settings = ctx.settings
     prompts_file = Path(settings.data_dir) / "sample_test_prompts.json"
-    conversations_file = Path("examples/sample_conversations.json")
+    conversations_file = _resolve_data_file(
+        settings.data_dir,
+        "sample_conversations.json",
+        "examples/sample_conversations.json",
+    )
 
     stats = {
         "prompts": {"total": 0, "by_category": {}, "by_corridor": {}},
@@ -117,7 +134,7 @@ async def get_statistics(ctx: AppContext = Depends(get_ctx)):
                     stats["prompts"]["by_corridor"].get(corridor, 0) + 1
                 )
 
-    if conversations_file.exists():
+    if conversations_file and conversations_file.exists():
         with open(conversations_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
         for conv in data.get("conversations", []):
@@ -369,12 +386,14 @@ async def get_conversations(
     model: Optional[str] = None,
     limit: int = 50,
     offset: int = 0,
+    ctx: AppContext = Depends(get_ctx),
 ):
     """Get test conversations with optional filtering."""
     possible_paths = [
+        Path(ctx.settings.data_dir) / "sample_conversations.json",
+        Path(ctx.settings.data_dir) / "all_conversations.json",
         Path("examples/sample_conversations.json"),
         Path("templates/all_conversations.json"),
-        Path("../trafficking_llm_benchmark/all_conversations.json"),
     ]
 
     conversations = []
@@ -413,11 +432,15 @@ async def get_conversations(
 
 
 @router.get("/conversations/{conversation_id}")
-async def get_conversation(conversation_id: str):
+async def get_conversation(conversation_id: str, ctx: AppContext = Depends(get_ctx)):
     """Get a specific conversation by ID."""
-    conversations_file = Path("examples/sample_conversations.json")
+    conversations_file = _resolve_data_file(
+        ctx.settings.data_dir,
+        "sample_conversations.json",
+        "examples/sample_conversations.json",
+    )
 
-    if not conversations_file.exists():
+    if not conversations_file:
         raise HTTPException(status_code=404, detail="Conversations file not found")
 
     with open(conversations_file, 'r', encoding='utf-8') as f:
@@ -511,11 +534,14 @@ async def apply_mutations(request: MutationRequest):
 # =============================================================================
 
 @router.get("/graded-responses")
-async def get_graded_responses():
+async def get_graded_responses(ctx: AppContext = Depends(get_ctx)):
     """Get all graded response examples."""
-    graded_file = Path("data/graded_responses/example_graded_responses.json")
+    graded_file = _resolve_data_file(
+        ctx.settings.data_dir,
+        "graded_responses/example_graded_responses.json",
+    )
 
-    if not graded_file.exists():
+    if not graded_file:
         return {"status": "success", "examples": []}
 
     with open(graded_file, 'r', encoding='utf-8') as f:
@@ -528,6 +554,9 @@ async def get_graded_responses():
 # Full Test Database
 # =============================================================================
 
+_CONSOLIDATED_TESTS_FILE = "all_tests_consolidated_20260129_211032.json"
+
+
 @router.get("/tests/full")
 async def get_full_tests(
     category: Optional[str] = None,
@@ -535,18 +564,14 @@ async def get_full_tests(
     limit: int = 100,
     offset: int = 0,
     search: Optional[str] = None,
+    ctx: AppContext = Depends(get_ctx),
 ):
     """Get tests from the full 69K+ test database."""
-    possible_paths = [
-        Path("templates/all_tests_consolidated_20260129_211032.json"),
-        Path("../trafficking_llm_benchmark/all_tests_consolidated_20260129_211032.json"),
-    ]
-
-    tests_file = None
-    for p in possible_paths:
-        if p.exists():
-            tests_file = p
-            break
+    tests_file = _resolve_data_file(
+        ctx.settings.data_dir,
+        _CONSOLIDATED_TESTS_FILE,
+        f"templates/{_CONSOLIDATED_TESTS_FILE}",
+    )
 
     if not tests_file:
         return {"status": "error", "message": "Consolidated tests file not found", "tests": [], "total": 0}
@@ -577,18 +602,13 @@ async def get_full_tests(
 
 
 @router.get("/tests/full/stats")
-async def get_full_tests_stats():
+async def get_full_tests_stats(ctx: AppContext = Depends(get_ctx)):
     """Get statistics for the full test database."""
-    possible_paths = [
-        Path("templates/all_tests_consolidated_20260129_211032.json"),
-        Path("../trafficking_llm_benchmark/all_tests_consolidated_20260129_211032.json"),
-    ]
-
-    tests_file = None
-    for p in possible_paths:
-        if p.exists():
-            tests_file = p
-            break
+    tests_file = _resolve_data_file(
+        ctx.settings.data_dir,
+        _CONSOLIDATED_TESTS_FILE,
+        f"templates/{_CONSOLIDATED_TESTS_FILE}",
+    )
 
     if not tests_file:
         return {"status": "error", "message": "Consolidated tests file not found"}
@@ -621,18 +641,17 @@ async def get_full_tests_stats():
 
 
 @router.get("/tests/full/sample")
-async def get_sample_tests(count: int = 10, category: Optional[str] = None):
+async def get_sample_tests(
+    count: int = 10,
+    category: Optional[str] = None,
+    ctx: AppContext = Depends(get_ctx),
+):
     """Get a random sample of tests."""
-    possible_paths = [
-        Path("templates/all_tests_consolidated_20260129_211032.json"),
-        Path("../trafficking_llm_benchmark/all_tests_consolidated_20260129_211032.json"),
-    ]
-
-    tests_file = None
-    for p in possible_paths:
-        if p.exists():
-            tests_file = p
-            break
+    tests_file = _resolve_data_file(
+        ctx.settings.data_dir,
+        _CONSOLIDATED_TESTS_FILE,
+        f"templates/{_CONSOLIDATED_TESTS_FILE}",
+    )
 
     if not tests_file:
         return {"status": "error", "message": "Consolidated tests file not found", "tests": []}
@@ -702,14 +721,14 @@ async def run_tests(request: TestRunRequest, ctx: AppContext = Depends(get_ctx))
     # Limit prompts
     prompts = prompts[:request.max_prompts]
 
-    run_id = f"run_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
+    run_id = f"run_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
 
     # Save run metadata
     runs_dir = Path(settings.pipeline_dir) / "runs"
     runs_dir.mkdir(parents=True, exist_ok=True)
     run_meta = {
         "id": run_id,
-        "started_at": datetime.now().isoformat(),
+        "started_at": datetime.now(tz=timezone.utc).isoformat(),
         "status": "started",
         "prompt_count": len(prompts),
         "models": [{"id": m["id"], "name": m["name"]} for m in enabled_models],
@@ -829,7 +848,7 @@ def _update_run_file(run_file: Path, run_id: str, results: list, status: str, er
         data["status"] = status
         data["result_count"] = len(results)
         if status == "completed":
-            data["completed_at"] = datetime.now().isoformat()
+            data["completed_at"] = datetime.now(tz=timezone.utc).isoformat()
         if error:
             data["error"] = error
         # Atomic write: write to temp file then rename to prevent corruption
@@ -1151,7 +1170,7 @@ tr:hover td{{background:#f9fafb}}
 <h2>Results ({total} total)</h2>
 <table><thead><tr><th>#</th><th>Prompt</th><th>Model</th><th>Classification</th><th>Confidence</th><th>Source</th></tr></thead>
 <tbody>{table_rows}</tbody></table>
-<div class="footer">Generated {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} &middot; LLM Safety Testing Framework</div>
+<div class="footer">Generated {datetime.now(tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')} &middot; LLM Safety Testing Framework</div>
 </div>
 <script>
 new Chart(document.getElementById('c1'),{{type:'doughnut',data:{{labels:['Safe','Harmful','Unclear','Error'],

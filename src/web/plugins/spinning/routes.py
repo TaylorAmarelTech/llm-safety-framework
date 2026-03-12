@@ -13,7 +13,7 @@ import json
 import re
 import uuid
 import random
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
@@ -194,14 +194,14 @@ async def expand_spintax(request: SpintaxRequest, ctx: AppContext = Depends(get_
             results.append(expanded)
         attempts += 1
 
-    job_id = f"spintax_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    job_id = f"spintax_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
 
     if request.save_to_pipeline:
         _save_spin_job(ctx.settings, job_id, {
             "id": job_id,
             "type": "spintax",
             "template": request.template,
-            "created_at": datetime.now().isoformat(),
+            "created_at": datetime.now(tz=timezone.utc).isoformat(),
             "prompts": results,
         })
 
@@ -230,14 +230,14 @@ async def regex_spin(request: RegexSpinRequest, ctx: AppContext = Depends(get_ct
                     raise HTTPException(status_code=400, detail=str(e))
         results.append(modified)
 
-    job_id = f"regex_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    job_id = f"regex_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
 
     if request.save_to_pipeline:
         _save_spin_job(ctx.settings, job_id, {
             "id": job_id,
             "type": "regex",
             "patterns": request.patterns,
-            "created_at": datetime.now().isoformat(),
+            "created_at": datetime.now(tz=timezone.utc).isoformat(),
             "prompts": results,
         })
 
@@ -265,13 +265,13 @@ async def char_padding(request: CharPaddingRequest, ctx: AppContext = Depends(ge
             modified = '\u200b'.join(modified)
         results.append(modified)
 
-    job_id = f"charpad_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    job_id = f"charpad_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
 
     if request.save_to_pipeline:
         _save_spin_job(ctx.settings, job_id, {
             "id": job_id,
             "type": "char_padding",
-            "created_at": datetime.now().isoformat(),
+            "created_at": datetime.now(tz=timezone.utc).isoformat(),
             "prompts": results,
         })
 
@@ -328,14 +328,14 @@ async def llm_rephrase(request: LLMRephrasingRequest, ctx: AppContext = Depends(
     for r in results:
         all_prompts.extend(r["variations"])
 
-    job_id = f"llm_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    job_id = f"llm_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
 
     if request.save_to_pipeline:
         _save_spin_job(ctx.settings, job_id, {
             "id": job_id,
             "type": "llm_rephrase",
             "model": request.model_id,
-            "created_at": datetime.now().isoformat(),
+            "created_at": datetime.now(tz=timezone.utc).isoformat(),
             "prompts": all_prompts,
             "details": results,
         })
@@ -372,14 +372,14 @@ async def attack_augment(request: AttackAugmentRequest, ctx: AppContext = Depend
             results.append({"original": prompt, "mutated": mutated, "strategies": request.strategies})
 
     all_prompts = [r["mutated"] for r in results]
-    job_id = f"attack_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    job_id = f"attack_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
 
     if request.save_to_pipeline:
         _save_spin_job(ctx.settings, job_id, {
             "id": job_id,
             "type": "attack_augment",
             "strategies": request.strategies,
-            "created_at": datetime.now().isoformat(),
+            "created_at": datetime.now(tz=timezone.utc).isoformat(),
             "prompts": all_prompts,
             "details": results,
         })
@@ -414,13 +414,13 @@ async def custom_augment(request: CustomAugmentRequest, ctx: AppContext = Depend
             modified = modified + request.suffix
         results.append(modified)
 
-    job_id = f"custom_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    job_id = f"custom_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
 
     if request.save_to_pipeline:
         _save_spin_job(ctx.settings, job_id, {
             "id": job_id,
             "type": "custom_augment",
-            "created_at": datetime.now().isoformat(),
+            "created_at": datetime.now(tz=timezone.utc).isoformat(),
             "prompts": results,
         })
 
@@ -460,14 +460,14 @@ async def encode_prompts(request: EncodeRequest, ctx: AppContext = Depends(get_c
         )
 
     results = fn(request.prompts, **request.options)
-    job_id = f"encode_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    job_id = f"encode_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
 
     if request.save_to_pipeline:
         _save_spin_job(ctx.settings, job_id, {
             "id": job_id,
             "type": "encode",
             "encoding_type": request.encoding_type,
-            "created_at": datetime.now().isoformat(),
+            "created_at": datetime.now(tz=timezone.utc).isoformat(),
             "prompts": results,
         })
 
@@ -490,14 +490,14 @@ async def obfuscate_prompts(request: ObfuscateRequest, ctx: AppContext = Depends
     from ....spinning.obfuscators import TextObfuscator
 
     results = TextObfuscator.apply_layers(request.prompts, request.techniques)
-    job_id = f"obfusc_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    job_id = f"obfusc_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
 
     if request.save_to_pipeline:
         _save_spin_job(ctx.settings, job_id, {
             "id": job_id,
             "type": "obfuscate",
             "techniques": [t.get("technique", "") for t in request.techniques],
-            "created_at": datetime.now().isoformat(),
+            "created_at": datetime.now(tz=timezone.utc).isoformat(),
             "prompts": results,
         })
 
@@ -536,14 +536,14 @@ async def jailbreak_wrap(request: JailbreakWrapRequest, ctx: AppContext = Depend
 
     results = JailbreakTemplater.apply(request.prompts, request.template_ids)
     all_prompts = [r["wrapped"] for r in results]
-    job_id = f"jailbreak_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    job_id = f"jailbreak_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
 
     if request.save_to_pipeline:
         _save_spin_job(ctx.settings, job_id, {
             "id": job_id,
             "type": "jailbreak_wrap",
             "template_ids": request.template_ids,
-            "created_at": datetime.now().isoformat(),
+            "created_at": datetime.now(tz=timezone.utc).isoformat(),
             "prompts": all_prompts,
             "details": results,
         })
@@ -723,13 +723,13 @@ async def save_chain(request: ChainSaveRequest, ctx: AppContext = Depends(get_ct
         raise HTTPException(status_code=400, detail="Chain must have at least one step")
 
     chains_dir = _get_chains_dir(ctx.settings)
-    chain_id = f"chain_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    chain_id = f"chain_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
     chain_data = {
         "id": chain_id,
         "name": request.name,
         "description": request.description,
         "steps": request.steps,
-        "created_at": datetime.now().isoformat(),
+        "created_at": datetime.now(tz=timezone.utc).isoformat(),
     }
     with open(chains_dir / f"{chain_id}.json", 'w', encoding='utf-8') as f:
         json.dump(chain_data, f, indent=2, ensure_ascii=False)
@@ -758,14 +758,14 @@ async def execute_chain(request: ChainExecuteRequest, ctx: AppContext = Depends(
         raise HTTPException(status_code=400, detail="No prompts provided")
 
     intermediates, final_prompts = _execute_chain_steps(request.prompts, request.steps)
-    job_id = f"chain_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    job_id = f"chain_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
 
     if request.save_to_pipeline:
         _save_spin_job(ctx.settings, job_id, {
             "id": job_id,
             "type": "chain",
             "steps": [s["step"] for s in intermediates],
-            "created_at": datetime.now().isoformat(),
+            "created_at": datetime.now(tz=timezone.utc).isoformat(),
             "prompts": final_prompts,
         })
 
@@ -933,7 +933,7 @@ async def build_pipeline(request: PipelineBuildRequest, ctx: AppContext = Depend
 
     # Save active pipeline
     pipeline_data = {
-        "built_at": datetime.now().isoformat(),
+        "built_at": datetime.now(tz=timezone.utc).isoformat(),
         "sources": sources,
         "total": len(all_prompts),
         "prompts": all_prompts,
@@ -1062,13 +1062,13 @@ async def translate_prompts(request: TranslateRequest, ctx: AppContext = Depends
         spun_dir = Path(ctx.settings.pipeline_dir) / "spun"
         spun_dir.mkdir(parents=True, exist_ok=True)
 
-        job_id = f"multilingual_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
+        job_id = f"multilingual_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
         save_data = {
             "id": job_id,
             "type": "multilingual_translate",
             "target_language": request.target_language,
             "model_id": request.model_id,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": datetime.now(tz=timezone.utc).isoformat(),
             "results": results,
             "count": len(results),
         }
@@ -1120,14 +1120,14 @@ async def mix_language_prompts(request: MixLanguageRequest, ctx: AppContext = De
         spun_dir = Path(ctx.settings.pipeline_dir) / "spun"
         spun_dir.mkdir(parents=True, exist_ok=True)
 
-        job_id = f"multilingual_mix_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
+        job_id = f"multilingual_mix_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
         save_data = {
             "id": job_id,
             "type": "multilingual_mix",
             "languages": request.languages,
             "mix_ratio": request.mix_ratio,
             "model_id": request.model_id,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": datetime.now(tz=timezone.utc).isoformat(),
             "results": results,
             "count": len(results),
         }

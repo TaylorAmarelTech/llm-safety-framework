@@ -12,7 +12,7 @@ from __future__ import annotations
 import json
 import re
 from abc import abstractmethod
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, TypeVar, Generic
 
@@ -129,7 +129,7 @@ class HarnessAgent(Generic[T]):
         Returns:
             AgentResponse with the result
         """
-        start_time = datetime.now()
+        start_time = datetime.now(tz=timezone.utc)
 
         # Build full prompt
         full_prompt = self._build_prompt(prompt, context, output_type)
@@ -164,12 +164,12 @@ class HarnessAgent(Generic[T]):
                 success=False,
                 error=str(e),
                 model_used=self.config.model,
-                latency_ms=(datetime.now() - start_time).total_seconds() * 1000,
+                latency_ms=(datetime.now(tz=timezone.utc) - start_time).total_seconds() * 1000,
             )
 
         # Log call
         self._call_history.append({
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": datetime.now(tz=timezone.utc).isoformat(),
             "prompt_length": len(prompt),
             "success": response.success,
             "tokens": response.tokens_used,

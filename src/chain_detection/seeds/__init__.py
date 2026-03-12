@@ -22,6 +22,11 @@ from .temporal_escalation import CHAINS as TEMPORAL_ESCALATION_CHAINS
 from .tax_evasion_chains import CHAINS as TAX_EVASION_CHAINS
 from .money_laundering_chains import CHAINS as MONEY_LAUNDERING_CHAINS
 from .white_collar_crime_chains import CHAINS as WHITE_COLLAR_CRIME_CHAINS
+from .agent_mediated_exploitation import CHAINS as AGENT_MEDIATED_EXPLOITATION_CHAINS
+from .dev_tool_exploitation import CHAINS as DEV_TOOL_EXPLOITATION_CHAINS
+from .software_suppression import CHAINS as SOFTWARE_SUPPRESSION_CHAINS
+from .multi_turn_agent_escalation import CHAINS as MULTI_TURN_AGENT_ESCALATION_CHAINS
+from .ml_exploitation_chains import CHAINS as ML_EXPLOITATION_CHAINS
 
 _ALL_SEED_MODULES = [
     RECRUITMENT_DEBT_CHAINS,
@@ -40,6 +45,11 @@ _ALL_SEED_MODULES = [
     TAX_EVASION_CHAINS,
     MONEY_LAUNDERING_CHAINS,
     WHITE_COLLAR_CRIME_CHAINS,
+    AGENT_MEDIATED_EXPLOITATION_CHAINS,
+    DEV_TOOL_EXPLOITATION_CHAINS,
+    SOFTWARE_SUPPRESSION_CHAINS,
+    MULTI_TURN_AGENT_ESCALATION_CHAINS,
+    ML_EXPLOITATION_CHAINS,
 ]
 
 

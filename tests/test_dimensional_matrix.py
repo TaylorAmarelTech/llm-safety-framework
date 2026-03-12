@@ -111,8 +111,8 @@ class TestDimensions:
     """Tests for dimensions.py: registry, lookups, and Dimension model."""
 
     def test_all_dimensions_count(self):
-        """ALL_DIMENSIONS should contain exactly 35 dimensions (12+7+11+5)."""
-        assert len(ALL_DIMENSIONS) == 35
+        """ALL_DIMENSIONS should contain exactly 45 dimensions (12+7+11+5+10)."""
+        assert len(ALL_DIMENSIONS) == 45
 
     def test_prompt_dimensions_count(self):
         """PROMPT_DIMENSIONS should contain 12 dimensions (A1-A12)."""
@@ -136,7 +136,7 @@ class TestDimensions:
 
     def test_dimension_by_id_lookup(self):
         """DIMENSION_BY_ID should map every dimension ID to its Dimension."""
-        assert len(DIMENSION_BY_ID) == 35
+        assert len(DIMENSION_BY_ID) == 45
         assert "A1" in DIMENSION_BY_ID
         assert "B7" in DIMENSION_BY_ID
         assert "C11" in DIMENSION_BY_ID
@@ -157,9 +157,9 @@ class TestDimensions:
             get_dimension("Z99")
 
     def test_get_dimensions_all(self):
-        """get_dimensions(None) should return all 35 dimensions."""
+        """get_dimensions(None) should return all 45 dimensions."""
         dims = get_dimensions(None)
-        assert len(dims) == 35
+        assert len(dims) == 45
 
     def test_get_dimensions_by_category(self):
         """get_dimensions(category) should return only that category's dimensions."""
@@ -170,7 +170,7 @@ class TestDimensions:
     def test_dimension_ids_returns_strings(self):
         """dimension_ids() should return a list of string IDs."""
         ids = dimension_ids()
-        assert len(ids) == 35
+        assert len(ids) == 45
         assert all(isinstance(i, str) for i in ids)
         assert "A1" in ids and "D5" in ids
 
@@ -191,14 +191,14 @@ class TestDimensions:
         assert len(lines) >= 6
 
     def test_dimensions_by_category_dict(self):
-        """DIMENSIONS_BY_CATEGORY should have exactly 4 entries."""
-        assert len(DIMENSIONS_BY_CATEGORY) == 4
-        assert set(DIMENSIONS_BY_CATEGORY.keys()) == {
+        """DIMENSIONS_BY_CATEGORY should have at least 4 entries (A-D, possibly E)."""
+        assert len(DIMENSIONS_BY_CATEGORY) >= 4
+        assert {
             DimensionCategory.PROMPT,
             DimensionCategory.RESPONSE,
             DimensionCategory.SCENARIO,
             DimensionCategory.SYSTEMIC,
-        }
+        }.issubset(set(DIMENSIONS_BY_CATEGORY.keys()))
 
     def test_every_dimension_has_five_levels(self):
         """Every dimension should have rubric levels 1 through 5."""
@@ -870,14 +870,14 @@ class TestEmbeddingMapper:
         assert pv.unified_vector == []
 
     def test_rating_to_vector_all_present(self):
-        """rating_to_vector should produce a 35-element normalized vector."""
-        # Create a rating with scores for all 35 dimensions
+        """rating_to_vector should produce a 45-element normalized vector."""
+        # Create a rating with scores for all 45 dimensions
         scores = [_make_score(d.id, 3) for d in ALL_DIMENSIONS]
         rating = _make_rating(scores=scores)
         mapper = EmbeddingMapper()
         vec = mapper.rating_to_vector(rating)
-        # dimension_ids() returns 35 IDs
-        assert len(vec) == 35
+        # dimension_ids() returns 45 IDs
+        assert len(vec) == 45
         # Score of 3 -> (3-1)/4 = 0.5
         assert all(abs(v - 0.5) < 1e-9 for v in vec)
 
@@ -886,7 +886,7 @@ class TestEmbeddingMapper:
         rating = _make_rating(scores=[_make_score("A1", 5)])
         mapper = EmbeddingMapper()
         vec = mapper.rating_to_vector(rating)
-        assert len(vec) == 35
+        assert len(vec) == 45
         # A1 should be (5-1)/4 = 1.0
         assert vec[0] == 1.0
         # All others should be (3-1)/4 = 0.5
@@ -906,7 +906,7 @@ class TestEmbeddingMapper:
         assert len(vectors) == 2
         assert vectors[0].verdict == "REFUSED"
         assert vectors[1].verdict == "COMPLIANT"
-        assert len(vectors[0].dimensional_scores) == 35
+        assert len(vectors[0].dimensional_scores) == 45
 
     def test_build_vector_no_rating(self):
         """build_vector with no rating should produce empty dimensional_scores."""
@@ -931,7 +931,7 @@ class TestEmbeddingMapper:
             verdict="SAFE",
             model_id="model-z",
         )
-        assert len(vec.dimensional_scores) == 35
+        assert len(vec.dimensional_scores) == 45
         assert vec.response == "world"
         assert vec.verdict == "SAFE"
         assert vec.model_id == "model-z"

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from .dimensions import DimensionCategory, get_dimensions
@@ -168,7 +168,7 @@ class DimensionalRater:
             scores=scores,
             overall_risk=round(overall_risk, 3),
             risk_level=risk_level,
-            timestamp=datetime.now(),
+            timestamp=datetime.now(tz=timezone.utc),
             categories_rated=[c.value for c in categories],
         )
 

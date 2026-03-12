@@ -8,7 +8,7 @@ responses -> configure target model -> run tests -> see results.
 import asyncio
 import json
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -415,7 +415,7 @@ async def load_library(request: WizardLoadLibraryRequest, ctx: AppContext = Depe
     if not prompts:
         raise HTTPException(status_code=404, detail="Library not found or empty")
 
-    session_id = f"session_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    session_id = f"session_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
     session = {
         "id": session_id,
         "domain": request.domain,
@@ -426,7 +426,7 @@ async def load_library(request: WizardLoadLibraryRequest, ctx: AppContext = Depe
         "generator_model": "library",
         "generator_provider": "library",
         "library_source": request.library_id,
-        "created_at": datetime.now().isoformat(),
+        "created_at": datetime.now(tz=timezone.utc).isoformat(),
         "prompts": prompts,
         "test_results": None,
     }
@@ -498,8 +498,8 @@ async def verify_connection(request: WizardVerifyRequest):
 @router.post("/generate")
 async def start_generation(request: WizardGenerateRequest, ctx: AppContext = Depends(get_ctx)):
     """Start prompt + graded response generation as a background job."""
-    job_id = f"gen_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
-    session_id = f"session_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    job_id = f"gen_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    session_id = f"session_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
 
     job = {
         "id": job_id,
@@ -513,7 +513,7 @@ async def start_generation(request: WizardGenerateRequest, ctx: AppContext = Dep
         "grades_total": request.prompt_count,
         "message": "Starting prompt generation...",
         "error": None,
-        "created_at": datetime.now().isoformat(),
+        "created_at": datetime.now(tz=timezone.utc).isoformat(),
     }
     _save_job(ctx.settings, job_id, job)
 
@@ -527,7 +527,7 @@ async def start_generation(request: WizardGenerateRequest, ctx: AppContext = Dep
         "prompt_count": request.prompt_count,
         "generator_model": request.generator_model,
         "generator_provider": request.generator_provider,
-        "created_at": datetime.now().isoformat(),
+        "created_at": datetime.now(tz=timezone.utc).isoformat(),
         "prompts": [],
         "test_results": None,
     }
@@ -658,7 +658,7 @@ async def start_grading(request: WizardGradeRequest, ctx: AppContext = Depends(g
     if not session.get("prompts"):
         raise HTTPException(status_code=400, detail="No prompts in session")
 
-    job_id = f"grade_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    job_id = f"grade_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
     prompts = session["prompts"]
 
     job = {
@@ -673,7 +673,7 @@ async def start_grading(request: WizardGradeRequest, ctx: AppContext = Depends(g
         "grades_total": len(prompts),
         "message": "Starting graded response generation...",
         "error": None,
-        "created_at": datetime.now().isoformat(),
+        "created_at": datetime.now(tz=timezone.utc).isoformat(),
     }
     _save_job(ctx.settings, job_id, job)
 
@@ -753,7 +753,7 @@ async def start_test_run(request: WizardTestRequest, ctx: AppContext = Depends(g
     if not session.get("prompts"):
         raise HTTPException(status_code=400, detail="No prompts generated yet")
 
-    run_id = f"wtest_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    run_id = f"wtest_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
 
     job = {
         "id": run_id,
@@ -767,7 +767,7 @@ async def start_test_run(request: WizardTestRequest, ctx: AppContext = Depends(g
         "results_summary": {"safe": 0, "harmful": 0, "unclear": 0, "errors": 0},
         "results": [],
         "error": None,
-        "created_at": datetime.now().isoformat(),
+        "created_at": datetime.now(tz=timezone.utc).isoformat(),
     }
     _save_job(ctx.settings, run_id, job)
 
@@ -836,7 +836,7 @@ async def _run_tests(settings, run_id: str, request: WizardTestRequest, session:
         session["test_results"] = {
             "run_id": run_id,
             "target_model": request.target_model,
-            "completed_at": datetime.now().isoformat(),
+            "completed_at": datetime.now(tz=timezone.utc).isoformat(),
             "summary": job["results_summary"],
             "results": job["results"],
         }

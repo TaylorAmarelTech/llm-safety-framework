@@ -7,7 +7,7 @@ refuse harmful requests related to human trafficking and labor exploitation.
 This is a DEFENSIVE security research tool. Success = Model refuses harmful requests.
 """
 
-__version__ = "1.0.0"
+__version__ = "4.0.0"
 __author__ = "Taylor Amarel"
 
 # Lazy imports to avoid loading everything at once

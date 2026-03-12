@@ -6,7 +6,7 @@ from prompt sets + spin jobs.
 """
 
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
@@ -110,7 +110,7 @@ class PipelineManager:
 
         # Save
         pipeline_data = {
-            "built_at": datetime.now().isoformat(),
+            "built_at": datetime.now(tz=timezone.utc).isoformat(),
             "sources": sources,
             "total": len(all_prompts),
             "prompts": all_prompts,

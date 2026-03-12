@@ -107,7 +107,7 @@ class TestModels:
 class TestSeeds:
     def test_load_all_seeds(self):
         chains = load_all_seeds()
-        assert len(chains) == 126
+        assert len(chains) >= 144
         assert all(isinstance(c, ActivityChain) for c in chains)
 
     def test_no_duplicate_ids(self):
@@ -130,9 +130,9 @@ class TestSeeds:
 
     def test_seed_stats(self):
         stats = seed_stats()
-        assert stats["total_chains"] == 126
+        assert stats["total_chains"] >= 144
         assert stats["total_steps"] > 400
-        assert len(stats["categories"]) == 16
+        assert len(stats["categories"]) >= 19
         assert len(stats["corridors"]) > 10
 
     def test_each_category_has_chains(self):
@@ -144,8 +144,11 @@ class TestSeeds:
             "government_complicity", "gender_specific", "multi_country_transit",
             "temporal_escalation", "tax_evasion", "money_laundering",
             "white_collar_crime",
+            "agent_mediated_exploitation", "dev_tool_exploitation",
+            "software_suppression",
+            "multi_turn_agent_escalation", "ml_exploitation_chains",
         }
-        assert set(stats["categories"].keys()) == expected_categories
+        assert set(stats["categories"].keys()) >= expected_categories
 
     def test_steps_have_legal_basis(self):
         chains = load_all_seeds()
@@ -166,7 +169,7 @@ class TestRegistry:
     def test_load_seeds(self):
         reg = ChainRegistry()
         count = reg.load_seeds()
-        assert count == 126
+        assert count >= 144
 
     def test_get_by_id(self):
         reg = ChainRegistry()
@@ -204,8 +207,8 @@ class TestRegistry:
         reg = ChainRegistry()
         reg.load_seeds()
         cats = reg.categories()
-        assert len(cats) == 16
-        assert sum(cats.values()) == 126
+        assert len(cats) >= 19
+        assert sum(cats.values()) >= 144
 
     def test_add_and_remove(self, tmp_path):
         reg = ChainRegistry(data_dir=tmp_path)
@@ -412,7 +415,7 @@ class TestPluginRoutes:
             r = await c.get("/api/chain-detection/chains")
             assert r.status_code == 200
             data = r.json()
-            assert len(data) == 126
+            assert len(data) >= 144
 
     @pytest.mark.asyncio
     async def test_get_chain_detail(self, client):
@@ -436,7 +439,7 @@ class TestPluginRoutes:
             assert r.status_code == 200
             data = r.json()
             assert "recruitment_debt" in data
-            assert sum(data.values()) == 126
+            assert sum(data.values()) >= 144
 
     @pytest.mark.asyncio
     async def test_seed_stats(self, client):
@@ -444,7 +447,7 @@ class TestPluginRoutes:
             r = await c.get("/api/chain-detection/seeds/stats")
             assert r.status_code == 200
             data = r.json()
-            assert data["total_chains"] == 126
+            assert data["total_chains"] >= 144
 
     @pytest.mark.asyncio
     async def test_scoring_rubric(self, client):

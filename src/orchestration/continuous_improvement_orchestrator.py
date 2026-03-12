@@ -11,7 +11,7 @@ import json
 import subprocess
 from pathlib import Path
 from typing import Dict, List, Any
-from datetime import datetime
+from datetime import datetime, timezone
 from collections import defaultdict
 
 
@@ -41,7 +41,7 @@ class ContinuousImprovementOrchestrator:
         # Results tracking
         self.cycle_results = {
             'cycle_number': cycle_number,
-            'start_date': datetime.now().isoformat(),
+            'start_date': datetime.now(tz=timezone.utc).isoformat(),
             'weeks': {}
         }
 
@@ -92,7 +92,7 @@ class ContinuousImprovementOrchestrator:
             'sample_size': sample_size,
             'models_tested': models,
             'metrics': metrics,
-            'completed': datetime.now().isoformat()
+            'completed': datetime.now(tz=timezone.utc).isoformat()
         }
 
         self._save_cycle_progress()
@@ -134,7 +134,7 @@ class ContinuousImprovementOrchestrator:
         self.cycle_results['weeks'][2] = {
             'phase': 'deep_analysis',
             'insights': insights,
-            'completed': datetime.now().isoformat()
+            'completed': datetime.now(tz=timezone.utc).isoformat()
         }
 
         self._save_cycle_progress()
@@ -176,7 +176,7 @@ class ContinuousImprovementOrchestrator:
         self.cycle_results['weeks'][3] = {
             'phase': 'training_material_generation',
             'materials_generated': materials,
-            'completed': datetime.now().isoformat()
+            'completed': datetime.now(tz=timezone.utc).isoformat()
         }
 
         self._save_cycle_progress()
@@ -215,7 +215,7 @@ class ContinuousImprovementOrchestrator:
         self.cycle_results['weeks'][4] = {
             'phase': 'prompt_evolution',
             'evolution_results': evolution_results,
-            'completed': datetime.now().isoformat()
+            'completed': datetime.now(tz=timezone.utc).isoformat()
         }
 
         self._save_cycle_progress()
@@ -257,10 +257,10 @@ class ContinuousImprovementOrchestrator:
         self.cycle_results['weeks'][5] = {
             'phase': 'validation',
             'improvement_metrics': improvement,
-            'completed': datetime.now().isoformat()
+            'completed': datetime.now(tz=timezone.utc).isoformat()
         }
 
-        self.cycle_results['end_date'] = datetime.now().isoformat()
+        self.cycle_results['end_date'] = datetime.now(tz=timezone.utc).isoformat()
         self._save_cycle_progress()
 
         print("\n[✓] Week 5 Complete")

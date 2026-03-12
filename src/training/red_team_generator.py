@@ -484,12 +484,14 @@ class FeedbackLoop:
                 target_endpoint=getattr(self, '_target_endpoint', {}),
                 model_name=getattr(self, '_target_model', 'gpt-4o-mini'),
             ))
-            results = tester.test_attacks_sync(
-                [{"generated_prompt": p, "id": f"gen_{i}", "category": "generated"}
-                 for i, p in enumerate(generated_prompts)]
-                if 'generated_prompts' in dir()
+            # Use attacks from Step 1 if generation was not skipped
+            attack_prompts = (
+                [{"generated_prompt": a.get("prompt", ""), "id": f"gen_{i}", "category": a.get("category", "generated")}
+                 for i, a in enumerate(attacks)]
+                if not skip_generation and attacks
                 else []
             )
+            results = tester.test_attacks_sync(attack_prompts)
             tester.write_results_to_db(self.db_path)
             stats["testing"] = tester.get_summary()
 

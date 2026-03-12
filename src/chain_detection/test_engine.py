@@ -84,14 +84,16 @@ class ChainTestEngine:
 
         start_ms = _now_ms()
 
-        # Execute based on test mode
+        # Execute based on test mode — build prompt once and reuse it
         if test_mode == "incremental":
+            prompt_for_record = build_prompt(chain, test_mode)
             response = await self._run_incremental(chain, api_client)
         elif test_mode == "contrastive":
+            prompt_for_record = build_prompt(chain, test_mode)
             response = await self._run_contrastive(chain, api_client)
         else:
-            prompt = build_prompt(chain, test_mode)
-            response = await self._call_llm(api_client, prompt)
+            prompt_for_record = build_prompt(chain, test_mode)
+            response = await self._call_llm(api_client, prompt_for_record)
 
         duration_ms = _now_ms() - start_ms
 
@@ -100,7 +102,7 @@ class ChainTestEngine:
             id=f"tc_{uuid.uuid4().hex[:12]}",
             chain_id=chain_id,
             test_mode=test_mode,
-            prompt=build_prompt(chain, test_mode),
+            prompt=prompt_for_record,
             expected_grade=_expected_grade_for_difficulty(chain.difficulty),
         )
 

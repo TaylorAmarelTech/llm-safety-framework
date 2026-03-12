@@ -12,7 +12,7 @@ import os
 import subprocess
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 # Fix Windows encoding
@@ -93,7 +93,7 @@ def run_claude_iteration(
     print(f"{'='*70}")
     print(f"  Model: {model}")
     print(f"  Budget: ${budget}")
-    print(f"  Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"  Time: {datetime.now(tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"{'='*70}\n")
 
     try:
@@ -133,7 +133,7 @@ def log_iteration_result(iteration: int, success: bool, output: str):
     log_dir = PROJECT_ROOT / "data" / "harness_logs"
     log_dir.mkdir(parents=True, exist_ok=True)
 
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now(tz=timezone.utc).strftime("%Y%m%d_%H%M%S")
     log_file = log_dir / f"iteration_{iteration:03d}_{timestamp}.log"
 
     with open(log_file, "w", encoding="utf-8") as f:

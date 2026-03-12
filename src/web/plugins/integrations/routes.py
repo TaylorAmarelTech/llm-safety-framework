@@ -95,15 +95,15 @@ async def execute_method(
         integrations_dir = Path(ctx.settings.pipeline_dir) / "integrations"
         integrations_dir.mkdir(parents=True, exist_ok=True)
 
-        from datetime import datetime
+        from datetime import datetime, timezone
         import uuid
-        filename = f"{library}_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}.json"
+        filename = f"{library}_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}.json"
         save_data = {
             "library": library,
             "method_id": request.method_id,
             "prompts": request.prompts,
             "results": results,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": datetime.now(tz=timezone.utc).isoformat(),
         }
         with open(integrations_dir / filename, "w", encoding="utf-8") as f:
             json.dump(save_data, f, indent=2, ensure_ascii=False)

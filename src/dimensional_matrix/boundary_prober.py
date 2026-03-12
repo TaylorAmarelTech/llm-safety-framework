@@ -14,7 +14,7 @@ from __future__ import annotations
 
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -64,7 +64,7 @@ class GuardrailMap:
         self.prompt = prompt
         self.model_id = model_id
         self.probes: dict[str, BoundaryProbe] = {}
-        self.timestamp = datetime.now()
+        self.timestamp = datetime.now(tz=timezone.utc)
 
     def add_probe(self, probe: BoundaryProbe) -> None:
         self.probes[probe.dimension_id] = probe
@@ -393,7 +393,7 @@ class BoundaryProber:
     def save_results(self, guardrail_map: GuardrailMap, name: str = "") -> str:
         """Save probing results to disk."""
         self.output_dir.mkdir(parents=True, exist_ok=True)
-        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        ts = datetime.now(tz=timezone.utc).strftime("%Y%m%d_%H%M%S")
         filename = f"boundary_{name}_{ts}.json" if name else f"boundary_{ts}.json"
         filepath = self.output_dir / filename
 

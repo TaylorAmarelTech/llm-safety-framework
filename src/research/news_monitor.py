@@ -6,7 +6,7 @@ about labor exploitation and trafficking patterns.
 """
 
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Optional
 from dataclasses import dataclass, field
 import logging
@@ -26,7 +26,7 @@ class NewsItem:
     ilo_indicators: list[str] = field(default_factory=list)
     relevance_score: float = 0.0
     published_at: Optional[datetime] = None
-    discovered_at: datetime = field(default_factory=datetime.now)
+    discovered_at: datetime = field(default_factory=lambda: datetime.now(tz=timezone.utc))
 
 
 class NewsMonitor:
@@ -224,7 +224,7 @@ class NewsMonitor:
                     key=lambda x: -x.relevance_score
                 )[:5]
             ],
-            "generated_at": datetime.now().isoformat()
+            "generated_at": datetime.now(tz=timezone.utc).isoformat()
         }
 
     def export_for_research(self) -> list[dict[str, Any]]:

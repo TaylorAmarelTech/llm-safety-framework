@@ -12,7 +12,7 @@ Given a prompt and baseline response, builds a calibration matrix by:
 from __future__ import annotations
 
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from .calibrator import DimensionalCalibrator
@@ -168,7 +168,7 @@ class MatrixBuilder:
             judge_model_id=self.judge_model,
             baseline_rating=baseline_rating,
             entries=entries,
-            timestamp=datetime.now(),
+            timestamp=datetime.now(tz=timezone.utc),
         )
 
     async def build_batch(

@@ -7,6 +7,7 @@ models are children of endpoints with per-model settings.
 
 import os
 import json
+import threading
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from functools import lru_cache
@@ -61,7 +62,7 @@ class Settings(BaseSettings):
     host: str = "0.0.0.0"
     port: int = 8080
     debug: bool = False
-    cors_origins: List[str] = ["*"]
+    cors_origins: List[str] = ["http://localhost:8080", "http://localhost:8088", "http://127.0.0.1:8080", "http://127.0.0.1:8088"]
 
     openai_api_key: Optional[str] = None
     anthropic_api_key: Optional[str] = None
@@ -211,6 +212,7 @@ class ConfigManager:
     def __init__(self, config_path: Optional[str] = None):
         self.config_path = Path(config_path or "config/api_keys.json")
         self.config_path.parent.mkdir(parents=True, exist_ok=True)
+        self._lock = threading.Lock()
         self._config: Dict[str, Any] = self._load_config()
 
     def _load_config(self) -> Dict[str, Any]:
@@ -313,12 +315,14 @@ class ConfigManager:
         }
 
     def _save_raw(self, data: dict) -> None:
+        """Write config dict to disk (caller must hold ``_lock`` for mutations)."""
         with open(self.config_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2)
 
     def save(self) -> None:
-        """Save current configuration to file."""
-        self._save_raw(self._config)
+        """Save current configuration to file (thread-safe)."""
+        with self._lock:
+            self._save_raw(self._config)
 
     # --- Endpoint Operations ---
 
@@ -332,33 +336,36 @@ class ConfigManager:
 
     def create_endpoint(self, endpoint: dict) -> None:
         """Create a new endpoint."""
-        eid = endpoint["id"]
-        self._config.setdefault("endpoints", {})[eid] = endpoint
-        self.save()
+        with self._lock:
+            eid = endpoint["id"]
+            self._config.setdefault("endpoints", {})[eid] = endpoint
+            self._save_raw(self._config)
 
     def update_endpoint(self, endpoint_id: str, updates: dict) -> None:
         """Update an existing endpoint."""
-        ep = self._config.get("endpoints", {}).get(endpoint_id)
-        if ep:
-            ep.update(updates)
-            self.save()
+        with self._lock:
+            ep = self._config.get("endpoints", {}).get(endpoint_id)
+            if ep:
+                ep.update(updates)
+                self._save_raw(self._config)
 
     def delete_endpoint(self, endpoint_id: str) -> None:
         """Delete an endpoint and its models."""
-        self._config.get("endpoints", {}).pop(endpoint_id, None)
-        # Remove associated models
-        self._config["models"] = {
-            k: v for k, v in self._config.get("models", {}).items()
-            if v.get("endpoint_id") != endpoint_id
-        }
-        self.save()
+        with self._lock:
+            self._config.get("endpoints", {}).pop(endpoint_id, None)
+            self._config["models"] = {
+                k: v for k, v in self._config.get("models", {}).items()
+                if v.get("endpoint_id") != endpoint_id
+            }
+            self._save_raw(self._config)
 
     def update_endpoint_key(self, endpoint_id: str, api_key: str) -> None:
         """Update the API key for an endpoint."""
-        ep = self._config.get("endpoints", {}).get(endpoint_id)
-        if ep:
-            ep["api_key"] = api_key
-            self.save()
+        with self._lock:
+            ep = self._config.get("endpoints", {}).get(endpoint_id)
+            if ep:
+                ep["api_key"] = api_key
+                self._save_raw(self._config)
 
     # --- Model Operations ---
 
@@ -389,21 +396,24 @@ class ConfigManager:
 
     def create_model(self, model: dict) -> None:
         """Create a new model under an endpoint."""
-        mid = model["id"]
-        self._config.setdefault("models", {})[mid] = model
-        self.save()
+        with self._lock:
+            mid = model["id"]
+            self._config.setdefault("models", {})[mid] = model
+            self._save_raw(self._config)
 
     def update_model(self, model_id: str, updates: dict) -> None:
         """Update model configuration."""
-        m = self._config.get("models", {}).get(model_id)
-        if m:
-            m.update(updates)
-            self.save()
+        with self._lock:
+            m = self._config.get("models", {}).get(model_id)
+            if m:
+                m.update(updates)
+                self._save_raw(self._config)
 
     def delete_model(self, model_id: str) -> None:
         """Delete a model."""
-        self._config.get("models", {}).pop(model_id, None)
-        self.save()
+        with self._lock:
+            self._config.get("models", {}).pop(model_id, None)
+            self._save_raw(self._config)
 
     def toggle_model(self, model_id: str, enabled: bool) -> None:
         """Enable or disable a model."""
@@ -422,14 +432,15 @@ class ConfigManager:
         enabled: Optional[bool] = None,
     ) -> None:
         """Update memory/context settings."""
-        mem = self._config.setdefault("memory", {})
-        if system_context is not None:
-            mem["system_context"] = system_context
-        if custom_instructions is not None:
-            mem["custom_instructions"] = custom_instructions
-        if enabled is not None:
-            mem["enabled"] = enabled
-        self.save()
+        with self._lock:
+            mem = self._config.setdefault("memory", {})
+            if system_context is not None:
+                mem["system_context"] = system_context
+            if custom_instructions is not None:
+                mem["custom_instructions"] = custom_instructions
+            if enabled is not None:
+                mem["enabled"] = enabled
+            self._save_raw(self._config)
 
     # --- Test Settings ---
 
@@ -437,8 +448,9 @@ class ConfigManager:
         return self._config.get("test_settings", {})
 
     def update_test_settings(self, settings: dict) -> None:
-        self._config.setdefault("test_settings", {}).update(settings)
-        self.save()
+        with self._lock:
+            self._config.setdefault("test_settings", {}).update(settings)
+            self._save_raw(self._config)
 
     # --- Export/Import ---
 
@@ -453,13 +465,14 @@ class ConfigManager:
 
     def import_config(self, config: dict, merge: bool = True) -> None:
         """Import configuration from dict."""
-        if merge:
-            for key in ("endpoints", "models"):
-                if key in config and isinstance(config[key], dict):
-                    self._config.setdefault(key, {}).update(config[key])
-            for key in ("test_settings", "memory"):
-                if key in config:
-                    self._config[key] = config[key]
-        else:
-            self._config = config
-        self.save()
+        with self._lock:
+            if merge:
+                for key in ("endpoints", "models"):
+                    if key in config and isinstance(config[key], dict):
+                        self._config.setdefault(key, {}).update(config[key])
+                for key in ("test_settings", "memory"):
+                    if key in config:
+                        self._config[key] = config[key]
+            else:
+                self._config = config
+            self._save_raw(self._config)

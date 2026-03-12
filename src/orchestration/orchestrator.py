@@ -13,7 +13,7 @@ import asyncio
 import json
 import random
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -178,7 +178,7 @@ class AutonomousOrchestrator:
         self._running = True
         self.state_manager.update_phase(HarnessPhase.RUNNING)
 
-        start_time = datetime.now()
+        start_time = datetime.now(tz=timezone.utc)
         iteration_count = 0
 
         print("\n" + "=" * 70)
@@ -198,7 +198,7 @@ class AutonomousOrchestrator:
                     break
 
                 if max_hours:
-                    elapsed = (datetime.now() - start_time).total_seconds() / 3600
+                    elapsed = (datetime.now(tz=timezone.utc) - start_time).total_seconds() / 3600
                     if elapsed >= max_hours:
                         print(f"\nReached max runtime ({max_hours} hours)")
                         break
@@ -247,7 +247,7 @@ class AutonomousOrchestrator:
         Returns:
             IterationResult with metrics and insights
         """
-        start_time = datetime.now()
+        start_time = datetime.now(tz=timezone.utc)
         self.state_manager.state.start_iteration()
 
         iteration = self.state.iteration
@@ -305,7 +305,7 @@ class AutonomousOrchestrator:
 
             # Complete iteration
             self.state_manager.update_iteration_status(IterationStatus.COMPLETED)
-            result.completed_at = datetime.now()
+            result.completed_at = datetime.now(tz=timezone.utc)
 
             # Record metrics
             self.metrics.record("iteration.pass_rate", result.pass_rate)
@@ -320,7 +320,7 @@ class AutonomousOrchestrator:
 
         except Exception as e:
             result.errors.append(str(e))
-            result.completed_at = datetime.now()
+            result.completed_at = datetime.now(tz=timezone.utc)
             self.state_manager.state.fail_iteration(str(e))
             raise
 
@@ -407,7 +407,7 @@ class AutonomousOrchestrator:
             "model_id": self.config.models_to_test[0] if self.config.models_to_test else "unknown",
             "response": "",
             "outcome": "unknown",
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": datetime.now(tz=timezone.utc).isoformat(),
         }
 
         try:

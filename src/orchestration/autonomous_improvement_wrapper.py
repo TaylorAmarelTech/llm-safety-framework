@@ -16,7 +16,7 @@ import subprocess
 import sys
 import time
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from pathlib import Path
 from typing import Any, Optional
@@ -74,7 +74,7 @@ class ImprovementTask:
 @dataclass
 class WrapperState:
     """Persistent state for the wrapper."""
-    start_time: datetime = field(default_factory=datetime.now)
+    start_time: datetime = field(default_factory=lambda: datetime.now(tz=timezone.utc))
     iterations: int = 0
     tasks_completed: int = 0
     tasks_failed: int = 0
@@ -222,7 +222,7 @@ class AutonomousImprovementWrapper:
     def _decide_improvements(self, metrics: dict[str, Any]) -> list[ImprovementTask]:
         """Autonomously decide what improvements to make based on metrics."""
         tasks = []
-        now = datetime.now()
+        now = datetime.now(tz=timezone.utc)
 
         # Check if we need more corridors
         if metrics["corridors"] < self.thresholds["min_corridors"]:
@@ -365,7 +365,7 @@ Check data/generated/ for new test files.""",
                 if result.returncode == 0:
                     task.completed = True
                     task.result = "Evaluation completed"
-                    self.state.last_evaluation_time = datetime.now()
+                    self.state.last_evaluation_time = datetime.now(tz=timezone.utc)
                     return True
 
             elif task.type == ImprovementType.GENERATE_REPORTS:
@@ -382,7 +382,7 @@ Check data/generated/ for new test files.""",
                         )
                 task.completed = True
                 task.result = "Reports generated"
-                self.state.last_report_time = datetime.now()
+                self.state.last_report_time = datetime.now(tz=timezone.utc)
                 return True
 
             elif task.type == ImprovementType.IMPROVE_ANALYSIS:
@@ -411,7 +411,7 @@ Check data/generated/ for new test files.""",
                 task_log_file.parent.mkdir(parents=True, exist_ok=True)
                 with open(task_log_file, "a") as f:
                     task_data = {
-                        "timestamp": datetime.now().isoformat(),
+                        "timestamp": datetime.now(tz=timezone.utc).isoformat(),
                         "type": task.type.value,
                         "description": task.description,
                         "prompt": task.prompt,
@@ -463,7 +463,7 @@ Check data/generated/ for new test files.""",
 
     def _send_breakthrough_alert(self, metrics: dict[str, Any]):
         """Send breakthrough alert via email."""
-        now = datetime.now()
+        now = datetime.now(tz=timezone.utc)
         if self.state.last_alert_time:
             hours_since_alert = (now - self.state.last_alert_time).total_seconds() / 3600
             if hours_since_alert < self.thresholds["alert_interval_hours"]:
@@ -492,7 +492,7 @@ Check data/generated/ for new test files.""",
                     "Corridors": metrics["corridors"],
                     "Schemes": metrics["schemes"],
                     "Test Cases": metrics["test_cases"],
-                    "Runtime": str(datetime.now() - self.state.start_time),
+                    "Runtime": str(datetime.now(tz=timezone.utc) - self.state.start_time),
                 },
                 severity="high",
             )
@@ -506,13 +506,13 @@ Check data/generated/ for new test files.""",
 
     def run(self):
         """Main loop - runs autonomously until max_hours reached."""
-        end_time = datetime.now() + timedelta(hours=self.max_hours)
+        end_time = datetime.now(tz=timezone.utc) + timedelta(hours=self.max_hours)
         logger.info(f"Starting autonomous improvement wrapper")
         logger.info(f"Will run until: {end_time}")
         logger.info(f"Iteration interval: {self.iteration_interval}s")
 
         try:
-            while datetime.now() < end_time:
+            while datetime.now(tz=timezone.utc) < end_time:
                 self.state.iterations += 1
                 logger.info(f"\n{'='*60}")
                 logger.info(f"ITERATION {self.state.iterations}")
@@ -551,7 +551,7 @@ Check data/generated/ for new test files.""",
                 self._save_state()
 
                 # Log progress
-                runtime = datetime.now() - self.state.start_time
+                runtime = datetime.now(tz=timezone.utc) - self.state.start_time
                 logger.info(f"Progress: {self.state.tasks_completed} tasks completed, "
                            f"{self.state.tasks_failed} failed, "
                            f"{self.state.breakthroughs_detected} breakthroughs")
@@ -571,7 +571,7 @@ Check data/generated/ for new test files.""",
             logger.info(f"  - Tasks completed: {self.state.tasks_completed}")
             logger.info(f"  - Tasks failed: {self.state.tasks_failed}")
             logger.info(f"  - Breakthroughs: {self.state.breakthroughs_detected}")
-            logger.info(f"  - Runtime: {datetime.now() - self.state.start_time}")
+            logger.info(f"  - Runtime: {datetime.now(tz=timezone.utc) - self.state.start_time}")
 
 
 def main():

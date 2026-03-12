@@ -8,7 +8,7 @@ executing multi-turn attacks, and saving results.
 import json
 import re
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -110,9 +110,9 @@ async def execute_multi_turn(
         results_dir = Path(ctx.settings.pipeline_dir) / "multi_turn"
         results_dir.mkdir(parents=True, exist_ok=True)
 
-        result_id = f"mt_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
+        result_id = f"mt_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
         result["id"] = result_id
-        result["timestamp"] = datetime.now().isoformat()
+        result["timestamp"] = datetime.now(tz=timezone.utc).isoformat()
 
         with open(results_dir / f"{result_id}.json", "w", encoding="utf-8") as f:
             json.dump(result, f, indent=2, ensure_ascii=False)
@@ -166,10 +166,10 @@ async def batch_execute(
         results_dir = Path(ctx.settings.pipeline_dir) / "multi_turn"
         results_dir.mkdir(parents=True, exist_ok=True)
 
-        batch_id = f"mt_batch_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
+        batch_id = f"mt_batch_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
         batch_data = {
             "id": batch_id,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": datetime.now(tz=timezone.utc).isoformat(),
             "results": results,
             "errors": errors,
             "total": len(results),

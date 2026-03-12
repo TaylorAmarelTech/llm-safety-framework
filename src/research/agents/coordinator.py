@@ -17,7 +17,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
 
@@ -109,7 +109,7 @@ class ResearchCoordinator:
                 generated_tests=[],
                 summary=f"Agent failed with error: {e}",
                 error=str(e),
-                completed_at=datetime.now().isoformat(),
+                completed_at=datetime.now(tz=timezone.utc).isoformat(),
             )
 
     async def run_agents(
@@ -192,7 +192,7 @@ class ResearchCoordinator:
             domain_counts[d] = domain_counts.get(d, 0) + 1
 
         return {
-            "generated_at": datetime.now().isoformat(),
+            "generated_at": datetime.now(tz=timezone.utc).isoformat(),
             "agent_count": len(reports),
             "agent_summaries": agent_summaries,
             "total_findings": len(unique_findings),
@@ -210,7 +210,7 @@ class ResearchCoordinator:
 
     def save_aggregated(self, aggregated: dict[str, Any]) -> Path:
         """Save aggregated results to disk."""
-        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        ts = datetime.now(tz=timezone.utc).strftime("%Y%m%d_%H%M%S")
         path = self.data_dir / f"aggregated_{ts}.json"
         path.write_text(json.dumps(aggregated, indent=2), encoding="utf-8")
         logger.info(f"Saved aggregated results to {path}")

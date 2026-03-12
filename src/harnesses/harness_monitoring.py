@@ -13,7 +13,7 @@ import logging
 import json
 import sqlite3
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 if sys.platform == 'win32':
     import io
@@ -35,12 +35,12 @@ class MonitoringHarness:
 
     def __init__(self, duration_hours=336):
         self.duration_hours = duration_hours
-        self.start_time = datetime.now()
+        self.start_time = datetime.now(tz=timezone.utc)
         self.end_time = self.start_time + timedelta(hours=duration_hours)
         self.health_checks = 0
 
     def should_continue(self):
-        return datetime.now() < self.end_time
+        return datetime.now(tz=timezone.utc) < self.end_time
 
     def count_tests(self):
         """Count tests in database"""
@@ -60,12 +60,12 @@ class MonitoringHarness:
 
         self.health_checks += 1
         test_count = self.count_tests()
-        elapsed_hours = (datetime.now() - self.start_time).total_seconds() / 3600
+        elapsed_hours = (datetime.now(tz=timezone.utc) - self.start_time).total_seconds() / 3600
 
         logger.info(f"  Health Check #{self.health_checks}")
         logger.info(f"  Elapsed: {elapsed_hours:.1f}h")
         logger.info(f"  Database tests: {test_count:,}")
-        logger.info(f"  Remaining: {(self.end_time - datetime.now()).total_seconds() / 3600:.1f}h")
+        logger.info(f"  Remaining: {(self.end_time - datetime.now(tz=timezone.utc)).total_seconds() / 3600:.1f}h")
 
     def run(self):
         """Main execution loop"""

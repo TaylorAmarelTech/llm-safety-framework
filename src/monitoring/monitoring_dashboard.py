@@ -13,7 +13,7 @@ from flask import Flask, render_template_string, jsonify
 from pathlib import Path
 import json
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timezone
 import re
 
 app = Flask(__name__)
@@ -354,7 +354,7 @@ def index():
     test_gen_log = get_log_tail("harness_test_gen.log", 15)
     monitor_log = get_log_tail("harness_monitor.log", 10)
 
-    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    current_time = datetime.now(tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
 
     return render_template_string(
         HTML_TEMPLATE,
@@ -373,7 +373,7 @@ def api_stats():
         'tests_generated': test_gen_count * 20,
         'health_checks': count_log_entries("harness_monitor.log", "Health Check"),
         'db_total': get_db_count(),
-        'timestamp': datetime.now().isoformat()
+        'timestamp': datetime.now(tz=timezone.utc).isoformat()
     })
 
 if __name__ == '__main__':

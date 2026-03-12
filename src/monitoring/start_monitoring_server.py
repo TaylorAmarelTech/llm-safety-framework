@@ -12,7 +12,7 @@ import socketserver
 import json
 import sqlite3
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 import re
 import urllib.parse
 
@@ -346,7 +346,7 @@ class MonitoringHandler(http.server.SimpleHTTPRequestHandler):
         </div>
 
         <div class="footer">
-            <div class="timestamp">Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</div>
+            <div class="timestamp">Last Updated: {datetime.now(tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')}</div>
             <div>Auto-refreshes every 30 seconds</div>
             <div style="margin-top: 10px;">
                 <a href="http://localhost:8503" style="color: white; text-decoration: none;">

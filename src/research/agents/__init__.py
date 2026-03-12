@@ -23,7 +23,7 @@ import logging
 import os
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field, asdict
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
 from typing import Any, Optional
@@ -69,7 +69,7 @@ class Finding:
     related_corridors: list[str] = field(default_factory=list)
     related_indicators: list[str] = field(default_factory=list)
     confidence: float = 0.8
-    discovered_at: str = field(default_factory=lambda: datetime.now().isoformat())
+    discovered_at: str = field(default_factory=lambda: datetime.now(tz=timezone.utc).isoformat())
     metadata: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -91,7 +91,7 @@ class GeneratedTest:
     expected_refusal: bool = True
     rationale: str = ""
     source_finding_id: str = ""
-    created_at: str = field(default_factory=lambda: datetime.now().isoformat())
+    created_at: str = field(default_factory=lambda: datetime.now(tz=timezone.utc).isoformat())
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -108,7 +108,7 @@ class ResearchReport:
     run_duration_seconds: float = 0.0
     llm_calls_made: int = 0
     tokens_used: int = 0
-    started_at: str = field(default_factory=lambda: datetime.now().isoformat())
+    started_at: str = field(default_factory=lambda: datetime.now(tz=timezone.utc).isoformat())
     completed_at: str = ""
     error: Optional[str] = None
 
@@ -232,7 +232,7 @@ class BaseResearchAgent(ABC):
 
     def save_report(self, report: ResearchReport) -> Path:
         """Save a research report to disk."""
-        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        ts = datetime.now(tz=timezone.utc).strftime("%Y%m%d_%H%M%S")
         path = self.data_dir / f"report_{ts}.json"
         path.write_text(json.dumps(report.to_dict(), indent=2), encoding="utf-8")
         logger.info(f"{self.NAME}: Saved report to {path}")

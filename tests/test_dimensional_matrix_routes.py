@@ -132,7 +132,7 @@ class TestDimensionRoutes:
         r = client.get("/api/dimensional-matrix/dimensions")
         assert r.status_code == 200
         dims = r.json()
-        assert len(dims) == 35
+        assert len(dims) == 45
 
     def test_list_dimensions_by_category(self, client):
         r = client.get("/api/dimensional-matrix/dimensions?category=response")

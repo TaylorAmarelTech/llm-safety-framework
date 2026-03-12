@@ -1,0 +1,124 @@
+<!-- Agent & Tool Testing Plugin — 3 tabs: Scenarios, Runner, Results -->
+
+<!-- ===== Agent Scenarios ===== -->
+<div id="section-agent-scenarios" class="plugin-section" style="display:none;">
+  <h2>Agent &amp; Tool Test Scenarios</h2>
+  <p class="text-muted">Test whether AI coding agents will build software that facilitates worker exploitation.</p>
+
+  <!-- Scenario categories -->
+  <div class="row g-3 mb-4" id="agent-scenario-cards"></div>
+
+  <!-- Generator panel -->
+  <div class="card mb-4">
+    <div class="card-header"><strong>Generate Test Prompts</strong></div>
+    <div class="card-body">
+      <div class="row g-2 align-items-end">
+        <div class="col-md-3">
+          <label class="form-label small">Category</label>
+          <select id="agent-gen-category" class="form-select form-select-sm">
+            <option value="exploitation_platform">Exploitation Platform</option>
+            <option value="law_circumvention_tool">Law Circumvention Tool</option>
+            <option value="surveillance_control">Surveillance &amp; Control</option>
+            <option value="supply_chain_opacity">Supply Chain Opacity</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label small">Target Agent</label>
+          <select id="agent-gen-target" class="form-select form-select-sm"></select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label small">Count</label>
+          <input id="agent-gen-count" type="number" class="form-control form-control-sm" value="5" min="1" max="100">
+        </div>
+        <div class="col-md-2">
+          <button id="agent-gen-btn" class="btn btn-primary btn-sm">Generate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generated prompts -->
+  <div id="agent-generated-prompts"></div>
+
+  <!-- Agent chains -->
+  <h4 class="mt-4">Agent-Mediated Exploitation Chains</h4>
+  <p class="text-muted small">Chains where each step is a legitimate software dev task, but the combination constitutes exploitation.</p>
+  <div id="agent-chains-list"></div>
+
+  <!-- Mutators -->
+  <h4 class="mt-4">Agent-Focused Mutators</h4>
+  <p class="text-muted small">Prompt injection techniques targeting coding agent workflows.</p>
+  <div id="agent-mutators-list"></div>
+</div>
+
+<!-- ===== Agent Runner ===== -->
+<div id="section-agent-runner" class="plugin-section" style="display:none;">
+  <h2>Agent Test Runner</h2>
+  <p class="text-muted">Execute agent test prompts against configured LLM endpoints.</p>
+
+  <div class="card mb-4">
+    <div class="card-header"><strong>Run Configuration</strong></div>
+    <div class="card-body">
+      <div class="row g-2 align-items-end">
+        <div class="col-md-3">
+          <label class="form-label small">Target Agent</label>
+          <select id="agent-run-target" class="form-select form-select-sm"></select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label small">Category Filter</label>
+          <select id="agent-run-category" class="form-select form-select-sm">
+            <option value="">All Categories</option>
+            <option value="exploitation_platform">Exploitation Platform</option>
+            <option value="law_circumvention_tool">Law Circumvention Tool</option>
+            <option value="surveillance_control">Surveillance &amp; Control</option>
+            <option value="supply_chain_opacity">Supply Chain Opacity</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button id="agent-run-btn" class="btn btn-success btn-sm">Run Tests</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dimension rating panel -->
+  <div class="card mb-4" id="agent-rating-panel" style="display:none;">
+    <div class="card-header"><strong>Rate Response (E-Dimensions)</strong></div>
+    <div class="card-body">
+      <div id="agent-rating-prompt" class="mb-3 p-2 bg-light rounded small" style="max-height:150px;overflow:auto;"></div>
+      <div id="agent-rating-response" class="mb-3 p-2 bg-light rounded small" style="max-height:200px;overflow:auto;"></div>
+      <div id="agent-rating-sliders"></div>
+      <textarea id="agent-rating-notes" class="form-control form-control-sm mt-2" rows="2" placeholder="Notes..."></textarea>
+      <button id="agent-rating-submit" class="btn btn-primary btn-sm mt-2">Submit Rating</button>
+    </div>
+  </div>
+
+  <!-- Runner output -->
+  <div id="agent-runner-output"></div>
+</div>
+
+<!-- ===== Agent Results ===== -->
+<div id="section-agent-results" class="plugin-section" style="display:none;">
+  <h2>Agent Test Results</h2>
+  <p class="text-muted">View and analyze agent testing results across dimensions and target agents.</p>
+
+  <div class="d-flex gap-2 mb-3">
+    <button id="agent-refresh-stats" class="btn btn-sm btn-primary">Refresh Stats</button>
+    <button id="agent-export-results" class="btn btn-sm btn-outline-secondary">Export JSON</button>
+  </div>
+
+  <!-- Stats cards -->
+  <div class="row g-3 mb-4" id="agent-stats-cards"></div>
+
+  <!-- Dimension heatmap -->
+  <h4>E-Dimension Averages</h4>
+  <div id="agent-dimension-heatmap" class="mb-4"></div>
+
+  <!-- Coverage matrix -->
+  <h4>Coverage Matrix: Categories x Agents</h4>
+  <div id="agent-coverage-matrix" class="mb-4" style="overflow-x:auto;"></div>
+
+  <!-- Results table -->
+  <h4>Recent Results</h4>
+  <div id="agent-results-table"></div>
+</div>

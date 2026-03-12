@@ -11,7 +11,7 @@ import json
 import time
 import os
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional, Dict
 
 
@@ -122,7 +122,7 @@ class ResearchMonitor:
                 print(f"   Phase: {task['phase']}")
                 if task.get('started_at'):
                     started = datetime.fromisoformat(task['started_at'])
-                    duration = datetime.now() - started
+                    duration = datetime.now(tz=timezone.utc) - started
                     print(f"   Running for: {duration.total_seconds()/3600:.1f} hours")
 
         # Failures

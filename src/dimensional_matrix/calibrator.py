@@ -9,7 +9,7 @@ Two operations:
 from __future__ import annotations
 
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from .dimensions import get_dimension
@@ -131,7 +131,7 @@ class DimensionalCalibrator:
             generated_text=generated.strip(),
             operation="response",
             model_id=self.model_id,
-            timestamp=datetime.now(),
+            timestamp=datetime.now(tz=timezone.utc),
         )
 
     async def calibrate_question(
@@ -185,7 +185,7 @@ class DimensionalCalibrator:
             generated_text=generated.strip(),
             operation="question",
             model_id=self.model_id,
-            timestamp=datetime.now(),
+            timestamp=datetime.now(tz=timezone.utc),
         )
 
     async def calibrate_ladder(
@@ -227,7 +227,7 @@ class DimensionalCalibrator:
                 generated_text=generated.strip(),
                 operation="response",
                 model_id=self.model_id,
-                timestamp=datetime.now(),
+                timestamp=datetime.now(tz=timezone.utc),
             ))
 
         return results

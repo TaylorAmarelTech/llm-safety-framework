@@ -1,0 +1,175 @@
+<!-- Cartography Plugin — 5 tabs: Gradient Explorer, Topology Map, Comparative Matrix, Attack Surface, Blind Spots -->
+
+<!-- ===== Gradient Explorer ===== -->
+<div id="section-gradient-explorer" class="plugin-section" style="display:none;">
+  <h2>Gradient Explorer</h2>
+  <p class="text-muted">Generate gradient prompt families that vary along a single dimension to map safety boundaries.</p>
+
+  <!-- Dimension selector + template -->
+  <div class="d-flex gap-2 mb-3 flex-wrap align-items-end">
+    <div style="min-width:220px;">
+      <label class="form-label small mb-1">Dimension</label>
+      <select id="carto-dim-select" class="form-select form-select-sm">
+        <option value="">Loading dimensions...</option>
+      </select>
+    </div>
+    <div style="min-width:160px;">
+      <label class="form-label small mb-1">Template</label>
+      <select id="carto-tpl-select" class="form-select form-select-sm">
+        <option value="">Loading...</option>
+      </select>
+    </div>
+    <div style="min-width:100px;">
+      <label class="form-label small mb-1">Baseline</label>
+      <select id="carto-baseline" class="form-select form-select-sm">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3" selected>3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+    </div>
+    <button id="carto-gen-btn" class="btn btn-primary btn-sm">Generate Gradient</button>
+    <button id="carto-gen-all-btn" class="btn btn-outline-secondary btn-sm">Generate All</button>
+  </div>
+
+  <!-- Cross-gradient controls -->
+  <details class="mb-3">
+    <summary class="small fw-bold" style="cursor:pointer;">Cross-Gradient (2D Grid)</summary>
+    <div class="d-flex gap-2 mt-2 flex-wrap align-items-end">
+      <div style="min-width:180px;">
+        <label class="form-label small mb-1">Dimension A</label>
+        <select id="carto-cross-a" class="form-select form-select-sm"></select>
+      </div>
+      <div style="min-width:180px;">
+        <label class="form-label small mb-1">Dimension B</label>
+        <select id="carto-cross-b" class="form-select form-select-sm"></select>
+      </div>
+      <button id="carto-cross-btn" class="btn btn-outline-primary btn-sm">Generate Cross-Gradient</button>
+    </div>
+  </details>
+
+  <!-- Results -->
+  <div id="carto-gradient-loading" style="display:none;" class="text-center py-3">
+    <div class="spinner-border spinner-border-sm"></div> Generating...
+  </div>
+  <div id="carto-gradient-result"></div>
+</div>
+
+<!-- ===== Topology Map ===== -->
+<div id="section-topology-map" class="plugin-section" style="display:none;">
+  <h2>Topology Map</h2>
+  <p class="text-muted">Compute safety surfaces, gradient vectors, and detect cliffs from scored test points.</p>
+
+  <!-- Data input area -->
+  <div class="mb-3">
+    <label class="form-label small mb-1">Model ID</label>
+    <input id="topo-model-id" type="text" class="form-control form-control-sm" value="default" style="max-width:300px;">
+  </div>
+  <div class="mb-3">
+    <label class="form-label small mb-1">Scored Points (JSON array of {prompt, response, score?, dimensional_vector?, corridor?, category?})</label>
+    <textarea id="topo-points-json" class="form-control form-control-sm" rows="8" placeholder='[{"prompt":"...", "response":"...", "score": 0.3, "dimensional_vector": {"C9": 4, "A8": 3}}]'></textarea>
+  </div>
+  <div class="d-flex gap-2 mb-3 flex-wrap">
+    <button id="topo-compute-btn" class="btn btn-primary btn-sm">Compute Surface</button>
+    <button id="topo-gradient-btn" class="btn btn-outline-secondary btn-sm">Gradient Vector</button>
+    <button id="topo-cliff-btn" class="btn btn-outline-secondary btn-sm">Detect Cliffs</button>
+    <button id="topo-blind-btn" class="btn btn-outline-secondary btn-sm">Blind Spots</button>
+  </div>
+
+  <div id="topo-loading" style="display:none;" class="text-center py-3">
+    <div class="spinner-border spinner-border-sm"></div> Computing...
+  </div>
+  <div id="topo-result"></div>
+</div>
+
+<!-- ===== Comparative Matrix ===== -->
+<div id="section-comparative-matrix" class="plugin-section" style="display:none;">
+  <h2>Comparative Matrix</h2>
+  <p class="text-muted">Compare safety profiles across multiple LLMs with scorecards, heatmaps, and rankings.</p>
+
+  <div class="mb-3">
+    <label class="form-label small mb-1">Multi-Model Data (JSON: {"model_a": [...points], "model_b": [...points]})</label>
+    <textarea id="compare-models-json" class="form-control form-control-sm" rows="8" placeholder='{"gpt-4o": [{"prompt":"...", "response":"...", "dimensional_vector": {"C9": 4}}], "claude-3": [...]}'></textarea>
+  </div>
+  <div class="d-flex gap-2 mb-3 flex-wrap">
+    <button id="compare-scorecards-btn" class="btn btn-primary btn-sm">Scorecards</button>
+    <button id="compare-heatmap-btn" class="btn btn-outline-secondary btn-sm">Heatmap</button>
+    <button id="compare-rank-btn" class="btn btn-outline-secondary btn-sm">Rank Models</button>
+  </div>
+
+  <!-- Heatmap axis selector -->
+  <div class="d-flex gap-2 mb-3 align-items-center" style="display:none !important;" id="compare-heatmap-opts">
+    <label class="form-label small mb-0">Axis:</label>
+    <select id="compare-axis" class="form-select form-select-sm" style="max-width:160px;">
+      <option value="dimension">Dimension</option>
+      <option value="category">Category</option>
+      <option value="corridor">Corridor</option>
+    </select>
+  </div>
+
+  <!-- Pairwise -->
+  <details class="mb-3">
+    <summary class="small fw-bold" style="cursor:pointer;">Pairwise Comparison</summary>
+    <div class="d-flex gap-2 mt-2 flex-wrap align-items-end">
+      <div style="min-width:150px;">
+        <label class="form-label small mb-1">Model A</label>
+        <input id="compare-pair-a" type="text" class="form-control form-control-sm" placeholder="gpt-4o">
+      </div>
+      <div style="min-width:150px;">
+        <label class="form-label small mb-1">Model B</label>
+        <input id="compare-pair-b" type="text" class="form-control form-control-sm" placeholder="claude-3">
+      </div>
+      <button id="compare-pairwise-btn" class="btn btn-outline-primary btn-sm">Compare Pair</button>
+    </div>
+  </details>
+
+  <div id="compare-loading" style="display:none;" class="text-center py-3">
+    <div class="spinner-border spinner-border-sm"></div> Computing...
+  </div>
+  <div id="compare-result"></div>
+</div>
+
+<!-- ===== Attack Surface ===== -->
+<div id="section-attack-surface" class="plugin-section" style="display:none;">
+  <h2>Attack Surface</h2>
+  <p class="text-muted">Measure the exploitable surface area: compliance rates, dimension vulnerabilities, technique effectiveness, and attack paths.</p>
+
+  <div class="mb-3">
+    <label class="form-label small mb-1">Scored Points (JSON array)</label>
+    <textarea id="attack-points-json" class="form-control form-control-sm" rows="8" placeholder='[{"prompt":"...", "response":"...", "dimensional_vector": {"C9": 5}, "metadata": {"technique": "jailbreak"}}]'></textarea>
+  </div>
+  <div class="d-flex gap-2 mb-3 flex-wrap">
+    <button id="attack-report-btn" class="btn btn-primary btn-sm">Full Report</button>
+    <button id="attack-dim-btn" class="btn btn-outline-secondary btn-sm">Dimension Vulnerability</button>
+    <button id="attack-tech-btn" class="btn btn-outline-secondary btn-sm">Technique Effectiveness</button>
+    <button id="attack-paths-btn" class="btn btn-outline-secondary btn-sm">Attack Paths</button>
+  </div>
+
+  <div id="attack-loading" style="display:none;" class="text-center py-3">
+    <div class="spinner-border spinner-border-sm"></div> Analyzing...
+  </div>
+  <div id="attack-result"></div>
+</div>
+
+<!-- ===== Blind Spots ===== -->
+<div id="section-blind-spots" class="plugin-section" style="display:none;">
+  <h2>Blind Spots</h2>
+  <p class="text-muted">Systematically detect regions where the model unexpectedly complies with harmful requests.</p>
+
+  <div class="mb-3">
+    <label class="form-label small mb-1">Scored Points (JSON array)</label>
+    <textarea id="blind-points-json" class="form-control form-control-sm" rows="8" placeholder='[{"prompt":"...", "response":"...", "score": 0.7, "dimensional_vector": {"C9": 5, "A8": 4}, "corridor": "PH-SA", "category": "debt_bondage"}]'></textarea>
+  </div>
+  <div class="d-flex gap-2 mb-3 flex-wrap">
+    <button id="blind-detect-btn" class="btn btn-primary btn-sm">Detect All</button>
+    <button id="blind-summary-btn" class="btn btn-outline-secondary btn-sm">Summary</button>
+    <button id="blind-cross-btn" class="btn btn-outline-secondary btn-sm">Cross-Dimensional</button>
+    <button id="blind-anomaly-btn" class="btn btn-outline-secondary btn-sm">Gradient Anomalies</button>
+  </div>
+
+  <div id="blind-loading" style="display:none;" class="text-center py-3">
+    <div class="spinner-border spinner-border-sm"></div> Detecting...
+  </div>
+  <div id="blind-result"></div>
+</div>

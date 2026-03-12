@@ -15,7 +15,7 @@ import subprocess
 import threading
 import queue
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import List, Dict
 import logging
 
@@ -52,7 +52,7 @@ class MasterOrchestrator:
 
     def __init__(self, duration_days=14):
         self.duration_days = duration_days
-        self.start_time = datetime.now()
+        self.start_time = datetime.now(tz=timezone.utc)
         self.end_time = self.start_time + timedelta(days=duration_days)
         self.streams: List[ResearchStream] = []
         self.initialize_streams()
@@ -98,7 +98,7 @@ class MasterOrchestrator:
         logger.info(f"Initialized {len(self.streams)} parallel research streams")
 
     def should_continue(self):
-        return datetime.now() < self.end_time
+        return datetime.now(tz=timezone.utc) < self.end_time
 
     def run_stream(self, stream: ResearchStream):
         """Run a single research stream"""
@@ -140,7 +140,7 @@ class MasterOrchestrator:
                 time.sleep(300)  # Check every 5 minutes
 
                 # Print status
-                elapsed = (datetime.now() - self.start_time).total_seconds() / 3600
+                elapsed = (datetime.now(tz=timezone.utc) - self.start_time).total_seconds() / 3600
                 logger.info(f"\nElapsed: {elapsed:.1f}h / {self.duration_days * 24}h")
                 for stream in self.streams:
                     logger.info(f"  {stream.focus}: {stream.iterations} iterations")

@@ -19,7 +19,7 @@ from __future__ import annotations
 
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -46,7 +46,7 @@ class DebateTurn(BaseModel):
     model_id: str
     content: str
     turn_number: int
-    timestamp: datetime = Field(default_factory=datetime.now)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(tz=timezone.utc))
 
 
 class DebateVerdict(BaseModel):
@@ -77,7 +77,7 @@ class DebateResult(BaseModel):
         description="Role -> model_id mapping",
     )
     num_rounds: int = 0
-    timestamp: datetime = Field(default_factory=datetime.now)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(tz=timezone.utc))
 
     @property
     def transcript(self) -> str:
@@ -697,7 +697,7 @@ def save_debate(result: DebateResult, output_dir: str = "data/debates") -> str:
     """Save a debate result to disk."""
     out_path = Path(output_dir)
     out_path.mkdir(parents=True, exist_ok=True)
-    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    ts = datetime.now(tz=timezone.utc).strftime("%Y%m%d_%H%M%S")
     filepath = out_path / f"debate_{ts}.json"
 
     data = {

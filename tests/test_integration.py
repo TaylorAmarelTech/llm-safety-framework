@@ -37,7 +37,7 @@ class TestFrameworkIntegration:
     def test_package_init(self):
         """Test that package __init__ works."""
         import src
-        assert src.__version__ == "1.0.0"
+        assert src.__version__ == "4.0.0"
         assert src.__author__ == "Taylor Amarel"
 
     def test_request_response_cycle(self):

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -365,7 +365,7 @@ class EmbeddingMapper:
         """Save analysis to disk."""
         self.output_dir.mkdir(parents=True, exist_ok=True)
         filepath = self.output_dir / f"embedding_analysis_{name}.json"
-        analysis["saved_at"] = datetime.now().isoformat()
+        analysis["saved_at"] = datetime.now(tz=timezone.utc).isoformat()
 
         with open(filepath, "w", encoding="utf-8") as f:
             json.dump(analysis, f, indent=2, ensure_ascii=False, default=str)
@@ -383,7 +383,7 @@ class EmbeddingMapper:
             "vectors": [v.to_dict() for v in vectors],
             "raw_unified": [v.unified_vector for v in vectors],
             "raw_dimensional": [v.dimensional_only for v in vectors],
-            "exported_at": datetime.now().isoformat(),
+            "exported_at": datetime.now(tz=timezone.utc).isoformat(),
         }
 
         with open(filepath, "w", encoding="utf-8") as f:

@@ -10,7 +10,7 @@ Users must provide their own domain-specific test content.
 import os
 import json
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 import time
 
 PROJECT_ROOT = Path(__file__).parent
@@ -59,7 +59,7 @@ def display_progress():
     start_time = data.get("start_time")
     if start_time:
         start_dt = datetime.fromisoformat(start_time)
-        elapsed = (datetime.now() - start_dt).total_seconds()
+        elapsed = (datetime.now(tz=timezone.utc) - start_dt).total_seconds()
     else:
         elapsed = 0
 
@@ -123,7 +123,7 @@ def display_progress():
         remaining_iterations = target_iterations - iteration
         est_remaining = remaining_iterations * avg_time_per_iteration
         print(f"Estimated Time Remaining: {format_duration(est_remaining)}")
-        print(f"Estimated Completion: {(datetime.now().timestamp() + est_remaining)}")
+        print(f"Estimated Completion: {(datetime.now(tz=timezone.utc).timestamp() + est_remaining)}")
 
     print("=" * 70)
 

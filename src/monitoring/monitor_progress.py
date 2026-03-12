@@ -12,7 +12,7 @@ import time
 import argparse
 import json
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -166,10 +166,10 @@ def display_progress(checkpoint_path, detailed=False):
         if start_time:
             try:
                 start_dt = datetime.fromisoformat(start_time)
-                elapsed = (datetime.now() - start_dt).total_seconds() / 3600  # hours
+                elapsed = (datetime.now(tz=timezone.utc) - start_dt).total_seconds() / 3600  # hours
                 avg_hours_per_task = elapsed / completed
                 remaining_hours = avg_hours_per_task * pending
-                completion_time = datetime.now() + timedelta(hours=remaining_hours)
+                completion_time = datetime.now(tz=timezone.utc) + timedelta(hours=remaining_hours)
 
                 print(f"\nEstimates:")
                 print(f"  Elapsed Time: {elapsed:.1f} hours")

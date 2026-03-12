@@ -6,7 +6,7 @@ Handles prompt sets, import, CRUD, preparation settings, and template library.
 
 import json
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
@@ -308,7 +308,7 @@ async def fork_templates(request: ForkRequest, ctx: AppContext = Depends(get_ctx
     else:
         set_name = request.new_set_name or f"forked_{uuid.uuid4().hex[:8]}"
         target_file = prompt_sets_dir / f"{set_name}.json"
-        save_data = {"name": set_name, "prompts": selected, "created_at": datetime.now().isoformat()}
+        save_data = {"name": set_name, "prompts": selected, "created_at": datetime.now(tz=timezone.utc).isoformat()}
 
     with open(target_file, 'w', encoding='utf-8') as f:
         json.dump(save_data, f, indent=2, ensure_ascii=False)

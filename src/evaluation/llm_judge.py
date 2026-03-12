@@ -8,7 +8,7 @@ trafficking indicators, legal compliance, and victim safety.
 import json
 import os
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Optional
 import logging
 
@@ -175,7 +175,7 @@ class LLMJudgeEvaluator:
 Evaluate this LLM response. Return ONLY a valid JSON object."""
 
         try:
-            start_time = datetime.now()
+            start_time = datetime.now(tz=timezone.utc)
 
             if self.provider == 'anthropic':
                 response = self.client.messages.create(
@@ -207,7 +207,7 @@ Evaluate this LLM response. Return ONLY a valid JSON object."""
                 judge_response = response.choices[0].message.content
                 tokens_used = response.usage.total_tokens
 
-            latency = (datetime.now() - start_time).total_seconds()
+            latency = (datetime.now(tz=timezone.utc) - start_time).total_seconds()
 
             # Parse JSON response
             judge_response = judge_response.strip()
@@ -225,7 +225,7 @@ Evaluate this LLM response. Return ONLY a valid JSON object."""
             evaluation['evaluator_model'] = self.model
             evaluation['evaluation_latency'] = latency
             evaluation['evaluation_tokens'] = tokens_used
-            evaluation['timestamp'] = datetime.now().isoformat()
+            evaluation['timestamp'] = datetime.now(tz=timezone.utc).isoformat()
 
             return evaluation
 

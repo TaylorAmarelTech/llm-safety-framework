@@ -17,11 +17,38 @@ class UnifiedAPIClient:
     Supports:
     - OpenAI-compatible: OpenAI, Mistral, Together, OpenRouter, custom
     - Anthropic: Different body structure and auth header
+
+    Use as an async context manager to benefit from connection pooling::
+
+        async with UnifiedAPIClient(endpoint) as client:
+            response = await client.chat(model_id, messages)
+
+    Or use standalone (creates a fresh connection per request).
     """
 
     def __init__(self, endpoint: Dict[str, Any], timeout: float = 60.0):
         self.endpoint = endpoint
         self.timeout = timeout
+        self._client: Optional[httpx.AsyncClient] = None
+        self._owns_client: bool = False
+
+    async def __aenter__(self) -> "UnifiedAPIClient":
+        self._client = httpx.AsyncClient(timeout=self.timeout)
+        self._owns_client = True
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:  # type: ignore[type-arg]
+        if self._client and self._owns_client:
+            await self._client.aclose()
+            self._client = None
+            self._owns_client = False
+
+    def _get_client(self) -> httpx.AsyncClient:
+        """Return the persistent client or create a one-shot client."""
+        if self._client is not None:
+            return self._client
+        # Fallback: caller isn't using context manager; use per-request client.
+        return httpx.AsyncClient(timeout=self.timeout)
 
     def _build_headers(self) -> Dict[str, str]:
         """Build request headers from endpoint config."""
@@ -107,10 +134,14 @@ class UnifiedAPIClient:
         if presence_penalty is not None:
             body["presence_penalty"] = presence_penalty
 
-        async with httpx.AsyncClient(timeout=self.timeout) as client:
+        client = self._get_client()
+        try:
             response = await client.post(url, headers=headers, json=body)
             response.raise_for_status()
             data = response.json()
+        finally:
+            if not self._owns_client:
+                await client.aclose()
 
         return (
             data.get("choices", [{}])[0]
@@ -141,10 +172,14 @@ class UnifiedAPIClient:
         if system_prompt:
             body["system"] = system_prompt
 
-        async with httpx.AsyncClient(timeout=self.timeout) as client:
+        client = self._get_client()
+        try:
             response = await client.post(url, headers=headers, json=body)
             response.raise_for_status()
             data = response.json()
+        finally:
+            if not self._owns_client:
+                await client.aclose()
 
         content = data.get("content", [])
         if content and isinstance(content, list):
@@ -166,10 +201,14 @@ class UnifiedAPIClient:
             "input": texts,
         }
 
-        async with httpx.AsyncClient(timeout=self.timeout) as client:
+        client = self._get_client()
+        try:
             response = await client.post(url, headers=headers, json=body)
             response.raise_for_status()
             data = response.json()
+        finally:
+            if not self._owns_client:
+                await client.aclose()
 
         return [item["embedding"] for item in data.get("data", [])]
 

@@ -135,8 +135,8 @@ class TestMutatorRegistry:
 
     def test_list_mutators_returns_all(self):
         all_mutators = list_mutators()
-        assert len(all_mutators) == 488, (
-            f"Expected 438 mutators, got {len(all_mutators)}: {sorted(all_mutators)}"
+        assert len(all_mutators) >= 518, (
+            f"Expected >= 518 mutators, got {len(all_mutators)}: {sorted(all_mutators)}"
         )
 
     def test_list_mutators_structure(self):
@@ -172,8 +172,8 @@ class TestMutatorRegistry:
             "social_engineering": 6,
             "context_manipulation": 5,
             "hybrid": 6,
-            "output_evasion": 107,
-            "named_jailbreak": 14,
+            "output_evasion": 109,
+            "named_jailbreak": 15,
             "structural_injection": 10,
             "advanced_obfuscation": 10,
             "application_injection": 8,

@@ -502,7 +502,7 @@ class TestNewMutatorCommon:
 
     def test_category_counts(self):
         """Each new category should have the expected number of mutators."""
-        assert len(get_mutators_by_category("named_jailbreak")) == 14
+        assert len(get_mutators_by_category("named_jailbreak")) == 15
         assert len(get_mutators_by_category("structural_injection")) == 10
         assert len(get_mutators_by_category("advanced_obfuscation")) == 10
         assert len(get_mutators_by_category("application_injection")) == 8

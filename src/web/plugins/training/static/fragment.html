@@ -1,0 +1,310 @@
+<!-- ============================================================ -->
+<!-- TRAINING PIPELINE -->
+<!-- ============================================================ -->
+
+<!-- EXPORT TRAINING DATA -->
+<div id="section-training-export" class="section">
+    <div class="page-header">
+        <h2>Export Training Data</h2>
+        <p>Export safety benchmark data in 9 fine-tuning formats</p>
+    </div>
+    <div class="card card-accent">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Format</label>
+                <select id="export-format">
+                    <option value="sft">SFT (Supervised Fine-Tuning)</option>
+                    <option value="dpo" selected>DPO (Direct Preference Optimization)</option>
+                    <option value="rlhf">RLHF (Reward Labels)</option>
+                    <option value="chatml">ChatML (Mistral/Qwen)</option>
+                    <option value="alpaca">Alpaca</option>
+                    <option value="sharegpt">ShareGPT (Axolotl)</option>
+                    <option value="orpo">ORPO (Odds Ratio)</option>
+                    <option value="kto">KTO (Kahneman-Tversky)</option>
+                    <option value="llama3">Llama 3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Min Harm Score</label>
+                <input type="number" id="export-min-harm" value="5.0" min="0" max="10" step="0.5">
+            </div>
+            <div class="form-group">
+                <label>Max Examples</label>
+                <input type="number" id="export-max" value="" placeholder="All">
+            </div>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="exportTrainingData()">Export</button>
+            <button class="btn" onclick="exportAllFormats()">Export All Formats</button>
+            <button class="btn" onclick="loadTrainingStats()">Refresh Stats</button>
+        </div>
+        <div id="export-stats" class="stats-grid" style="margin-top:16px"></div>
+        <div id="export-result" style="margin-top:12px"></div>
+    </div>
+</div>
+
+<!-- FINE-TUNE CONFIGS -->
+<div id="section-training-finetune" class="section">
+    <div class="page-header">
+        <h2>Fine-Tune Configs</h2>
+        <p>Generate ready-to-run training scripts for 4 frameworks</p>
+    </div>
+    <div class="card card-accent">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Framework</label>
+                <select id="ft-framework">
+                    <option value="unsloth">Unsloth (fastest, 2x speed)</option>
+                    <option value="axolotl">Axolotl (most flexible)</option>
+                    <option value="trl">HuggingFace TRL</option>
+                    <option value="llama_factory">LLaMA-Factory</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Model</label>
+                <select id="ft-model"></select>
+            </div>
+            <div class="form-group">
+                <label>Objective</label>
+                <select id="ft-objective">
+                    <option value="sft">SFT</option>
+                    <option value="dpo">DPO</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group"><label>LoRA r</label><input type="number" id="ft-lora-r" value="16"></div>
+            <div class="form-group"><label>LoRA alpha</label><input type="number" id="ft-lora-alpha" value="32"></div>
+            <div class="form-group"><label>Learning Rate</label><input type="text" id="ft-lr" value="2e-4"></div>
+            <div class="form-group"><label>Epochs</label><input type="number" id="ft-epochs" value="3"></div>
+            <div class="form-group"><label>Batch Size</label><input type="number" id="ft-batch" value="4"></div>
+        </div>
+        <div class="form-group">
+            <label><input type="checkbox" id="ft-4bit" checked> Use 4-bit quantization</label>
+        </div>
+        <button class="btn btn-primary" onclick="generateFinetuneConfig()">Generate Config</button>
+        <div id="ft-result" style="margin-top:16px"></div>
+    </div>
+</div>
+
+<!-- RED-TEAM LOOP -->
+<div id="section-training-redteam" class="section">
+    <div class="page-header">
+        <h2>Red-Team Feedback Loop</h2>
+        <p>Iterative red-teaming: generate attacks, evaluate, retrain, repeat</p>
+    </div>
+    <div class="card card-accent">
+        <h3>Loop Status</h3>
+        <div id="redteam-status" class="stats-grid"></div>
+        <button class="btn" onclick="loadRedteamStatus()" style="margin-top:12px">Refresh</button>
+    </div>
+    <div class="card" style="margin-top:16px">
+        <h3>Progress Report</h3>
+        <div id="redteam-progress"></div>
+        <div class="btn-group" style="margin-top:12px">
+            <button class="btn" onclick="loadProgressSummary()">Load Summary</button>
+            <button class="btn" onclick="loadProgressReport()">Full Report</button>
+        </div>
+    </div>
+</div>
+
+<!-- ACADEMIC ATTACKS -->
+<div id="section-training-attacks" class="section">
+    <div class="page-header">
+        <h2>Academic Attacks</h2>
+        <p>Configure PAIR, TAP, AutoDAN, and evolutionary attack algorithms</p>
+    </div>
+    <div class="card card-accent">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Algorithm</label>
+                <select id="atk-algorithm">
+                    <option value="pair">PAIR (Chao et al. 2023)</option>
+                    <option value="tap">TAP (Mehrotra et al. 2024)</option>
+                    <option value="autodan">AutoDAN (Liu et al. 2024)</option>
+                    <option value="evolution">Evolutionary (488 mutators)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Max Iterations</label>
+                <input type="number" id="atk-iterations" value="10" min="1" max="100">
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <input type="text" id="atk-category" value="debt_bondage">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Attacker Model</label>
+                <input type="text" id="atk-attacker-model" value="gpt-4o-mini">
+            </div>
+            <div class="form-group">
+                <label>Target Model</label>
+                <input type="text" id="atk-target-model" value="gpt-4o-mini">
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="configureAttack()">Configure (Dry Run)</button>
+        <div id="atk-result" style="margin-top:16px"></div>
+    </div>
+</div>
+
+<!-- CLOUD FINE-TUNE -->
+<div id="section-training-cloud" class="section">
+    <div class="page-header">
+        <h2>Cloud Fine-Tune</h2>
+        <p>Configure fine-tuning jobs on Together, HuggingFace, OpenAI, or RunPod</p>
+    </div>
+    <div class="card card-accent">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Platform</label>
+                <select id="cloud-platform">
+                    <option value="together">Together AI</option>
+                    <option value="huggingface">HuggingFace</option>
+                    <option value="openai">OpenAI</option>
+                    <option value="runpod">RunPod</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>API Key</label>
+                <input type="password" id="cloud-api-key" placeholder="Platform API key">
+            </div>
+            <div class="form-group">
+                <label>Base Model</label>
+                <input type="text" id="cloud-base-model" placeholder="Auto-detect">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group"><label>Training File</label><input type="text" id="cloud-training-file" placeholder="data/training/sft_examples.jsonl"></div>
+            <div class="form-group"><label>Epochs</label><input type="number" id="cloud-epochs" value="3"></div>
+            <div class="form-group"><label>LoRA r</label><input type="number" id="cloud-lora-r" value="16"></div>
+        </div>
+        <button class="btn btn-primary" onclick="configureCloudFinetune()">Configure (Dry Run)</button>
+        <div id="cloud-result" style="margin-top:16px"></div>
+    </div>
+</div>
+
+<!-- TOKEN ANALYSIS -->
+<div id="section-training-analysis" class="section">
+    <div class="page-header">
+        <h2>Token Analysis</h2>
+        <p>Analyze token patterns in successful vs failed attacks</p>
+    </div>
+    <div class="card card-accent">
+        <div class="form-group">
+            <label>Results JSON (array of {prompt, is_harmful, category})</label>
+            <textarea id="analysis-results" rows="6" placeholder='[{"prompt": "...", "is_harmful": true, "category": "debt_bondage"}]'></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group"><label>Top N</label><input type="number" id="analysis-top-n" value="20"></div>
+            <div class="form-group"><label>Min Frequency</label><input type="number" id="analysis-min-freq" value="2"></div>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="analyzeTokens()">Analyze Tokens</button>
+            <button class="btn" onclick="getRecommendations()">Get Mutation Recommendations</button>
+            <button class="btn" onclick="getEffectivePatterns()">Effective Patterns</button>
+        </div>
+        <div id="analysis-result" style="margin-top:16px"></div>
+    </div>
+</div>
+
+<!-- REWARD MODELING -->
+<div id="section-training-reward" class="section">
+    <div class="page-header">
+        <h2>Reward Modeling</h2>
+        <p>Bradley-Terry, SteerLM, RLOO, and RAFT training scripts</p>
+    </div>
+    <div class="card card-accent">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Method</label>
+                <select id="reward-method">
+                    <option value="reward_model">Reward Model (Bradley-Terry)</option>
+                    <option value="steerlm">SteerLM (Multi-attribute)</option>
+                    <option value="rloo">RLOO (Leave-One-Out)</option>
+                    <option value="raft">RAFT (Ranked FineTuning)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Model</label>
+                <input type="text" id="reward-model-name" value="meta-llama/Llama-3.1-8B-Instruct">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group"><label>Dataset Path</label><input type="text" id="reward-dataset" value="data/training/dpo_examples.jsonl"></div>
+            <div class="form-group"><label>Learning Rate</label><input type="text" id="reward-lr" value="1e-5"></div>
+            <div class="form-group"><label>Epochs</label><input type="number" id="reward-epochs" value="3"></div>
+            <div class="form-group"><label>LoRA r</label><input type="number" id="reward-lora-r" value="16"></div>
+        </div>
+        <button class="btn btn-primary" onclick="generateRewardScript()">Generate Script</button>
+        <div id="reward-result" style="margin-top:16px"></div>
+    </div>
+</div>
+
+<!-- SAFETY EVALUATION -->
+<div id="section-training-evaluate" class="section">
+    <div class="page-header">
+        <h2>Safety Evaluation</h2>
+        <p>Evaluate model responses, compare models, and identify vulnerabilities</p>
+    </div>
+    <div class="card card-accent">
+        <div class="form-group">
+            <label>Results JSON (array of {prompt, response, category?, corridor?})</label>
+            <textarea id="eval-results" rows="6" placeholder='[{"prompt": "...", "response": "...", "category": "debt_bondage"}]'></textarea>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="evaluateBatch()">Evaluate Batch</button>
+            <button class="btn" onclick="getVulnerabilities()">Find Vulnerabilities</button>
+            <button class="btn" onclick="generateEvalReport()">Generate Report</button>
+        </div>
+        <div id="eval-result" style="margin-top:16px"></div>
+    </div>
+</div>
+
+<!-- DATASET GENERATOR -->
+<div id="section-training-generate" class="section">
+    <div class="page-header">
+        <h2>Dataset Generator</h2>
+        <p>Generate synthetic training datasets, contrastive pairs, and edge cases</p>
+    </div>
+    <div class="card card-accent">
+        <h3>Synthetic Dataset</h3>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Format</label>
+                <select id="gen-format">
+                    <option value="dpo">DPO</option>
+                    <option value="sft">SFT</option>
+                    <option value="rlhf">RLHF</option>
+                    <option value="contrastive">Contrastive</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Count</label><input type="number" id="gen-count" value="100" min="1" max="5000"></div>
+            <div class="form-group"><label>Seed</label><input type="number" id="gen-seed" value="42"></div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Categories (comma-separated)</label>
+                <input type="text" id="gen-categories" value="debt_bondage,recruitment_fees,regulatory_evasion">
+            </div>
+            <div class="form-group">
+                <label>Corridors (comma-separated)</label>
+                <input type="text" id="gen-corridors" value="PH-SA,NP-QA,BD-MY">
+            </div>
+        </div>
+        <div class="form-group">
+            <label><input type="checkbox" id="gen-mutations"> Include prompt injection mutations</label>
+        </div>
+        <button class="btn btn-primary" onclick="generateDataset()">Generate Dataset</button>
+        <div id="gen-result" style="margin-top:16px"></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+        <h3>Quick Generators</h3>
+        <div class="btn-group">
+            <button class="btn" onclick="generateContrastive()">Contrastive Pairs</button>
+            <button class="btn" onclick="generateEdgeCases()">Edge Cases</button>
+        </div>
+        <div id="gen-quick-result" style="margin-top:12px"></div>
+    </div>
+</div>

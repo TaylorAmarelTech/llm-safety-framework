@@ -1,0 +1,71 @@
+"""
+$DISPLAY_NAME — API routes.
+
+All routes are mounted under /api$API_PREFIX by the plugin registry.
+Use the AppContext dependency for shared services.
+"""
+
+import logging
+from typing import Any
+
+from fastapi import APIRouter, Depends
+from pydantic import BaseModel
+
+from ...app_context import AppContext, get_ctx
+
+logger = logging.getLogger(__name__)
+router = APIRouter()
+
+
+# ---------------------------------------------------------------------------
+# Request / Response models
+# ---------------------------------------------------------------------------
+
+
+class StatusResponse(BaseModel):
+    """Plugin status."""
+    plugin: str = "$PLUGIN_ID"
+    status: str = "active"
+    version: str = "1.0.0"
+
+
+class ItemCreateRequest(BaseModel):
+    """Example create request — customise for your plugin."""
+    name: str
+    description: str = ""
+    metadata: dict[str, Any] = {}
+
+
+# ---------------------------------------------------------------------------
+# Routes
+# ---------------------------------------------------------------------------
+
+
+@router.get("/status", response_model=StatusResponse)
+async def get_status():
+    """Return plugin status."""
+    return StatusResponse()
+
+
+@router.get("/items")
+async def list_items(ctx: AppContext = Depends(get_ctx)):
+    """List all items managed by this plugin."""
+    # TODO: Implement your listing logic
+    return {"items": [], "total": 0}
+
+
+@router.post("/items")
+async def create_item(
+    req: ItemCreateRequest,
+    ctx: AppContext = Depends(get_ctx),
+):
+    """Create a new item."""
+    # TODO: Implement your creation logic
+    return {"id": "new_item_001", "name": req.name, "created": True}
+
+
+@router.get("/items/{item_id}")
+async def get_item(item_id: str, ctx: AppContext = Depends(get_ctx)):
+    """Get a single item by ID."""
+    # TODO: Implement your retrieval logic
+    return {"id": item_id, "name": "placeholder", "metadata": {}}

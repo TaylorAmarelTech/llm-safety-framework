@@ -1,7 +1,7 @@
 """
 Prompt Injection Mutation System
 
-A collection of 488 specialized mutators across 41 categories that take an input prompt and
+A collection of 600+ specialized mutators across 52 categories that take an input prompt and
 transform it using various injection, obfuscation, and adversarial techniques.
 
 Each mutator is deterministic (no LLM calls needed) and operates purely on
@@ -49,6 +49,18 @@ Categories:
     template_fuzzing       - 10 GPTFuzzer-style mutations: crossover, expansion, shrinkage, adaptive, evolutionary
     reasoning_hijack       - 10 reasoning model exploits: H-CoT, ExtendAttack, thought poisoning, meta-reasoning
     authority_exploit      - 10 authority/trust exploits: markup injection, GOAT, Mousetrap, Best-of-N, Hydra
+    agent_task_framing     - 10 dev-workflow framings: user story, sprint, code review, bug fix, refactor, arch, API, DB, tests, deploy
+    tool_output_exploit    - 10 coding-tool exploits: incremental feature, template TODO, library rec, error fix, docs, migration, perf, security, scaffold, multi-file
+    software_spec_injection - 10 spec-format injections: PRD, JIRA, GitHub issue, RFC, UML, Terraform, CI/CD, monitoring, data model, SLA
+    codebase_poisoning     - 10 existing-codebase feature additions: HR system, recruitment portal, tracking app, payroll, messaging, compliance, housing, contracts, onboarding, safety removal
+    ml_exploitation_framing - 10 ML/data-science framings: flight risk predictor, wage optimizer, productivity scoring, sentiment surveillance, attrition model, compliance predictor, scheduling optimizer, recruitment screening, housing allocation, performance profiling
+    integration_exploitation - 10 system-integration exploits: GPS-payroll, visa-access, biometric-attendance, messaging-monitor, housing-utility, debt-payment, document-scan, health-insurance, transport-tracking, emergency-alert
+    government_honeypot      - 10 gov honey pot/sting exploits: federal sting, intel briefing, sting app, LE training, undercover cover, prosecution, policy, cybercrime, task force, victim ID tech
+    encoding_advanced        - 10 advanced encoding mutators: Base32, Base85, Morse, Braille Unicode, Quoted-Printable, UUencode, NATO phonetic, superscript, binary, hex-word
+    multilingual_extended    - 10 extended multilingual mutators: Chinese Pinyin, Japanese Romaji, Korean, Thai, Vietnamese, Arabic, Hebrew, Turkish, Portuguese, Indonesian
+    phonetic_obfuscation     - 10 phonetic mutators: IPA transliteration, Pig Latin, eye dialect, homophones, Cockney, Verlan, Double Dutch, spoonerisms, Ubbi Dubbi, phonemic decomposition
+    transposition_cipher     - 10 classical transposition ciphers: Rail Fence, columnar, Scytale, route, reverse word, interleave, skip-N, diagonal, block shuffle, zigzag reorder
+    genetic_evolution        - 10 evolutionary/genetic mutators: single-point crossover, uniform crossover, semantic crossover, insert mutation, swap mutation, category sibling, elitist chain, island model, Pareto front, diversity-seeking
 
 Usage:
     from src.prompt_injection import MutationPipeline, list_mutators
@@ -63,7 +75,7 @@ import random
 import hashlib
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field, asdict
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Optional
 
 # ---------------------------------------------------------------------------
@@ -82,7 +94,7 @@ class MutationResult:
     attack_vector: str = ""
     reversible: bool = True
     metadata: dict[str, Any] = field(default_factory=dict)
-    timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(tz=timezone.utc).isoformat())
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -298,10 +310,28 @@ def _import_all_mutators():
         template_fuzzing,
         reasoning_hijack,
         authority_exploit,
+        agent_task_framing,
+        tool_output_exploit,
+        software_spec_injection,
+        codebase_poisoning,
+        ml_exploitation_framing,
+        integration_exploitation,
+        government_honeypot,
+        encoding_advanced,
+        multilingual_extended,
+        phonetic_obfuscation,
+        transposition_cipher,
+        genetic_engine,
+        coevolution,
+        tree_attack,
     )
 
 # Lazy import to avoid circular issues
+import logging as _logging
+
 try:
     _import_all_mutators()
-except ImportError:
-    pass  # Will be imported when individual modules are accessed
+except ImportError as _e:
+    _logging.getLogger(__name__).warning(
+        "Failed to import some mutator modules: %s", _e
+    )

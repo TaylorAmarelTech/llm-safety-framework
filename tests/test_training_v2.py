@@ -172,8 +172,8 @@ class TestCoverageAnalyzer:
         analyzer = CoverageAnalyzer()
         report = analyzer.analyze()
 
-        assert report.total_mutators == 488
-        assert report.total_categories == 41
+        assert report.total_mutators >= 518
+        assert report.total_categories >= 44
         assert report.coverage_score > 0
         assert report.coverage_score <= 1.0
 

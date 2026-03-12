@@ -1,0 +1,26 @@
+"""$DISPLAY_NAME plugin — add your description here."""
+
+from pathlib import Path
+
+from ...plugin_base import PluginManifest, NavItem
+from .routes import router
+
+manifest = PluginManifest(
+    id="$PLUGIN_ID",
+    name="$DISPLAY_NAME",
+    version="1.0.0",
+    router=router,
+    api_prefix="$API_PREFIX",
+    api_tags=["$DISPLAY_NAME"],
+    nav_items=[
+        NavItem(
+            id="$PLUGIN_ID",
+            label="$DISPLAY_NAME",
+            icon="&#9733;",
+            group="$NAV_GROUP",
+            workflow_stage="$WORKFLOW_STAGE",
+            order=$ORDER,
+        ),
+    ],
+    fragment_dir=Path(__file__).parent / "static",
+)

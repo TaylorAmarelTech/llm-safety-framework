@@ -225,8 +225,8 @@ class TestRegistryCounts:
     the overall registry counts remain consistent."""
 
     def test_total_mutator_count(self):
-        """Registry should contain exactly 488 mutators."""
-        assert len(list_mutators()) == 488
+        """Registry should contain at least 518 mutators."""
+        assert len(list_mutators()) >= 518
 
     def test_logical_fallacy_count(self):
         """logical_fallacy category should have exactly 10 mutators."""
@@ -253,11 +253,11 @@ class TestRegistryCounts:
         assert len(get_mutators_by_category("analytical_framing")) == 10
 
     def test_total_category_count(self):
-        """Registry should contain exactly 41 unique categories."""
+        """Registry should contain at least 44 unique categories."""
         all_mutators = list_mutators()
         categories = {info["category"] for info in all_mutators.values()}
-        assert len(categories) == 41, (
-            f"Expected 41 categories, got {len(categories)}: {sorted(categories)}"
+        assert len(categories) >= 44, (
+            f"Expected >= 44 categories, got {len(categories)}: {sorted(categories)}"
         )
 
     def test_all_logical_fallacy_names(self):

@@ -2,8 +2,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![Tests](https://img.shields.io/badge/tests-4069%20passing-brightgreen.svg)](tests/)
-[![Coverage](https://img.shields.io/badge/coverage-93%25-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-5208%20passing-brightgreen.svg)](tests/)
+[![Coverage](https://img.shields.io/badge/coverage-dynamic-blue.svg)](tests/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 A modular, extensible framework for evaluating whether Large Language Models properly refuse requests that could facilitate human trafficking and migrant worker exploitation. This is **defensive security research** -- the framework identifies weaknesses in AI safety guardrails so they can be strengthened, not bypassed. Every test measures a model's ability to recognize and refuse harmful requests grounded in real-world exploitation patterns documented by the ILO, IOM, and international anti-trafficking law.
@@ -14,21 +14,22 @@ A modular, extensible framework for evaluating whether Large Language Models pro
 
 | Metric | Count |
 |--------|------:|
-| Python source files | 439 |
-| Lines of Python | ~300,000 |
-| Unit tests passing | 4,069 |
-| Test files | 39 |
-| API routes | 267 |
-| Web dashboard plugins | 14 |
-| Prompt injection mutators | 488 across 41 categories |
-| Chain detection seeds | 126 chains, 16 modules |
+| Python source files | 470+ |
+| Lines of Python | ~320,000 |
+| Unit tests passing | 5,208 |
+| Test files | 51 |
+| API routes | 303 |
+| Web dashboard plugins | 16 |
+| Prompt injection mutators | 548 across 47 categories |
+| Chain detection seeds | 150+ chains, 21 modules |
 | Document intelligence facts | 20,460 across 174 modules |
 | Training algorithms supported | 15 |
 | Export formats | 9 |
 | Migration corridors | 126 routes |
 | ILO forced labor indicators | All 11 |
 | Research API integrations | 5 |
-| Dimensional scoring dimensions | 35 |
+| Dimensional scoring dimensions | 45 across 5 categories |
+| LLM cartography modules | 7 (topology, scorer, comparator, attack surface, blind spots, gradient generator) |
 
 ---
 

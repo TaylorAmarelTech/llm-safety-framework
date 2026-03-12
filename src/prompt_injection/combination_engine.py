@@ -73,7 +73,7 @@ def _caesar(text: str, shift: int = 3) -> str:
 def _atbash(text: str) -> str:
     result = []
     for c in text:
-        if c.isalpha():
+        if c.isascii() and c.isalpha():
             base = ord("A") if c.isupper() else ord("a")
             result.append(chr(base + 25 - (ord(c) - base)))
         else:

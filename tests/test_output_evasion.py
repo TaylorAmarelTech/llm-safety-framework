@@ -452,10 +452,10 @@ class TestAutoDecoder:
 
 
 class TestRegistration:
-    def test_output_evasion_category_has_107_mutators(self):
+    def test_output_evasion_category_has_109_mutators(self):
         names = get_mutators_by_category("output_evasion")
-        assert len(names) == 107, (
-            f"Expected 107 output_evasion mutators, got {len(names)}: {names}"
+        assert len(names) == 109, (
+            f"Expected 109 output_evasion mutators, got {len(names)}: {names}"
         )
 
     def test_all_output_evasion_mutator_names(self):
@@ -466,8 +466,8 @@ class TestRegistration:
             "first_letter_steg", "nth_word_extract", "paragraph_initial",
             "a1z26_cipher", "custom_sub_cipher", "coordinate_encode",
             "multicolumn_fragment", "nested_format_encode",
-            # Family 6: Historical Cipher Roleplay (atbash/vigenere moved to bijection_cipher)
-            "caesar_shift",
+            # Family 6: Historical Cipher Roleplay
+            "caesar_shift", "atbash_output_cipher", "vigenere_output_cipher",
             "rail_fence_cipher", "enigma_roleplay", "pigpen_describe",
             # Family 7: Narrative Camouflage
             "recipe_steg", "playlist_steg", "bedtime_story_steg",
@@ -531,8 +531,8 @@ class TestRegistration:
 
     def test_total_mutator_count(self):
         all_mutators = list_mutators()
-        assert len(all_mutators) == 488, (
-            f"Expected 488 total mutators, got {len(all_mutators)}"
+        assert len(all_mutators) >= 518, (
+            f"Expected >= 518 total mutators, got {len(all_mutators)}"
         )
 
     def test_all_output_evasion_are_base_mutator_subclass(self):

@@ -310,6 +310,71 @@ def test_config():
 # Pytest Configuration
 # =============================================================================
 
+# =============================================================================
+# Prompt Injection / Mutator Fixtures
+# =============================================================================
+
+
+@pytest.fixture
+def mutator_factory():
+    """Callable that instantiates a mutator by name.
+
+    Usage::
+
+        def test_something(mutator_factory):
+            m = mutator_factory("persona_switch")
+            results = m.mutate("test prompt")
+    """
+    from src.prompt_injection import get_mutator
+    def _factory(name: str):
+        return get_mutator(name)
+    return _factory
+
+
+@pytest.fixture
+def pipeline_factory():
+    """Callable that builds a MutationPipeline."""
+    from src.prompt_injection import MutationPipeline
+    def _factory(names: list, mode: str = "parallel"):
+        return MutationPipeline(names, mode=mode)
+    return _factory
+
+
+@pytest.fixture
+def all_mutator_names_fixture():
+    """All registered mutator names as a sorted list."""
+    from src.prompt_injection import list_mutators
+    return sorted(list_mutators().keys())
+
+
+@pytest.fixture
+def all_categories_fixture():
+    """All unique categories from the mutator registry."""
+    from src.prompt_injection import list_mutators
+    return sorted(set(m["category"] for m in list_mutators().values()))
+
+
+# =============================================================================
+# Web Client Fixtures
+# =============================================================================
+
+
+@pytest.fixture(scope="session")
+def web_client():
+    """FastAPI TestClient for integration tests (session-scoped)."""
+    from fastapi.testclient import TestClient
+    from src.web.app import create_app
+    from src.web.config import Settings
+    settings = Settings(data_dir="data", config_file="config/api_keys.json")
+    app = create_app(settings)
+    return TestClient(app)
+
+
+# =============================================================================
+# Pytest Configuration
+# =============================================================================
+
+
 def pytest_configure(config):
     """Configure pytest with custom markers."""
     config.addinivalue_line(
@@ -320,4 +385,7 @@ def pytest_configure(config):
     )
     config.addinivalue_line(
         "markers", "database: marks tests that require database access"
+    )
+    config.addinivalue_line(
+        "markers", "edge_case: marks edge-case tests that run over all mutators"
     )

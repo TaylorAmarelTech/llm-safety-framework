@@ -620,7 +620,7 @@ class CognitiveOverloadMutator(BaseMutator):
 class BadLikertJudgeMutator(BaseMutator):
     """Two-step Likert scale evaluation that elicits harmful content at level 5."""
 
-    NAME = "bad_likert_judge"
+    NAME = "bad_likert_judge_jailbreak"
     CATEGORY = "named_jailbreak"
     DESCRIPTION = (
         "Bad Likert Judge — asks the model to rate harmfulness on a 1-5 "

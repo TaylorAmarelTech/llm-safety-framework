@@ -1,0 +1,92 @@
+// $DISPLAY_NAME Plugin JavaScript
+(function() {
+  "use strict";
+
+  const API = "/api$API_PREFIX";
+  const escHtml = s => s == null ? "" : String(s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+  // ------------------------------------------------------------------
+  // Section Loaders — called when the shell reveals this section
+  // ------------------------------------------------------------------
+
+  async function loadSection() {
+    try {
+      // Load status
+      const statusResp = await fetch(API + "/status");
+      const statusData = await statusResp.json();
+      const el = document.getElementById("$PLUGIN_ID-status");
+      if (el) el.textContent = statusData.status || "active";
+
+      // Load items
+      await window._${PLUGIN_ID}_refresh();
+    } catch (err) {
+      console.error("[$PLUGIN_ID] load error:", err);
+    }
+  }
+
+  // ------------------------------------------------------------------
+  // CRUD operations
+  // ------------------------------------------------------------------
+
+  window._${PLUGIN_ID}_refresh = async function() {
+    try {
+      const resp = await fetch(API + "/items");
+      const data = await resp.json();
+      const tbody = document.getElementById("$PLUGIN_ID-items-body");
+      if (!tbody) return;
+
+      if (!data.items || data.items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3">No items yet.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = data.items.map(item =>
+        '<tr>' +
+          '<td>' + escHtml(item.id) + '</td>' +
+          '<td>' + escHtml(item.name) + '</td>' +
+          '<td><button onclick="alert(\'Detail: ' + escHtml(item.id) + '\')">View</button></td>' +
+        '</tr>'
+      ).join("");
+    } catch (err) {
+      console.error("[$PLUGIN_ID] refresh error:", err);
+    }
+  };
+
+  window._${PLUGIN_ID}_createItem = function() {
+    document.getElementById("$PLUGIN_ID-create-form").style.display = "block";
+  };
+
+  window._${PLUGIN_ID}_submitCreate = async function() {
+    const name = document.getElementById("$PLUGIN_ID-name-input").value;
+    const desc = document.getElementById("$PLUGIN_ID-desc-input").value;
+    if (!name) { alert("Name is required"); return; }
+
+    try {
+      const resp = await fetch(API + "/items", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({name: name, description: desc}),
+      });
+      if (resp.ok) {
+        document.getElementById("$PLUGIN_ID-create-form").style.display = "none";
+        document.getElementById("$PLUGIN_ID-name-input").value = "";
+        document.getElementById("$PLUGIN_ID-desc-input").value = "";
+        await window._${PLUGIN_ID}_refresh();
+      } else {
+        alert("Error creating item");
+      }
+    } catch (err) {
+      console.error("[$PLUGIN_ID] create error:", err);
+    }
+  };
+
+  // ------------------------------------------------------------------
+  // Register section loader
+  // ------------------------------------------------------------------
+
+  if (!window.SECTION_LOADERS) window.SECTION_LOADERS = {};
+  window.SECTION_LOADERS["$PLUGIN_ID"] = loadSection;
+
+})();

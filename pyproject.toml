@@ -10,7 +10,7 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11"
 authors = [
-    { name = "Taylor Amarel" }
+    { name = "Taylor Amarel", email = "taylor.amarel@gmail.com" }
 ]
 keywords = [
     "llm",
@@ -22,7 +22,7 @@ keywords = [
     "ai-safety"
 ]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
@@ -210,4 +210,11 @@ exclude_lines = [
     "raise NotImplementedError",
     "if TYPE_CHECKING:",
     "if __name__ == .__main__.:",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests", "scripts", "_archive"]
+skips = [
+    "B101",  # assert used in non-test code (acceptable for validation)
+    "B311",  # random not for crypto (we use random for test sampling, not security)
 ]

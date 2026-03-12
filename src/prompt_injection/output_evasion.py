@@ -700,7 +700,7 @@ _ATBASH_TABLE = (
 class AtbashCipherMutator(BaseMutator):
     """Instructs the LLM to respond using the Atbash cipher."""
 
-    NAME = "atbash_cipher"
+    NAME = "atbash_output_cipher"
     CATEGORY = "output_evasion"
     DESCRIPTION = (
         "Uses the ancient Hebrew Atbash cipher where the alphabet is reversed: "
@@ -729,7 +729,7 @@ class AtbashCipherMutator(BaseMutator):
 class VigenereCipherMutator(BaseMutator):
     """Instructs the LLM to respond using a Vigenere cipher with a keyword."""
 
-    NAME = "vigenere_cipher"
+    NAME = "vigenere_output_cipher"
     CATEGORY = "output_evasion"
     DESCRIPTION = (
         "Uses the Vigenere cipher with a repeating keyword to polyalphabetically "

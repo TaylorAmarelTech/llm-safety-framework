@@ -8,7 +8,7 @@ and decode output-evasion results.
 import json
 import logging
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -254,10 +254,10 @@ async def run_batch(
     }
 
     # Persist batch result
-    batch_id = f"batch_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    batch_id = f"batch_{datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
     _save_batch(ctx, batch_id, {
         "id": batch_id,
-        "created_at": datetime.now().isoformat(),
+        "created_at": datetime.now(tz=timezone.utc).isoformat(),
         "stats": stats,
         "results": all_results,
     })

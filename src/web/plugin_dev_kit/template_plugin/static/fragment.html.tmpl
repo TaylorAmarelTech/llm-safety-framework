@@ -1,0 +1,41 @@
+<!-- $DISPLAY_NAME Plugin Fragment -->
+
+<div id="section-$PLUGIN_ID" class="section" style="display:none;">
+  <h2>$DISPLAY_NAME</h2>
+
+  <!-- Status Card -->
+  <div class="card" id="$PLUGIN_ID-status-card">
+    <h3>Status</h3>
+    <div id="$PLUGIN_ID-status">Loading...</div>
+  </div>
+
+  <!-- Items Table -->
+  <div class="card" id="$PLUGIN_ID-items-card">
+    <h3>Items</h3>
+    <div style="margin-bottom:12px;">
+      <button onclick="window._${PLUGIN_ID}_createItem()">+ New Item</button>
+      <button onclick="window._${PLUGIN_ID}_refresh()">Refresh</button>
+    </div>
+    <table id="$PLUGIN_ID-items-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="$PLUGIN_ID-items-body">
+        <tr><td colspan="3">No items yet.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Create Form (hidden by default) -->
+  <div class="card" id="$PLUGIN_ID-create-form" style="display:none;">
+    <h3>Create New Item</h3>
+    <label>Name: <input type="text" id="$PLUGIN_ID-name-input"></label><br>
+    <label>Description: <textarea id="$PLUGIN_ID-desc-input" rows="3"></textarea></label><br>
+    <button onclick="window._${PLUGIN_ID}_submitCreate()">Create</button>
+    <button onclick="document.getElementById('$PLUGIN_ID-create-form').style.display='none'">Cancel</button>
+  </div>
+</div>

@@ -184,6 +184,62 @@ CATEGORY_TAXONOMY: dict[str, dict[str, list[str]]] = {
         "defense_layers": ["alignment"],
         "technique_classes": ["authority", "social_engineering"],
     },
+    "agent_task_framing": {
+        "defense_layers": ["alignment", "reasoning"],
+        "technique_classes": ["social_engineering", "structural"],
+    },
+    "tool_output_exploit": {
+        "defense_layers": ["alignment", "reasoning"],
+        "technique_classes": ["structural", "social_engineering"],
+    },
+    "software_spec_injection": {
+        "defense_layers": ["alignment", "input_filter"],
+        "technique_classes": ["structural", "social_engineering"],
+    },
+    "codebase_poisoning": {
+        "defense_layers": ["alignment", "reasoning"],
+        "technique_classes": ["structural", "cognitive"],
+    },
+    "ml_exploitation_framing": {
+        "defense_layers": ["alignment", "reasoning"],
+        "technique_classes": ["cognitive", "structural"],
+    },
+    "integration_exploitation": {
+        "defense_layers": ["alignment", "reasoning"],
+        "technique_classes": ["structural", "social_engineering"],
+    },
+    "government_honeypot": {
+        "defense_layers": ["alignment", "reasoning"],
+        "technique_classes": ["social_engineering", "authority"],
+    },
+    "encoding_advanced": {
+        "defense_layers": ["input_filter"],
+        "technique_classes": ["encoding"],
+    },
+    "multilingual_extended": {
+        "defense_layers": ["input_filter", "alignment"],
+        "technique_classes": ["encoding"],
+    },
+    "phonetic_obfuscation": {
+        "defense_layers": ["input_filter"],
+        "technique_classes": ["obfuscation", "encoding"],
+    },
+    "transposition_cipher": {
+        "defense_layers": ["input_filter"],
+        "technique_classes": ["encoding"],
+    },
+    "genetic_evolution": {
+        "defense_layers": ["input_filter", "alignment", "output_filter", "reasoning"],
+        "technique_classes": ["encoding", "social_engineering", "obfuscation", "cognitive"],
+    },
+    "coevolution": {
+        "defense_layers": ["input_filter", "alignment", "output_filter", "reasoning"],
+        "technique_classes": ["cognitive", "social_engineering", "obfuscation", "encoding"],
+    },
+    "tree_attack": {
+        "defense_layers": ["input_filter", "alignment", "output_filter", "reasoning"],
+        "technique_classes": ["cognitive", "structural", "encoding", "obfuscation"],
+    },
 }
 
 ALL_DEFENSE_LAYERS = ["input_filter", "alignment", "output_filter", "reasoning"]

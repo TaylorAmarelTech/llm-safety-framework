@@ -38,6 +38,11 @@ from src.research.agents.coverage_gap_agent import CoverageGapAgent
 from src.research.agents.ethics_boundary_agent import EthicsBoundaryAgent
 from src.research.agents.financial_crime_agent import FinancialCrimeAgent
 from src.research.agents.jurisdiction_agent import JurisdictionAgent
+from src.research.agents.embedding_research_agent import EmbeddingResearchAgent
+from src.research.agents.github_library_agent import GitHubLibraryAgent
+from src.research.agents.model_benchmark_agent import ModelBenchmarkAgent
+from src.research.agents.technique_integration_agent import TechniqueIntegrationAgent
+from src.research.agents.attack_surface_evolution_agent import AttackSurfaceEvolutionAgent
 
 logger = logging.getLogger(__name__)
 

@@ -6,13 +6,18 @@ They share a common protocol (BaseResearchAgent) and output format but
 have no dependencies on each other.
 
 Agents:
-    1. EnforcementAgent      - SEC/DOJ/FinCEN/FATF/IRS enforcement actions
-    2. CrossPollinationAgent  - Cross-domain pattern transfer
-    3. TechniqueEvolutionAgent - Emerging techniques (AI, DeFi, prompt injection)
-    4. CoverageGapAgent       - Test suite gap analysis and filling
-    5. EthicsBoundaryAgent    - Dual-use, usury, ethical edge cases
-    6. FinancialCrimeAgent    - Tax evasion, AML, white collar deep-dive
-    7. JurisdictionAgent      - Jurisdiction-specific regulations and loopholes
+    1. EnforcementAgent           - SEC/DOJ/FinCEN/FATF/IRS enforcement actions
+    2. CrossPollinationAgent      - Cross-domain pattern transfer
+    3. TechniqueEvolutionAgent    - Emerging techniques (AI, DeFi, prompt injection)
+    4. CoverageGapAgent           - Test suite gap analysis and filling
+    5. EthicsBoundaryAgent        - Dual-use, usury, ethical edge cases
+    6. FinancialCrimeAgent        - Tax evasion, AML, white collar deep-dive
+    7. JurisdictionAgent          - Jurisdiction-specific regulations and loopholes
+    8. EmbeddingResearchAgent     - Novel embedding/vector attack technique discovery
+    9. GitHubLibraryAgent         - Adversarial ML repo discovery and evaluation
+   10. ModelBenchmarkAgent        - Embedding model tracking and attack surface eval
+   11. TechniqueIntegrationAgent  - Convert findings into implementation plans
+   12. AttackSurfaceEvolutionAgent - Monitor attack/defense co-evolution
 """
 
 from __future__ import annotations
